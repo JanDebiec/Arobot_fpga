@@ -25,8 +25,8 @@ library work;
 package slice_tick_gen_pkg is
     component slice_tick_gen 
     generic(
- 		bISSP     : boolean := TRUE;
-        bModelSim : boolean := FALSE
+ 		bISSP     : boolean;  
+        bModelSim : boolean
     );
     port (
 		isl_clk50Mhz 		: in std_logic;	--!
@@ -44,8 +44,8 @@ Library ieee;
 --!
 entity slice_tick_gen is
     generic(
- 		bISSP     : boolean := TRUE;
-        bModelSim : boolean := FALSE
+ 		bISSP     : boolean;
+        bModelSim : boolean
     );
     port (
 		isl_clk50Mhz 		: in std_logic;	--! master clock 50 MHz

@@ -25,10 +25,10 @@ library work;
 --!
 package one_axis_pkg is
     component one_axis 
---    generic(
--- 		bISSP     : boolean := TRUE;
---        bModelSim : boolean := FALSE
---    );
+    generic(
+			bModelSim : boolean;
+			bISSP     : boolean
+    );
     port (
 		isl_clk50Mhz 		: in std_logic;	--! master clock 50 MHz
 		isl_rst 			: in std_logic;	--! master reset active high
@@ -64,8 +64,8 @@ Library work;
 --!
 entity one_axis is
     generic(
-			bModelSim : boolean := FALSE;
-			bISSP     : boolean := TRUE
+			bModelSim : boolean;
+			bISSP     : boolean
     );
 	port (
 		isl_clk50Mhz 		: in std_logic;	--! master clock 50 MHz

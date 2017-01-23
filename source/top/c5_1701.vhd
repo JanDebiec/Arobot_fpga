@@ -384,6 +384,22 @@ port map (
     hps_0_hps_io_hps_io_gpio_inst_GPIO61  => HPS_GSENSOR_INT ,--, -CONNECTED_TO_hps_0_hps_io_hps_io_gpio_inst_GPIO61,  --                               .hps_io_gpio_inst_GPIO61
                                              
     led_pio_external_connection_export    => LED, --CONNECTED_TO_led_pio_external_connection_export,    --    led_pio_external_connection.export
+    memory_mem_a            => HPS_DDR3_ADDR,   --,CONNECTED_TO_memory_mem_a,                          --                         memory.mem_a
+    memory_mem_ba           => HPS_DDR3_BA,     --,CONNECTED_TO_memory_mem_ba,                         --                               .mem_ba
+    memory_mem_ck           => HPS_DDR3_CK_P,   --,CONNECTED_TO_memory_mem_ck,                         --                               .mem_ck
+    memory_mem_ck_n         => HPS_DDR3_CK_N,   --,CONNECTED_TO_memory_mem_ck_n,                       --                               .mem_ck_n
+    memory_mem_cke          => HPS_DDR3_CKE,    --,CONNECTED_TO_memory_mem_cke,                        --                               .mem_cke
+    memory_mem_cs_n         => HPS_DDR3_CS_N,   --,CONNECTED_TO_memory_mem_cs_n,                       --                               .mem_cs_n
+    memory_mem_ras_n        => HPS_DDR3_RAS_N,  --,CONNECTED_TO_memory_mem_ras_n,                      --                               .mem_ras_n
+    memory_mem_cas_n        => HPS_DDR3_CAS_N,  --,CONNECTED_TO_memory_mem_cas_n,                      --                               .mem_cas_n
+    memory_mem_we_n         => HPS_DDR3_WE_N,   --,CONNECTED_TO_memory_mem_we_n,                       --                               .mem_we_n
+    memory_mem_reset_n      => HPS_DDR3_RESET_N,--,CONNECTED_TO_memory_mem_reset_n,                    --                               .mem_reset_n
+    memory_mem_dq           => HPS_DDR3_DQ,     --,CONNECTED_TO_memory_mem_dq,                         --                               .mem_dq
+    memory_mem_dqs          => HPS_DDR3_DQS_P,  --,CONNECTED_TO_memory_mem_dqs,                        --                               .mem_dqs
+    memory_mem_dqs_n        => HPS_DDR3_DQS_N,  --,CONNECTED_TO_memory_mem_dqs_n,                      --                               .mem_dqs_n
+    memory_mem_odt          => HPS_DDR3_ODT,    --,CONNECTED_TO_memory_mem_odt,                        --                               .mem_odt
+    memory_mem_dm           => HPS_DDR3_DM,     --,CONNECTED_TO_memory_mem_dm,                         --                               .mem_dm
+    memory_oct_rzqin        => HPS_DDR3_RZQ,    --,CONNECTED_TO_memory_oct_rzqin,                      --                               .oct_rzqin
 
     reset_reset_n           => sl_ResetN --CONNECTED_TO_reset_reset_n                          --                          reset.reset_n
 );
@@ -469,6 +485,10 @@ port map
 
 --!
 uST : slice_tick_gen
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
 port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
@@ -502,6 +522,10 @@ end generate;
 
 --!
 uAxis : one_axis
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
 port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
