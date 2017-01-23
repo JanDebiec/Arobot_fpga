@@ -1,0 +1,16 @@
+*.bak
+greybox_tmp/
+db/
+incremental_db/
+*.cdb
+*.hdb
+*.rpt
+*.done
+*.smsg
+*.sdo
+*.vho
+*.summary
+simulation/
+simulation/modelsim/
+
+

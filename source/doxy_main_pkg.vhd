@@ -1,0 +1,35 @@
+--! @mainpage notitle
+--!
+--! additional information about arobot fpga copy from msystem, TO BE EDITED
+--!
+--! @TODO: change the content of arobot doxy
+--! @tableofcontents
+--! @section  structure
+--! @subsection  H2F_interface
+--!
+--! | interface    | functionality   | top-file name            |
+--! |:------------:|:---------------:|:------------------------:|
+--! | light-weight | @ref h2flw_addr | msystem_constant_pkg.vhd |
+--! | h2f memory  | @ref h2fmem_addr | msystem_constant_pkg.vhd |
+--!
+--!
+--! @section  State_machines
+--!
+--!
+--! | state machine | functionality   |     file name            |
+--! |:-------------:|:---------------:|:------------------------:|
+--! | ILX generator | @ref t_IlxGenSM |   msystem_typedef_pkg.vhd |
+--! | Internal run-time | @ref t_ControlSearchNonSM | non_search_sm.vhd |
+--! | search procedure | @ref search_proc | search_proc.vhd |
+--!
+--!
+--! @section  Style_guide
+--!
+--! | style_guide    | functionality   | top-file name            |
+--! |:------------:|:---------------:|:------------------------:|
+--! | style guide | @ref style_guide | doxy_styleguide.vhd |
+--!
+--!
+
+
+
