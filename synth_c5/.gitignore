@@ -1,6 +1,9 @@
 .qsys_edit/
 db/
+hps_isw_handoff/
 increment_db/
 *.rpt
 *.summary
+*.smsg
+*.txt
 

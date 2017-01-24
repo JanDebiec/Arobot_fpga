@@ -1,0 +1,5 @@
+.qsys_edit/
+*.sopcinfo
+soc_jtag_irq/*
+!soc_jtag_irq/*.vhd
+
