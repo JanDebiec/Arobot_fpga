@@ -19,6 +19,11 @@ set addr_sw 0x10080
 set addr_pb 0x100C0
 #  0x0000_5000   light weight bridge
 set addr_lw 0x5000
+#
+set period_offset 	0x04
+set ramp_offset 	0x08
+set velocity_offset 0x0C
+
 # -----------------------------------------------------------------
 
 # =================================================================
@@ -141,6 +146,47 @@ proc lw_write {offset data} {
 	master_write_32 $jtag(master) $addr $data
 	return
 }
+
+# setting period
+proc period {data} {
+    global jtag
+    global addr_lw
+    global period_offset
+    if {![info exists jtag(master)]} {
+        jtag_open
+    }
+    set addr [expr {$addr_lw + $period_offset}]
+    master_write_32 $jtag(master) $addr $data
+    return
+}
+
+# setting ramp
+proc ramp {data} {
+    global jtag
+    global addr_lw
+    global ramp_offset
+    if {![info exists jtag(master)]} {
+        jtag_open
+    }
+    set addr [expr {$addr_lw + $ramp_offset}]
+    master_write_32 $jtag(master) $addr $data
+    return
+}
+
+# setting velocity
+proc velocity {data} {
+    global jtag
+    global addr_lw
+    global velocity_offset
+    if {![info exists jtag(master)]} {
+        jtag_open
+    }
+    set addr [expr {$addr_lw + $velocity_offset}]
+    master_write_32 $jtag(master) $addr $data
+    return
+}
+
+
 
 led_write 0x7
 
