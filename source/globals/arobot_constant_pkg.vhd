@@ -40,17 +40,13 @@ constant c_slv2_h2f_block_pll        : std_logic_vector(1 downto 0) :=  "11";
 constant c_slv2_h2f_block_reserve    : std_logic_vector(1 downto 0) :=  "10";
 constant c_slv2_h2f_block_read       : std_logic_vector(1 downto 0) :=  "01";
 constant c_slv2_h2f_block_write      : std_logic_vector(1 downto 0) :=  "00";
--- h2f lw interface write address	8 bits NOT USED
-constant c_slv8_h2f_address_Modus        : std_logic_vector(7 downto 0) :=  x"04";
-constant c_slv8_h2f_address_TimerReload  : std_logic_vector(7 downto 0) :=  x"08";
-constant c_slv8_h2f_address_ReadLock     : std_logic_vector(7 downto 0) :=  x"0C";
-constant c_slv8_h2f_address_DAC_Offset   : std_logic_vector(7 downto 0) :=  x"10";
-constant c_slv8_h2f_address_ADC_Delay    : std_logic_vector(7 downto 0) :=  x"14";
+-- h2f lw interface write address	8 bits 
+constant c_slv8_h2f_address_PeriodCount  : std_logic_vector(7 downto 0) :=  x"04";
+constant c_slv8_h2f_address_RampValue	 : std_logic_vector(7 downto 0) :=  x"08";
 
 -- h2f lw interface read address   8 bits 
 constant c_slv8_h2f_address_Status       : std_logic_vector(7 downto 0) :=  x"80";
-constant c_slv8_h2f_address_BufferNumber : std_logic_vector(7 downto 0) :=  x"84";
-constant c_slv8_h2f_address_BufferStatus : std_logic_vector(7 downto 0) :=  x"88";
+constant c_slv8_h2f_address_PosModulo : std_logic_vector(7 downto 0) :=  x"84";
 constant c_slv8_h2f_address_Version      : std_logic_vector(7 downto 0) :=  x"8C";
 
 end arobot_constant_pkg;

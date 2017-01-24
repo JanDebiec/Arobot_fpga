@@ -285,11 +285,13 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 	signal sl_extDir : std_logic;
 	signal uISSP_sl_mux : std_logic;
 -- signals io for the h2f:
-	signal n16_rampValue  	: signed (15 downto 0);
-	signal n32_periodCount	: signed (31 downto 0);
+	signal uH2flw_n16_rampValue  	: signed (15 downto 0);
+	signal uH2flw_n32_periodCount	: signed (31 downto 0);
 	signal	in16_inputVector : signed (15 downto 0);
 	signal	n16_inputVector : signed (15 downto 0);
 	signal uAxis_oslv6_PosModulo : std_logic_vector(5 downto 0);
+	signal uH2flw_sl_periodValid : std_logic;
+	signal uH2flw_sl_rampValid : std_logic;
 
 begin
 -------------------------------------------------------------
@@ -419,43 +421,25 @@ port map
     isl_external_lw_bus_rw              => sl_h2f_lw_bus_rw            ,--: in  std_logic;                                        -- rw
     islv32_external_lw_bus_write_data   => slv32_h2f_lw_bus_write_data ,--: in  std_logic_vector(31 downto 0);                    -- write_data
     oslv32_external_lw_bus_read_data    => slv32_h2f_lw_bus_read_data  ,--: out std_logic_vector(31 downto 0); -- read_data
-----pll_reconfig
---    pll_reconfig_slave_waitrequest => uIlxPll_slave_waitrequest,--: in std_logic;                                        -- waitrequest
---    pll_reconfig_slave_read        => uH2flw_pll_reconfig_slave_read,--: out  std_logic;             -- read
---    pll_reconfig_slave_write       => uH2flw_pll_reconfig_slave_write,--: out  std_logic;             -- write
---    pll_reconfig_slave_readdata    => uIlxPll_slave_readdata,--: in std_logic_vector(31 downto 0);                    -- readdata
---    pll_reconfig_slave_address     => uH2flw_pll_reconfig_slave_address,--: out  std_logic_vector(5 downto 0)  := (others => 'X'); -- address
---    pll_reconfig_slave_writedata   => uH2flw_pll_reconfig_slave_writedata,--: out  std_logic_vector(31 downto 0) := (others => 'X'); -- writedata
---non-interface
---buf-control
-    islv32_BuffersStatus     => uSens2Buf_slv32_BufStatus,--: in std_logic_vector(31 downto 0);
-	islv32_BufferNumber => uSens2Buf_slv32_ReadBufsNr,
---    islv32_BufValid    => slv32_BufValid,--: in std_logic_vector(31 downto 0);
---    oslv32_RdBufNr     => ,--: out std_logic_vector(31 downto 0);
-    oslv32_ReadLock    => uH2flw_slv32_ReadLock,--: out std_logic_vector(31 downto 0);
--- system control
-    oslv32_Modus       => uH2flw_slv32_Modus       ,--: out std_logic_vector(31 downto 0); 
-    osl_ModusValid     => uH2flw_sl_ModusValid     ,--: out std_logic;
-    oslv32_TimerReload => uH2flw_slv32_TimerReload ,--: out std_logic_vector(31 downto 0); 
-    osl_TimerRelValid  => uH2flw_sl_TimerRelValid  ,--: out std_logic;
-    oslv32_DACOffset   => uH2flw_slv32_DACOffset,--: out std_logic_vector(31 downto 0); 
-    osl_DacOffsetValid => uH2flw_sl_DacOffsetValid,-- : out std_logic;
-    oslv32_ADCDelay    => uH2flw_slv32_ADCDelay ,--: out std_logic_vector(31 downto 0); 
-    osl_AdcDelayValid  => uH2flw_sl_AdcDelayValid ,--: out std_logic;
+-- outputs
+	on32_periodCount	=> uH2flw_n32_periodCount,--: out  signed (31 downto 0);
+	osl_periodValid		=> uH2flw_sl_periodValid,--: out std_logic;
+	on16_rampValue  	=> uH2flw_n16_rampValue,--: out signed (15 downto 0);
+	osl_rampValid		=> uH2flw_sl_rampValid,--	: out std_logic;
+-- inputs
+	islv6_PosModulo		=> uAxis_oslv6_PosModulo,--: in std_logic_vector(5 downto 0);
+
     islv32_Version     => slv32_FpgaVersion,
     islv32_Status      => slv32_Status      ,--: in  std_logic_vector(31 downto 0); 
     isl_StatusValid    => uSens2Buf_sl_StatusValid    --: in  std_logic
  );
 -- outputs to control from h2f
-n32_periodCount	<= x"004C4B40";--05-000-000 clocks = 100ms
-n16_rampValue  	<= x"0040";
+--uH2flw_n32_periodCount	<= x"004C4B40";--05-000-000 clocks = 100ms
+--uH2flw_n16_rampValue  	<= x"0040";
 -- inputs for h2f
 	-- uAxis_oslv6_PosModulo;--: out std_logic_vector(5 downto 0);
 
 uM : monoshot 
---generic(
---    bModelSim           : boolean := FALSE
---);
 port map     (
     isl_clk        => sl_clk50MHz,--: in std_logic; --! master clock 50 MHz
     isl_rst             => sl_Reset,--: in std_logic; --! master reset active high
@@ -493,7 +477,7 @@ port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
 	isl_rst 			=> sl_Reset,--: in std_logic;	--!
-	in32_periodCount 	=> n32_periodCount,--: in std_logic;
+	in32_periodCount 	=> uH2flw_n32_periodCount,--: in std_logic;
 	osl_slice_tick		=> uST_sl_sliceTick--: out integer	--!
 );
 
@@ -532,7 +516,7 @@ port map
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
 	in16_inputVector 	=> n16_inputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
-	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+	in16_rampValue  	=> uH2flw_n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
 	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;

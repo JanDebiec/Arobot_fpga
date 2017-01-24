@@ -124,6 +124,10 @@ port map
 
 --!
 uST : slice_tick_gen
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
 port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
@@ -157,6 +161,10 @@ end generate;
 
 --!
 U_SingleAxis : one_axis
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
 port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;

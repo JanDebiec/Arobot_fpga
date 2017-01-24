@@ -96,6 +96,10 @@ port map
 
 --!
 U_slice_tick_gen : slice_tick_gen
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
 port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
