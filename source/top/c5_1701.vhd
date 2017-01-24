@@ -315,6 +315,7 @@ slv4_switch <= SW;
 	osl_outX1B	<= uAxis_sl_output1B;
 	osl_outX2A	<= uAxis_sl_output2A;
 	osl_outX2B	<= uAxis_sl_output2B;
+	osl_slice_tick <= uST_sl_sliceTick;
 
 -------------------------------------------------------------
 u0 : soc_jtag_irq
