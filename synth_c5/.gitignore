@@ -6,4 +6,7 @@ incremental_db/
 *.summary
 *.smsg
 *.txt
+*.done
+*.jdi
+*.pin
 

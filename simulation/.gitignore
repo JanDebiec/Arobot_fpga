@@ -1,0 +1,9 @@
+rtl_work/
+work/
+vunit_lib/
+transcript
+modelsim.ini
+*.wlf
+*.vstf
+
+
