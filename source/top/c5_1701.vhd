@@ -267,10 +267,10 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- motion signals
 	signal n16_outValue 		: signed (15 downto 0) := x"0000";
 	signal n16_Value 			: signed (15 downto 0) :=  x"0080";
-	signal sl_output1A		: std_logic;
-	signal sl_output1B		: std_logic;
-	signal sl_output2A		: std_logic;
-	signal sl_output2B		: std_logic;
+	signal uAxis_sl_output1A		: std_logic;
+	signal uAxis_sl_output1B		: std_logic;
+	signal uAxis_sl_output2A		: std_logic;
+	signal uAxis_sl_output2B		: std_logic;
 	signal sl_slice_tick		: std_logic;	--!
 
 	signal	uIssp_n16_outputVector : signed (15 downto 0);
@@ -287,17 +287,14 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- signals io for the h2f:
 	signal uH2flw_n16_rampValue  	: signed (15 downto 0);
 	signal uH2flw_n32_periodCount	: signed (31 downto 0);
-	signal	in16_inputVector : signed (15 downto 0);
+	signal	n16_H2FinputVector : signed (15 downto 0);
 	signal	n16_inputVector : signed (15 downto 0);
 	signal uAxis_oslv6_PosModulo : std_logic_vector(5 downto 0);
 	signal uH2flw_sl_periodValid : std_logic;
 	signal uH2flw_sl_rampValid : std_logic;
-
+	signal n32_periodCount : signed (31 downto 0);
+	signal n16_rampValue : signed (15 downto 0);
 begin
--------------------------------------------------------------
--- version
--------------------------------------------------------------
-
 
 -------------------------------------------------------------
 -- IOs global pins
@@ -310,9 +307,16 @@ sl_clk50Mhz  <= CLOCK_50;
 osl_PerfTest <= '1';-- when (uH2flw_slv32_TimerReload = uH2flw_slv32_Modus) else '0'; --slv16_TestPoints(15);
 slv4_keys    <= KEY;
 slv4_switch <= SW;
-    -- LED, SW direct from H2F    
---  slv4_Modus <= uH2flw_slv32_Modus(3 downto 0);
---u0 : component soc_search_non_jtag
+
+-------------------------------------------------------------
+-- outputs
+-------------------------------------------------------------
+	osl_outX1A	<= uAxis_sl_output1A;
+	osl_outX1B	<= uAxis_sl_output1B;
+	osl_outX2A	<= uAxis_sl_output2A;
+	osl_outX2B	<= uAxis_sl_output2B;
+
+-------------------------------------------------------------
 u0 : soc_jtag_irq
 port map (
     button_pio_external_connection_export => slv4_keys,--KEY,--CONNECTED_TO_button_pio_external_connection_export, -- button_pio_external_connection.export
@@ -438,6 +442,29 @@ port map
 --uH2flw_n16_rampValue  	<= x"0040";
 -- inputs for h2f
 	-- uAxis_oslv6_PosModulo;--: out std_logic_vector(5 downto 0);
+pPeriod : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n32_periodCount <= x"00000000";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_periodValid = '1') then
+        n32_periodCount <= uH2flw_n32_periodCount;
+        end if;
+    END IF;
+end process;
+
+pRamp : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_rampValue <= x"0040";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_rampValid = '1') then
+        n16_rampValue <= uH2flw_n16_rampValue;
+        end if;
+    END IF;
+end process;
 
 uM : monoshot 
 port map     (
@@ -477,7 +504,7 @@ port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
 	isl_rst 			=> sl_Reset,--: in std_logic;	--!
-	in32_periodCount 	=> uH2flw_n32_periodCount,--: in std_logic;
+	in32_periodCount 	=> n32_periodCount,--: in std_logic;
 	osl_slice_tick		=> uST_sl_sliceTick--: out integer	--!
 );
 
@@ -489,18 +516,18 @@ port map (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	osl_mux				=> uISSP_sl_mux,
-	in16_inputVector 	=> in16_inputVector,--: in signed (15 downto 0);
+	in16_inputVector 	=> n16_H2FinputVector,--: in signed (15 downto 0);
 	on16_outputVector 	=> uIssp_n16_outputVector--: out signed (15 downto 0);
 );
 
 n16_inputVector <= uIssp_n16_outputVector when (uISSP_sl_mux = '1') else
-				in16_inputVector;
+				n16_H2FinputVector;
 end generate;
 
 
 uNISSP : if (bISSP = FALSE) generate
 begin
-	n16_inputVector <= in16_inputVector;
+	n16_inputVector <= n16_H2FinputVector;
 	uISSP_sl_mux <= '0';
 end generate;	
 
@@ -516,15 +543,15 @@ port map
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
 	in16_inputVector 	=> n16_inputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
-	in16_rampValue  	=> uH2flw_n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
 	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;
 	oslv6_PosModulo 	=> uAxis_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
-	osl_output1A		=> sl_output1A ,--	: out std_logic;
-	osl_output1B		=> sl_output1B ,--	: out std_logic;
-	osl_output2A		=> sl_output2A ,--	: out std_logic;
-	osl_output2B		=> sl_output2B --	: out std_logic
+	osl_output1A		=> uAxis_sl_output1A ,--	: out std_logic;
+	osl_output1B		=> uAxis_sl_output1B ,--	: out std_logic;
+	osl_output2A		=> uAxis_sl_output2A ,--	: out std_logic;
+	osl_output2B		=> uAxis_sl_output2B --	: out std_logic
 );
 
 

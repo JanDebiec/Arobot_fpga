@@ -43,6 +43,7 @@ constant c_slv2_h2f_block_write      : std_logic_vector(1 downto 0) :=  "00";
 -- h2f lw interface write address	8 bits 
 constant c_slv8_h2f_address_PeriodCount  : std_logic_vector(7 downto 0) :=  x"04";
 constant c_slv8_h2f_address_RampValue	 : std_logic_vector(7 downto 0) :=  x"08";
+constant c_slv8_h2f_address_InputValue	 : std_logic_vector(7 downto 0) :=  x"0C";
 
 -- h2f lw interface read address   8 bits 
 constant c_slv8_h2f_address_Status       : std_logic_vector(7 downto 0) :=  x"80";

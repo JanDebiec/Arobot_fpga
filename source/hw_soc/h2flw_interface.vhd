@@ -38,6 +38,8 @@ package h2flw_interface_pkg is
 	osl_periodValid						: out std_logic;
 	on16_rampValue  					: out signed (15 downto 0);
 	osl_rampValid						: out std_logic;
+	on16_H2FinputVector					: out signed (15 downto 0);
+	osl_inputValid						: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
 
@@ -75,6 +77,8 @@ entity h2flw_interface is
 	osl_periodValid						: out std_logic;
 	on16_rampValue  					: out signed (15 downto 0);
 	osl_rampValid						: out std_logic;
+	on16_H2FinputVector					: out signed (15 downto 0);
+	osl_inputValid						: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
 
@@ -104,6 +108,7 @@ architecture RTL of h2flw_interface is
     
     signal sl_periodValid	: std_logic;
     signal sl_rampValid		: std_logic;
+    signal sl_inputValid		: std_logic;
     
 begin
     slv_lw_bus_block_addr <= islv10_external_lw_bus_address(9 downto 8);
@@ -114,6 +119,7 @@ begin
 
    osl_periodValid <= sl_periodValid and sl_h2fWriteAck;
    osl_rampValid    <= sl_rampValid and sl_h2fWriteAck;
+   osl_inputValid   <= sl_inputValid and sl_h2fWriteAck;
 
  U_RdAckMono : monoshot 
     port map     (
@@ -146,6 +152,9 @@ begin
 			sl_periodValid <= '0';
 	        on16_rampValue <= x"0040";
 	        sl_rampValid <= '0';
+            on16_H2FinputVector <= x"0000";
+	        sl_inputValid <= '1';
+	        
 		elsif((sl_h2fWriteReq = '1')) then
             if(slv_lw_bus_block_addr = c_slv2_h2f_block_write) then -- old write area
                 case (slv_lw_bus_item_addr) is
@@ -155,14 +164,19 @@ begin
                 when c_slv8_h2f_address_RampValue =>
                     on16_rampValue <= signed(islv32_external_lw_bus_write_data(15 downto 0));
                     sl_rampValid <= '1';
+                when c_slv8_h2f_address_InputValue =>
+                    on16_H2FinputVector <= signed(islv32_external_lw_bus_write_data(15 downto 0));
+                    sl_inputValid <= '1';
                 when others =>     
                     sl_periodValid <= '0';
                     sl_rampValid <= '0';
+                    sl_inputValid <= '0';
                 end case;
             end if;    
 		else
             sl_periodValid <= '0';
             sl_rampValid <= '0';
+            sl_inputValid <= '0';
 		end if;	 	
 	end if;
 end process;		
