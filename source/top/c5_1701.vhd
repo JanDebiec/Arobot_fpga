@@ -462,7 +462,7 @@ pPeriod : process (
    all 
 )begin
     if (sl_Reset = '1') then
-        n32_periodCount <= x"00000000";
+        n32_periodCount <= x"004C4B40";--05-000-000 clocks = 100ms
     elsif (rising_edge(sl_clk50Mhz)) then
         if (uH2flw_sl_periodValid = '1') then
         n32_periodCount <= uH2flw_n32_periodCount;
