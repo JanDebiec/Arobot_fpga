@@ -287,8 +287,9 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- signals io for the h2f:
 	signal uH2flw_n16_rampValue  	: signed (15 downto 0);
 	signal uH2flw_n32_periodCount	: signed (31 downto 0);
+	signal	uH2flw_n16_H2FinputVector : signed (15 downto 0);
 	signal	n16_H2FinputVector : signed (15 downto 0);
-	signal	n16_inputVector : signed (15 downto 0);
+	signal uH2flw_sl_inputValid : std_logic;
 	signal uAxis_oslv6_PosModulo : std_logic_vector(5 downto 0);
 	signal uH2flw_sl_periodValid : std_logic;
 	signal uH2flw_sl_rampValid : std_logic;
@@ -431,6 +432,8 @@ port map
 	osl_periodValid		=> uH2flw_sl_periodValid,--: out std_logic;
 	on16_rampValue  	=> uH2flw_n16_rampValue,--: out signed (15 downto 0);
 	osl_rampValid		=> uH2flw_sl_rampValid,--	: out std_logic;
+	on16_H2FinputVector	=> uH2flw_n16_H2FinputVector,--				: out signed (15 downto 0);
+	osl_inputValid		=> uH2flw_sl_inputValid,--			: out std_logic;
 -- inputs
 	islv6_PosModulo		=> uAxis_oslv6_PosModulo,--: in std_logic_vector(5 downto 0);
 
@@ -443,6 +446,18 @@ port map
 --uH2flw_n16_rampValue  	<= x"0040";
 -- inputs for h2f
 	-- uAxis_oslv6_PosModulo;--: out std_logic_vector(5 downto 0);
+pInput : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_H2FinputVector <= x"0000";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_inputValid = '1') then
+        n16_H2FinputVector <= uH2flw_n16_H2FinputVector;
+        end if;
+    END IF;
+end process;
+
 pPeriod : process (
    all 
 )begin
@@ -509,29 +524,6 @@ port map
 	osl_slice_tick		=> uST_sl_sliceTick--: out integer	--!
 );
 
-
-U_VELOCITY_JTAG : if (bISSP = TRUE and bModelSim = FALSE) generate
-begin
-uVelIssp : velocity_issp
-port map (
-	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
-	isl_rst 			=> sl_Reset,--: in std_logic;
-	osl_mux				=> uISSP_sl_mux,
-	in16_inputVector 	=> n16_H2FinputVector,--: in signed (15 downto 0);
-	on16_outputVector 	=> uIssp_n16_outputVector--: out signed (15 downto 0);
-);
-
-n16_inputVector <= uIssp_n16_outputVector when (uISSP_sl_mux = '1') else
-				n16_H2FinputVector;
-end generate;
-
-
-uNISSP : if (bISSP = FALSE) generate
-begin
-	n16_inputVector <= n16_H2FinputVector;
-	uISSP_sl_mux <= '0';
-end generate;	
-
 --!
 uAxis : one_axis
 generic map(
@@ -543,7 +535,7 @@ port map
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
-	in16_inputVector 	=> n16_inputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
+	in16_inputVector 	=> n16_H2FinputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
 	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
