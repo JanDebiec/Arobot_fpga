@@ -94,16 +94,31 @@ set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to SW[3]
 #============================================================
 # GPIO_0, GPIO connect to GPIO Default
 #============================================================
-set_location_assignment PIN_V12 -to GPIO_0[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[0]
-set_location_assignment PIN_AF7 -to GPIO_0[1]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[1]
-set_location_assignment PIN_W12 -to GPIO_0[2]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[2]
-set_location_assignment PIN_AF8 -to GPIO_0[3]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[3]
-set_location_assignment PIN_Y8 -to GPIO_0[4]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[4]
+set_location_assignment PIN_V12 -to osl_outX1A
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_outX1A
+#set_location_assignment PIN_V12 -to GPIO_0[0]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[0]
+
+set_location_assignment PIN_AF7 -to osl_outX1B
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_outX1B
+#set_location_assignment PIN_AF7 -to GPIO_0[1]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[1]
+
+set_location_assignment PIN_W12 -to osl_outX2A
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_outX2A
+#set_location_assignment PIN_W12 -to GPIO_0[2]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[2]
+
+set_location_assignment PIN_AF8 -to osl_outX2B
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_outX2B
+#set_location_assignment PIN_AF8 -to GPIO_0[3]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[3]
+
+set_location_assignment PIN_Y8 -to osl_slice_tick
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_slice_tick
+#set_location_assignment PIN_Y8 -to GPIO_0[4]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[4]
+
 set_location_assignment PIN_AB4 -to GPIO_0[5]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[5]
 set_location_assignment PIN_W8 -to GPIO_0[6]
