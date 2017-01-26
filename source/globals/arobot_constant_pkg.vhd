@@ -46,8 +46,37 @@ constant c_slv8_h2f_address_RampValue	 : std_logic_vector(7 downto 0) :=  x"08";
 constant c_slv8_h2f_address_InputValue	 : std_logic_vector(7 downto 0) :=  x"0C";
 
 -- h2f lw interface read address   8 bits 
-constant c_slv8_h2f_address_Status       : std_logic_vector(7 downto 0) :=  x"80";
-constant c_slv8_h2f_address_PosModulo : std_logic_vector(7 downto 0) :=  x"84";
-constant c_slv8_h2f_address_Version      : std_logic_vector(7 downto 0) :=  x"8C";
+constant c_slv8_h2f_address_Status       : std_logic_vector(7 downto 0) :=  x"00";
+constant c_slv8_h2f_address_PosAbsolute  : std_logic_vector(7 downto 0) :=  x"04";
+constant c_slv8_h2f_address_PosModulo    : std_logic_vector(7 downto 0) :=  x"08";
+constant c_slv8_h2f_address_Version      : std_logic_vector(7 downto 0) :=  x"0C";
+
+--! @page h2flw_addr H2F light-weigth bridge address space
+--! 32 bits registers on H2F interface (rw seen from ARM side) 
+--! | address | rw | name               | functionality  | link to doc          |
+--! |:-------:|:--:|:------------------:|:-------------------------:|:--------------------:|
+--! |   0x004 | w  | ramp period reg32  |                16 bits    |                      |
+--! |         | w  |  (byte0)           | low byte                  |                      |
+--! |         | w  |  (byte1)           | high byte                 |                      |
+--! |         | w  |  (byte2)           |                           |                      |
+--! |         | w  |  (byte3)           |                           |                      |
+--! |   0x008 | w  | ramp value reg32   |                16 bits    |                      |
+--! |         | w  |  (byte0)           | low byte                  |                      |
+--! |         | w  |  (byte1)           | high byte                 |                      |
+--! |         | w  |  (byte2)           |                           |                      |
+--! |         | w  |  (byte3)           |                           |                      |
+--! |   0x00C | w  | velocity  reg32    | 15 bits + 1 bit direction | |
+--! |         | w  |  (byte0)           | low byte                  |                      |
+--! |         | w  |  (byte1) bit 15    | direction                 |                      |
+--! |         | w  |  (byte1) bits(14-8)| high 7 bits                 |                      |
+--! |   0x100 | r  |  status reg32      | high level status of fpga                 | |
+--! |   0x104 | r  | position absolute reg32      |              | |
+--! |   0x108 | r  | position modulo reg32      |              | |
+--! |   0x10C | r  | Revision reg32     |   | @ref fpga_version |
+--! |         | w  |  (byte0)           | build nr                  |                      |
+--! |         | w  |  (byte1)           | version subnumber                |                      |
+--! |         | w  |  (byte2)           | version number                          |                      |
+--! |         | w  |  (byte3)           |                           |                      |
+
 
 end arobot_constant_pkg;

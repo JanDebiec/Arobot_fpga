@@ -9,27 +9,16 @@
 --!
 --! | interface    | functionality   | top-file name            |
 --! |:------------:|:---------------:|:------------------------:|
---! | light-weight | @ref h2flw_addr | msystem_constant_pkg.vhd |
---! | h2f memory  | @ref h2fmem_addr | msystem_constant_pkg.vhd |
+--! | light-weight | @ref h2flw_addr | arobot_constant_pkg.vhd |
 --!
 --!
---! @section  State_machines
 --!
+--! @section  formal
 --!
---! | state machine | functionality   |     file name            |
---! |:-------------:|:---------------:|:------------------------:|
---! | ILX generator | @ref t_IlxGenSM |   msystem_typedef_pkg.vhd |
---! | Internal run-time | @ref t_ControlSearchNonSM | non_search_sm.vhd |
---! | search procedure | @ref search_proc | search_proc.vhd |
---!
---!
---! @section  Style_guide
---!
---! | style_guide    | functionality   | top-file name            |
+--! | item    | functionality   | top-file name            |
 --! |:------------:|:---------------:|:------------------------:|
+--! | version | @ref fpga_version | version.vhd |
 --! | style guide | @ref style_guide | doxy_styleguide.vhd |
---!
---!
 
 
 

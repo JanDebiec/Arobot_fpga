@@ -6,7 +6,7 @@
 --! @date 09.11.2016
 --! 
 --! @note 
---!@page fpga_version fpga-versions
+--! @page fpga_version fpga-versions
 --! | version | date/item |
 --! |:------:|:----------:|
 --! |  0.2.0 | 21.01.2017 |
