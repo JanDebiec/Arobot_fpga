@@ -128,7 +128,7 @@ sl_step <= uV2P_sl_step when (isl_extStepEnable = '0') else isl_extStep;
 sl_direction <= n16_inputVector(15) when (isl_extStepEnable = '0') else isl_extDir;
 
 -- main inputs
-n16_inputVector 	<= in16_inputVector;
+n16_inputVector 	<= "0" & in16_inputVector(14 downto 0);
 n16_rampValue  	<= in16_rampValue;
 
 -- outputs
