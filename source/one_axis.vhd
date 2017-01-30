@@ -111,7 +111,7 @@ architecture RTL of one_axis is
 	signal	slv6_OutputValueModulo : std_logic_vector(5 downto 0); 
 	
 	signal	slv6_InputIndexIssp : std_logic_vector(5 downto 0);
-	signal sl_direction : std_logic;
+	signal uV2P_sl_direction : std_logic;
 	signal sl_sliceTick : std_logic;
 	signal uV2P_sl_step : std_logic;
 	signal sl_step : std_logic;
@@ -125,10 +125,11 @@ sl_sliceTick <= isl_sliceTick;
 --configuration
 -- internal/external step/dir interface
 sl_step <= uV2P_sl_step when (isl_extStepEnable = '0') else isl_extStep;
-sl_direction <= n16_inputVector(15) when (isl_extStepEnable = '0') else isl_extDir;
+
+--uV2P_sl_direction <= n16_inputVector(15) when (isl_extStepEnable = '0') else isl_extDir;
 
 -- main inputs
-n16_inputVector 	<= "0" & in16_inputVector(14 downto 0);
+n16_inputVector 	<= in16_inputVector;
 n16_rampValue  	<= in16_rampValue;
 
 -- outputs
@@ -156,6 +157,7 @@ port map
 	in16_inputVector 	=> n16_inputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
 	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 --	oslv16_testValue  	=> ,--out std_logic_vector (15 downto 0);--! used for tesing
+	osl_DirAfterRamp	=> uV2P_sl_direction,
 	osl_pulse			=> uV2P_sl_step--out std_logic--! used for tesing
 );
 
@@ -166,7 +168,7 @@ port map
 (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
 	isl_rst 			=> sl_Reset,--: in std_logic;
-	isl_direction		=> sl_direction,--: in std_logic;
+	isl_direction		=> uV2P_sl_direction,--: in std_logic;
 	isl_pulse			=> uV2P_sl_step,--: in std_logic;
 	oslv6_OutputValue  	=> uP2P_slv6_PosModulo--: out std_logic_vector (5 downto 0)--! 
 );

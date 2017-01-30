@@ -37,6 +37,7 @@ package convVel2Pulse_pkg is
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 --		oslv16_testValue  	: out std_logic_vector (15 downto 0);--! used for tesing
+		osl_DirAfterRamp	: out std_logic;
 		osl_pulse			: out std_logic--! used for tesing
     );        
     end component convVel2Pulse;
@@ -69,6 +70,7 @@ entity convVel2Pulse is
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 --		oslv16_testValue  	: out std_logic_vector (15 downto 0);--! used for tesing
+		osl_DirAfterRamp	: out std_logic;
 		osl_pulse			: out std_logic--! used for tesing
 	);
 end entity convVel2Pulse;
@@ -86,13 +88,20 @@ architecture RTL of convVel2Pulse is
 	signal un32_timerSettings : unsigned(31 downto 0);
 	signal uPG_sl_pulseOutput : std_logic;
 	signal sl_sliceTick : std_logic;
+	signal un15_VelAfterRamp : unsigned(14 downto 0);
+	signal n16_VelAfterRamp : signed(15 downto 0);
+	signal n_VelAfterRamp : integer;
+	signal un16_VelAfterRamp : unsigned(15 downto 0);
+	signal sl_DirAfterRamp : std_logic;
 	
 begin
 --oslv16_testValue <= std_logic_vector(uRamp_n16OutValue);
 osl_pulse <= uPG_sl_pulseOutput;
 n16_outputVector <= in16_inputVector;
 sl_sliceTick <= isl_sliceTick;
-
+n16_VelAfterRamp <= abs(uRamp_n16OutValue);
+sl_DirAfterRamp <= '1' when (uRamp_n16OutValue(15) = '1') else '0';
+osl_DirAfterRamp <= sl_DirAfterRamp;
 --!
 uRamp : ramp
 port map (
@@ -110,7 +119,7 @@ port map
 (
 	isl_clk50Mhz 		=> isl_clk50Mhz,--: in std_logic;
 	isl_rst 			=> isl_rst,--: in std_logic;
-	in16_Value 			=> uRamp_n16OutValue,--: in signed (15 downto 0);
+	in16_Value 			=> n16_VelAfterRamp,--: in signed (15 downto 0);
 	osl_pulseOutput 	=> uPG_sl_pulseOutput--: out std_logic
           
 );
