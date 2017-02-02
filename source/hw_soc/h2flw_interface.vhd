@@ -38,7 +38,8 @@ package h2flw_interface_pkg is
 	osl_periodValid						: out std_logic;
 	on16_rampValue  					: out signed (15 downto 0);
 	osl_rampValid						: out std_logic;
-	on16_H2FinputVector					: out signed (15 downto 0);
+	on16_H2FinputVectorL				: out signed (15 downto 0);
+	on16_H2FinputVectorR				: out signed (15 downto 0);
 	osl_inputValid						: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
@@ -77,7 +78,8 @@ entity h2flw_interface is
 	osl_periodValid						: out std_logic;
 	on16_rampValue  					: out signed (15 downto 0);
 	osl_rampValid						: out std_logic;
-	on16_H2FinputVector					: out signed (15 downto 0);
+	on16_H2FinputVectorL				: out signed (15 downto 0);
+	on16_H2FinputVectorR				: out signed (15 downto 0);
 	osl_inputValid						: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
@@ -152,7 +154,8 @@ begin
 			sl_periodValid <= '0';
 	        on16_rampValue <= x"0040";
 	        sl_rampValid <= '0';
-            on16_H2FinputVector <= x"0000";
+            on16_H2FinputVectorL <= x"0000";
+            on16_H2FinputVectorR <= x"0000";
 	        sl_inputValid <= '1';
 	        
 		elsif((sl_h2fWriteReq = '1')) then
@@ -165,7 +168,8 @@ begin
                     on16_rampValue <= signed(islv32_external_lw_bus_write_data(15 downto 0));
                     sl_rampValid <= '1';
                 when c_slv8_h2f_address_InputValue =>
-                    on16_H2FinputVector <= signed(islv32_external_lw_bus_write_data(15 downto 0));
+                    on16_H2FinputVectorL <= signed(islv32_external_lw_bus_write_data(31 downto 16));
+                    on16_H2FinputVectorR <= signed(islv32_external_lw_bus_write_data(15 downto 0));
                     sl_inputValid <= '1';
                 when others =>     
                     sl_periodValid <= '0';

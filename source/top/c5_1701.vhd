@@ -267,10 +267,14 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- motion signals
 	signal n16_outValue 		: signed (15 downto 0) := x"0000";
 	signal n16_Value 			: signed (15 downto 0) :=  x"0080";
-	signal uAxis_sl_output1A		: std_logic;
-	signal uAxis_sl_output1B		: std_logic;
-	signal uAxis_sl_output2A		: std_logic;
-	signal uAxis_sl_output2B		: std_logic;
+	signal uAxisL_sl_output1A		: std_logic;
+	signal uAxisL_sl_output1B		: std_logic;
+	signal uAxisL_sl_output2A		: std_logic;
+	signal uAxisL_sl_output2B		: std_logic;
+	signal uAxisR_sl_output1A		: std_logic;
+	signal uAxisR_sl_output1B		: std_logic;
+	signal uAxisR_sl_output2A		: std_logic;
+	signal uAxisR_sl_output2B		: std_logic;
 	signal sl_slice_tick		: std_logic;	--!
 
 	signal	uIssp_n16_outputVector : signed (15 downto 0);
@@ -287,10 +291,13 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- signals io for the h2f:
 	signal uH2flw_n16_rampValue  	: signed (15 downto 0);
 	signal uH2flw_n32_periodCount	: signed (31 downto 0);
-	signal	uH2flw_n16_H2FinputVector : signed (15 downto 0);
-	signal	n16_H2FinputVector : signed (15 downto 0);
+	signal	uH2flw_n16_H2FinputVectorL : signed (15 downto 0);
+	signal	n16_H2FinputVectorL : signed (15 downto 0);
+	signal	uH2flw_n16_H2FinputVectorR : signed (15 downto 0);
+	signal	n16_H2FinputVectorR : signed (15 downto 0);
 	signal uH2flw_sl_inputValid : std_logic;
-	signal uAxis_oslv6_PosModulo : std_logic_vector(5 downto 0);
+	signal uAxisR_oslv6_PosModulo : std_logic_vector(5 downto 0);
+	signal uAxisL_oslv6_PosModulo : std_logic_vector(5 downto 0);
 	signal uH2flw_sl_periodValid : std_logic;
 	signal uH2flw_sl_rampValid : std_logic;
 	signal n32_periodCount : signed (31 downto 0);
@@ -312,10 +319,10 @@ slv4_switch <= SW;
 -------------------------------------------------------------
 -- outputs
 -------------------------------------------------------------
-	osl_outX1A	<= uAxis_sl_output1A;
-	osl_outX1B	<= uAxis_sl_output1B;
-	osl_outX2A	<= uAxis_sl_output2A;
-	osl_outX2B	<= uAxis_sl_output2B;
+	osl_outX1A	<= uAxisL_sl_output1A;
+	osl_outX1B	<= uAxisL_sl_output1B;
+	osl_outX2A	<= uAxisL_sl_output2A;
+	osl_outX2B	<= uAxisL_sl_output2B;
 	osl_slice_tick <= uST_sl_sliceTick;
 
 -------------------------------------------------------------
@@ -428,14 +435,15 @@ port map
     islv32_external_lw_bus_write_data   => slv32_h2f_lw_bus_write_data ,--: in  std_logic_vector(31 downto 0);                    -- write_data
     oslv32_external_lw_bus_read_data    => slv32_h2f_lw_bus_read_data  ,--: out std_logic_vector(31 downto 0); -- read_data
 -- outputs
-	on32_periodCount	=> uH2flw_n32_periodCount,--: out  signed (31 downto 0);
-	osl_periodValid		=> uH2flw_sl_periodValid,--: out std_logic;
-	on16_rampValue  	=> uH2flw_n16_rampValue,--: out signed (15 downto 0);
-	osl_rampValid		=> uH2flw_sl_rampValid,--	: out std_logic;
-	on16_H2FinputVector	=> uH2flw_n16_H2FinputVector,--				: out signed (15 downto 0);
-	osl_inputValid		=> uH2flw_sl_inputValid,--			: out std_logic;
+	on32_periodCount		=> uH2flw_n32_periodCount,--: out  signed (31 downto 0);
+	osl_periodValid			=> uH2flw_sl_periodValid,--: out std_logic;
+	on16_rampValue  		=> uH2flw_n16_rampValue,--: out signed (15 downto 0);
+	osl_rampValid			=> uH2flw_sl_rampValid,--	: out std_logic;
+	on16_H2FinputVectorL	=> uH2flw_n16_H2FinputVectorL,--				: out signed (15 downto 0);
+	on16_H2FinputVectorR	=> uH2flw_n16_H2FinputVectorR,--				: out signed (15 downto 0);
+	osl_inputValid			=> uH2flw_sl_inputValid,--			: out std_logic;
 -- inputs
-	islv6_PosModulo		=> uAxis_oslv6_PosModulo,--: in std_logic_vector(5 downto 0);
+	islv6_PosModulo		=> uAxisR_oslv6_PosModulo,--: in std_logic_vector(5 downto 0);
 
     islv32_Version     => slv32_FpgaVersion,
     islv32_Status      => slv32_Status      ,--: in  std_logic_vector(31 downto 0); 
@@ -446,14 +454,26 @@ port map
 --uH2flw_n16_rampValue  	<= x"0040";
 -- inputs for h2f
 	-- uAxis_oslv6_PosModulo;--: out std_logic_vector(5 downto 0);
-pInput : process (
+pInputL : process (
    all 
 )begin
     if (sl_Reset = '1') then
-        n16_H2FinputVector <= x"0000";
+        n16_H2FinputVectorL <= x"0000";
     elsif (rising_edge(sl_clk50Mhz)) then
         if (uH2flw_sl_inputValid = '1') then
-        n16_H2FinputVector <= uH2flw_n16_H2FinputVector;
+        n16_H2FinputVectorL <= uH2flw_n16_H2FinputVectorL;
+        end if;
+    END IF;
+end process;
+
+pInputR : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_H2FinputVectorR <= x"0000";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_inputValid = '1') then
+        n16_H2FinputVectorR <= uH2flw_n16_H2FinputVectorR;
         end if;
     END IF;
 end process;
@@ -525,7 +545,7 @@ port map
 );
 
 --!
-uAxis : one_axis
+uAxisL : one_axis
 generic map(
 	bISSP => FALSE,
 	bModelSim => FALSE
@@ -535,16 +555,38 @@ port map
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
-	in16_inputVector 	=> n16_H2FinputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
+	in16_inputVector 	=> n16_H2FinputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
 	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
 	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;
-	oslv6_PosModulo 	=> uAxis_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
-	osl_output1A		=> uAxis_sl_output1A ,--	: out std_logic;
-	osl_output1B		=> uAxis_sl_output1B ,--	: out std_logic;
-	osl_output2A		=> uAxis_sl_output2A ,--	: out std_logic;
-	osl_output2B		=> uAxis_sl_output2B --	: out std_logic
+	oslv6_PosModulo 	=> uAxisL_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+	osl_output1A		=> uAxisL_sl_output1A ,--	: out std_logic;
+	osl_output1B		=> uAxisL_sl_output1B ,--	: out std_logic;
+	osl_output2A		=> uAxisL_sl_output2A ,--	: out std_logic;
+	osl_output2B		=> uAxisL_sl_output2B --	: out std_logic
+);
+
+uAxisR : one_axis
+generic map(
+	bISSP => FALSE,
+	bModelSim => FALSE
+)
+port map
+(
+	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
+	isl_rst 			=> sl_Reset,--: in std_logic;
+	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
+	in16_inputVector 	=> n16_H2FinputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
+	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+	isl_extStep			=> sl_extStep_m,--: in std_logic;
+	isl_extDir			=> sl_extDir,--: in std_logic;
+	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;
+	oslv6_PosModulo 	=> uAxisR_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+	osl_output1A		=> uAxisR_sl_output1A ,--	: out std_logic;
+	osl_output1B		=> uAxisR_sl_output1B ,--	: out std_logic;
+	osl_output2A		=> uAxisR_sl_output2A ,--	: out std_logic;
+	osl_output2B		=> uAxisR_sl_output2B --	: out std_logic
 );
 
 
