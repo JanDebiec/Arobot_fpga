@@ -10,7 +10,9 @@
 --! | version | date/item |
 --! |:------:|:----------:|
 --! |  0.2.0 | 21.01.2017 |
---! | | new version system |
+--! | | c5 SOC system |
+--! |  0.3.0 | 02.02.2017 |
+--! | | two axis system |
 ----------------------------------------------------------------------
 library ieee;
     use ieee.std_logic_1164.all;

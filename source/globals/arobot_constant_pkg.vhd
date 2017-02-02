@@ -65,10 +65,13 @@ constant c_slv8_h2f_address_Version      : std_logic_vector(7 downto 0) :=  x"0C
 --! |         | w  |  (byte1)           | high byte                 |                      |
 --! |         | w  |  (byte2)           |                           |                      |
 --! |         | w  |  (byte3)           |                           |                      |
---! |   0x00C | w  | velocity  reg32    | 15 bits + 1 bit direction | |
---! |         | w  |  (byte0)           | low byte                  |                      |
---! |         | w  |  (byte1) bit 15    | direction                 |                      |
---! |         | w  |  (byte1) bits(14-8)| high 7 bits                 |                      |
+--! |   0x00C | w  | velocity  reg32    | L, R: 1 bit direction + 15 bits | |
+--! |         | w  |  (byte0)           | Right axis low byte                  |                      |
+--! |         | w  |  (byte1) bit 15    | Right axis direction                 |                      |
+--! |         | w  |  (byte1) bits(14-8)| Right axis high 7 bits                 |                      |
+--! |         | w  |  (byte2)           | Left axis low byte                  |                      |
+--! |         | w  |  (byte3) bit 31    | Left axis direction                 |                      |
+--! |         | w  |  (byte3) bits(30-24)| Left axis high 7 bits                 |                      |
 --! |   0x100 | r  |  status reg32      | high level status of fpga                 | |
 --! |   0x104 | r  | position absolute reg32      |              | |
 --! |   0x108 | r  | position modulo reg32      |              | |
