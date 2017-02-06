@@ -44,6 +44,7 @@ constant c_slv2_h2f_block_write      : std_logic_vector(1 downto 0) :=  "00";
 constant c_slv8_h2f_address_PeriodCount  : std_logic_vector(7 downto 0) :=  x"04";
 constant c_slv8_h2f_address_RampValue	 : std_logic_vector(7 downto 0) :=  x"08";
 constant c_slv8_h2f_address_InputValue	 : std_logic_vector(7 downto 0) :=  x"0C";
+constant c_slv8_h2f_address_MicroStepProStep	 : std_logic_vector(7 downto 0) :=  x"10";
 
 -- h2f lw interface read address   8 bits 
 constant c_slv8_h2f_address_Status       : std_logic_vector(7 downto 0) :=  x"00";
@@ -72,6 +73,11 @@ constant c_slv8_h2f_address_Version      : std_logic_vector(7 downto 0) :=  x"0C
 --! |         | w  |  (byte2)           | Left axis low byte                  |                      |
 --! |         | w  |  (byte3) bit 31    | Left axis direction                 |                      |
 --! |         | w  |  (byte3) bits(30-24)| Left axis high 7 bits                 |                      |
+--! |   0x010 | w  | microstep/step reg32   |   max 0x10    |                      |
+--! |         | w  |  (byte0)           | axis L                  |                      |
+--! |         | w  |  (byte1)           |                  |                      |
+--! |         | w  |  (byte2)           | axis R                          |                      |
+--! |         | w  |  (byte3)           |                           |                      |
 --! |   0x100 | r  |  status reg32      | high level status of fpga                 | |
 --! |   0x104 | r  | position absolute reg32      |              | |
 --! |   0x108 | r  | position modulo reg32      |              | |

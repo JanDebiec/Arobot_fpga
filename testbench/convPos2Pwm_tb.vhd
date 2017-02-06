@@ -30,7 +30,7 @@ architecture behave of convPos2Pwm_TB is
 	signal sl_output2A		:  std_logic;
 	signal sl_output2B		:  std_logic;
 	signal	slv6_InputIndex : std_logic_vector(5 downto 0); 
-
+	signal u8_microResProStep : unsigned(7 downto 0) := x"10";
 begin	
 
 -- U_SIMUL: process
@@ -109,6 +109,7 @@ port map
 		islv6_InputIndex 	=> slv6_InputIndex,--: in std_logic_vector(7 downto 0);
 		iu16_loopCounter 	=> u16_loopCounter,--: in integer;
 		isl_InputSync		=> sl_PwmPeriodPulse,--: in std_logic;
+		iu8_microResProStep => u8_microResProStep,-- : in unsigned(7 downto 0);
 		osl_output1A	=> sl_output1A ,--	: out std_logic;
 		osl_output1B	=> sl_output1B ,--	: out std_logic;
 		osl_output2A	=> sl_output2A ,--	: out std_logic;

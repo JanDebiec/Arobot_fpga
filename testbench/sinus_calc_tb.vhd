@@ -14,7 +14,7 @@ architecture behave of sinus_calc_TB is
 	signal sl_Reset 	: STD_LOGIC := '0';
 	signal slv6_InputIndex :  std_logic_vector(5 downto 0) := "000000";
 	signal slv8_InputIndex :  std_logic_vector(7 downto 0) := "00000000";
-	signal u8_microResProStep : signed(7 downto 0) := x"10";
+	signal u8_microResProStep : unsigned(7 downto 0) := x"10";
 	signal slv16_sinus : std_logic_vector(15 downto 0);
 	signal slv16_sinusLeft : std_logic_vector(15 downto 0);
 	signal slv16_sinusRight : std_logic_vector(15 downto 0);

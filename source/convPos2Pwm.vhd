@@ -36,6 +36,7 @@ package convPos2Pwm_pkg is
 		islv6_InputIndex 	: in std_logic_vector(5 downto 0);
 		iu16_loopCounter 	: in integer;
 		isl_InputSync		: in std_logic;
+		iu8_microResProStep : in unsigned(7 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
 		osl_output2A		: out std_logic;--! pwm output
@@ -64,6 +65,7 @@ entity convPos2Pwm is
 		islv6_InputIndex 	: in std_logic_vector(5 downto 0);
 		iu16_loopCounter 	: in integer;
 		isl_InputSync		: in std_logic;
+		iu8_microResProStep : in unsigned(7 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
 		osl_output2A		: out std_logic;--! pwm output
@@ -79,7 +81,7 @@ architecture RTL of convPos2Pwm is
 --sinus input
 --	signal slv6_InputIndex :  std_logic_vector(5 downto 0);
 --	signal slv8_InputIndexIssp :  std_logic_vector(7 downto 0) := x"00";
-	signal u8_microResProStep : signed(7 downto 0);
+--	signal u8_microResProStep : signed(7 downto 0);
 --sinus output
 	signal uSinCalc_slv16_sinus : std_logic_vector(15 downto 0);
 	signal uSinCalc_slv16_sinusLeft : std_logic_vector(15 downto 0);
@@ -97,7 +99,7 @@ architecture RTL of convPos2Pwm is
 	
 begin
 --	slv6_InputIndex <= islv6_InputIndex;
-u8_microResProStep <= x"10";
+--u8_microResProStep <= x"10";
 --u16_loopCounter <= iu16_loopCounter;
 --sl_InputSync <= isl_InputSync;
 
@@ -112,7 +114,7 @@ uSinCalc : sinus_calc
 port map (
 	isl_clk50Mhz 		=> isl_clk50Mhz,--: in std_logic;
 	islv6_InputIndex 	=> islv6_InputIndex,--: in std_logic_vector(7 downto 0);
-	iu8_microResProStep => u8_microResProStep,--: in unsigned(7 downto 0);
+	iu8_microResProStep => iu8_microResProStep,--: in unsigned(7 downto 0);
 	oslv16_sinusLeft	=> uSinCalc_slv16_sinusLeft,--: out std_logic_vector(15 downto 0);
 	oslv16_sinusRight	=> uSinCalc_slv16_sinusRight,--: out std_logic_vector(15 downto 0);
 	oslv16_cosinusLeft	=> uSinCalc_slv16_cosinusLeft,--: out std_logic_vector(15 downto 0);

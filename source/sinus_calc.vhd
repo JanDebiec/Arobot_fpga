@@ -24,7 +24,7 @@ package sinus_calc_pkg is
 	port (
 		isl_clk50Mhz 		: in std_logic;
 		islv6_InputIndex 	: in std_logic_vector(5 downto 0);
-		iu8_microResProStep : in signed(7 downto 0);
+		iu8_microResProStep : in unsigned(7 downto 0);
 		oslv16_sinusLeft	: out std_logic_vector(15 downto 0);
 		oslv16_sinusRight	: out std_logic_vector(15 downto 0);
 		oslv16_cosinusLeft	: out std_logic_vector(15 downto 0);
@@ -49,7 +49,7 @@ entity sinus_calc is
 	port (
 		isl_clk50Mhz 		: in std_logic;
 		islv6_InputIndex 	: in std_logic_vector(5 downto 0);-- only 6 will be used, max 63
-		iu8_microResProStep : in signed(7 downto 0);
+		iu8_microResProStep : in unsigned(7 downto 0);
 		oslv16_sinusLeft	: out std_logic_vector(15 downto 0);
 		oslv16_sinusRight	: out std_logic_vector(15 downto 0);
 		oslv16_cosinusLeft	: out std_logic_vector(15 downto 0);
@@ -81,11 +81,11 @@ architecture RTL of sinus_calc is
 	constant cu6_16 : signed(5 downto 0) := "010000";
 	constant cu6_15 : signed(5 downto 0) := "001111";
 	constant cu6_32 : signed(5 downto 0) := "100000";
-	constant cu8_1 :  signed(7 downto 0) := x"01";
-	constant cu8_2 :  signed(7 downto 0) := x"02";
-	constant cu8_4 :  signed(7 downto 0) := x"04";
-	constant cu8_8 :  signed(7 downto 0) := x"08";
-	constant cu8_16 :  signed(7 downto 0) := x"10";
+	constant cu8_1 :  unsigned(7 downto 0) := x"01";
+	constant cu8_2 :  unsigned(7 downto 0) := x"02";
+	constant cu8_4 :  unsigned(7 downto 0) := x"04";
+	constant cu8_8 :  unsigned(7 downto 0) := x"08";
+	constant cu8_16 :  unsigned(7 downto 0) := x"10";
 	
 	signal u5_index : signed(4 downto 0);
 	signal u6_index : signed(5 downto 0);

@@ -2,8 +2,8 @@
 --! @file .vhd  
 --! @brief converter pulse to position-modulo
 --!
---! input: velocity command, signed 16 bits, 
---! outputs: pwms for both phases of stepper
+--! input: puls and direction 
+--! outputs: position (modulo 64) // four full steps with 16 microsteps/step
 --!
 --! @author Jan Debiec
 --! @date 13.05.2015

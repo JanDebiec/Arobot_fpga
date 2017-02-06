@@ -302,6 +302,11 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 	signal uH2flw_sl_rampValid : std_logic;
 	signal n32_periodCount : signed (31 downto 0);
 	signal n16_rampValue : signed (15 downto 0);
+	signal  u8_microResProStepL : unsigned(7 downto 0);
+	signal  u8_microResProStepR : unsigned(7 downto 0);
+	signal  uH2flw_u8_microResProStepL : unsigned(7 downto 0);
+	signal  uH2flw_u8_microResProStepR : unsigned(7 downto 0);
+	signal  uH2flw_sl_microStepValid : std_logic;
 begin
 
 -------------------------------------------------------------
@@ -442,6 +447,9 @@ port map
 	on16_H2FinputVectorL	=> uH2flw_n16_H2FinputVectorL,--				: out signed (15 downto 0);
 	on16_H2FinputVectorR	=> uH2flw_n16_H2FinputVectorR,--				: out signed (15 downto 0);
 	osl_inputValid			=> uH2flw_sl_inputValid,--			: out std_logic;
+	ou8_microResProStepL 	=> uH2flw_u8_microResProStepL ,--			: out unsigned(7 downto 0);
+	ou8_microResProStepR 	=> uH2flw_u8_microResProStepR ,--			: out unsigned(7 downto 0);
+	osl_microStepValid		=> uH2flw_sl_microStepValid ,--			: out std_logic;
 -- inputs
 	islv6_PosModulo		=> uAxisR_oslv6_PosModulo,--: in std_logic_vector(5 downto 0);
 
@@ -477,6 +485,32 @@ pInputR : process (
         end if;
     END IF;
 end process;
+
+pMicroL : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        u8_microResProStepL <= x"10";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_microStepValid = '1') then
+        u8_microResProStepL <= uH2flw_u8_microResProStepL;
+        end if;
+    END IF;
+end process;
+
+pMicroR : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        u8_microResProStepR <= x"10";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if (uH2flw_sl_microStepValid = '1') then
+        u8_microResProStepR <= uH2flw_u8_microResProStepR;
+        end if;
+    END IF;
+end process;
+
+
 
 pPeriod : process (
    all 
@@ -557,6 +591,7 @@ port map
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
 	in16_inputVector 	=> n16_H2FinputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
 	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+	iu8_microResProStep => u8_microResProStepL,-- in unsigned(7 downto 0);
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
 	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;
@@ -579,6 +614,7 @@ port map
 	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
 	in16_inputVector 	=> n16_H2FinputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
 	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+	iu8_microResProStep => u8_microResProStepR,-- in unsigned(7 downto 0);
 	isl_extStep			=> sl_extStep_m,--: in std_logic;
 	isl_extDir			=> sl_extDir,--: in std_logic;
 	isl_extStepEnable	=> sl_extStepEnable,--: in std_logic;

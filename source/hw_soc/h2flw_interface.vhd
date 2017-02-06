@@ -41,6 +41,9 @@ package h2flw_interface_pkg is
 	on16_H2FinputVectorL				: out signed (15 downto 0);
 	on16_H2FinputVectorR				: out signed (15 downto 0);
 	osl_inputValid						: out std_logic;
+	ou8_microResProStepL 				: out unsigned(7 downto 0);
+	ou8_microResProStepR 				: out unsigned(7 downto 0);
+	osl_microStepValid					: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
 
@@ -81,6 +84,9 @@ entity h2flw_interface is
 	on16_H2FinputVectorL				: out signed (15 downto 0);
 	on16_H2FinputVectorR				: out signed (15 downto 0);
 	osl_inputValid						: out std_logic;
+	ou8_microResProStepL 				: out unsigned(7 downto 0);
+	ou8_microResProStepR 				: out unsigned(7 downto 0);
+	osl_microStepValid					: out std_logic;
 -- inputs
 	islv6_PosModulo						: in std_logic_vector(5 downto 0);
 
@@ -111,6 +117,8 @@ architecture RTL of h2flw_interface is
     signal sl_periodValid	: std_logic;
     signal sl_rampValid		: std_logic;
     signal sl_inputValid		: std_logic;
+    signal sl_microStepValid		: std_logic;
+    
     
 begin
     slv_lw_bus_block_addr <= islv10_external_lw_bus_address(9 downto 8);
@@ -122,6 +130,7 @@ begin
    osl_periodValid <= sl_periodValid and sl_h2fWriteAck;
    osl_rampValid    <= sl_rampValid and sl_h2fWriteAck;
    osl_inputValid   <= sl_inputValid and sl_h2fWriteAck;
+   osl_microStepValid <= sl_microStepValid and sl_h2fWriteAck;
 
  U_RdAckMono : monoshot 
     port map     (
@@ -156,7 +165,8 @@ begin
 	        sl_rampValid <= '0';
             on16_H2FinputVectorL <= x"0000";
             on16_H2FinputVectorR <= x"0000";
-	        sl_inputValid <= '1';
+	        sl_inputValid <= '0';
+            sl_microStepValid <= '0';
 	        
 		elsif((sl_h2fWriteReq = '1')) then
             if(slv_lw_bus_block_addr = c_slv2_h2f_block_write) then -- old write area
@@ -171,16 +181,22 @@ begin
                     on16_H2FinputVectorL <= signed(islv32_external_lw_bus_write_data(31 downto 16));
                     on16_H2FinputVectorR <= signed(islv32_external_lw_bus_write_data(15 downto 0));
                     sl_inputValid <= '1';
+                when c_slv8_h2f_address_MicroStepProStep =>
+                    ou8_microResProStepL <= unsigned(islv32_external_lw_bus_write_data(23 downto 16));
+                    ou8_microResProStepR <= unsigned(islv32_external_lw_bus_write_data(7 downto 0));
+                    sl_microStepValid <= '1';
                 when others =>     
                     sl_periodValid <= '0';
                     sl_rampValid <= '0';
                     sl_inputValid <= '0';
+                    sl_microStepValid <= '0';
                 end case;
             end if;    
 		else
             sl_periodValid <= '0';
             sl_rampValid <= '0';
             sl_inputValid <= '0';
+            sl_microStepValid <= '0';
 		end if;	 	
 	end if;
 end process;		

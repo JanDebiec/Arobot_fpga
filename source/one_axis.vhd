@@ -35,6 +35,7 @@ package one_axis_pkg is
 		isl_sliceTick 		: in std_logic; --! 50 ms tick for velocity changes
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+		iu8_microResProStep : in unsigned(7 downto 0);
 		isl_extStep			: in std_logic;
 		isl_extDir			: in std_logic;
 		isl_extStepEnable	: in std_logic;
@@ -73,6 +74,7 @@ entity one_axis is
 		isl_sliceTick 		: in std_logic; --! 50 ms tick for velocity changes
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
+		iu8_microResProStep : in unsigned(7 downto 0);
 		isl_extStep			: in std_logic;
 		isl_extDir			: in std_logic;
 		isl_extStepEnable	: in std_logic;
@@ -185,7 +187,7 @@ port map
 	islv6_InputIndex 	=> uP2P_slv6_PosModulo,--: in std_logic_vector(7 downto 0);
 	iu16_loopCounter 	=> uPwmPG_u16_loopCounter,--: in integer;
 	isl_InputSync		=> uPwmPG_sl_PwmPeriodPulse,--: in std_logic;
-	osl_output1A		=> uAx_sl_output1A ,--	: out std_logic;
+	iu8_microResProStep => iu8_microResProStep,--: in unsigned(7 downto 0);		osl_output1A		=> uAx_sl_output1A ,--	: out std_logic;
 	osl_output1B		=> uAx_sl_output1B ,--	: out std_logic;
 	osl_output2A		=> uAx_sl_output2A ,--	: out std_logic;
 	osl_output2B		=> uAx_sl_output2B --	: out std_logic
