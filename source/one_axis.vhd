@@ -187,7 +187,8 @@ port map
 	islv6_InputIndex 	=> uP2P_slv6_PosModulo,--: in std_logic_vector(7 downto 0);
 	iu16_loopCounter 	=> uPwmPG_u16_loopCounter,--: in integer;
 	isl_InputSync		=> uPwmPG_sl_PwmPeriodPulse,--: in std_logic;
-	iu8_microResProStep => iu8_microResProStep,--: in unsigned(7 downto 0);		osl_output1A		=> uAx_sl_output1A ,--	: out std_logic;
+	iu8_microResProStep => iu8_microResProStep,--: in unsigned(7 downto 0);		
+	osl_output1A		=> uAx_sl_output1A ,--	: out std_logic;
 	osl_output1B		=> uAx_sl_output1B ,--	: out std_logic;
 	osl_output2A		=> uAx_sl_output2A ,--	: out std_logic;
 	osl_output2B		=> uAx_sl_output2B --	: out std_logic
