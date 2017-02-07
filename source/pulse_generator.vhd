@@ -93,45 +93,40 @@ architecture RTL of pulse_generator is
 	);
 	signal sm_PulsRunSM, sm_PulsRunSM_Next : sm_PulsGenRun_Type;
 	
-	signal n16_absValue 			: signed(15 downto 0) := x"0000";
-	signal n16_negValue 			: signed(15 downto 0) := x"0000";
-	signal un16_Zero 				: signed(15 downto 0) := x"0000";
-	signal un32_Zero 				: signed(31 downto 0) := x"0000_0000";
-	signal un16_One 				: signed(15 downto 0) := x"0001";
-	signal n16_ValueShadow 			: signed (15 downto 0) := x"0000";
+	signal n16_absValue 			: signed(15 downto 0);
+	signal n16_negValue 			: signed(15 downto 0);
+	constant un16_Zero 				: signed(15 downto 0) := x"0000";
+	constant un32_Zero 				: signed(31 downto 0) := x"0000_0000";
+	constant un16_One 				: signed(15 downto 0) := x"0001";
+	signal n16_ValueShadow 			: signed(15 downto 0);
 
 -- real values for 50 ms
-	signal un32_TickTimerSetting 			: signed(31 downto 0) := x"0026_25a0";-- ca 2.5 mln
-	signal un32_PulseBreakOneSetting		: signed(31 downto 0) := x"0026_2400";
--- fake values for simulation
---	signal un32_TickTimerSetting 			: signed(31 downto 0) := x"0000_25a0";-- ca 2.5 mln
---	signal un32_PulseBreakOneSetting		: signed(31 downto 0) := x"0000_2400";
-
-	signal un32_TickTimerCounter 			: signed(31 downto 0) := x"0000_0000";
+	constant un32_TickTimerSetting 			: signed(31 downto 0) := x"0026_25a0";-- ca 2.5 mln
+	constant un32_PulseBreakOneSetting		: signed(31 downto 0) := x"0026_2400";
+	signal un32_TickTimerCounter 			: signed(31 downto 0);
 -- orig
-	signal un32_PulseTimeSetting			: signed(31 downto 0) := x"0000_0032";-- 50 dec
---	signal un32_PulseTimeSetting			: signed(31 downto 0) := x"0000_0001";-- 50 dec
-	signal un32_PulseBreakActSetting		: signed(31 downto 0) := x"0000_0000";
-	signal slv32_PulseBreakDivided			: std_logic_vector(31 downto 0) := x"0000_0000";
-	signal slv32_PulseBreakDividedShadow	: std_logic_vector(31 downto 0) := x"0000_0000";
-	signal un32_PulseTimeCounter			: signed(31 downto 0) := x"0000_0000";
-	signal un32_PulseBreakCounter			: signed(31 downto 0) := x"0000_0000";
-	signal sl_PulseTimeEnable 		: std_logic := '0';
-	signal sl_PulseTimeEnableNext	: std_logic := '0';
-	signal sl_PulseBreakEnable 		: std_logic := '0';
-	signal sl_PulseBreakEnableNext	: std_logic := '0';
-	signal sl_checkInput 			: std_logic := '0';
-	signal sl_SyncNewDelay 			: std_logic := '0';
-	signal sl_PulseTimeReached 		: std_logic := '0';
-	signal sl_PulseBreakReached 	: std_logic := '0';
+	constant un32_PulseTimeSetting			: signed(31 downto 0) := x"0000_0032";-- 50 dec
+	signal un32_PulseBreakActSetting		: signed(31 downto 0);
+	signal slv32_PulseBreakDivided			: std_logic_vector(31 downto 0);
+	signal slv32_PulseBreakDividedShadow	: std_logic_vector(31 downto 0);
+	signal un32_PulseTimeCounter			: signed(31 downto 0);
+	signal un32_PulseBreakCounter			: signed(31 downto 0);
+	signal sl_PulseTimeEnable 		: std_logic;
+	signal sl_PulseTimeEnableNext	: std_logic;
+	signal sl_PulseBreakEnable 		: std_logic;
+	signal sl_PulseBreakEnableNext	: std_logic;
+	signal sl_checkInput 			: std_logic;
+	signal sl_SyncNewDelay 			: std_logic;
+	signal sl_PulseTimeReached 		: std_logic;
+	signal sl_PulseBreakReached 	: std_logic;
 	
 begin
+	
+
 
 osl_pulseOutput <= sl_PulseTimeEnable;
 n16_ValueShadow <= in16_Value when (sl_checkInput = '1');
 slv32_PulseBreakDividedShadow <= slv32_PulseBreakDivided;-- when(sl_SyncNewDelay = '1');
---sl_PulseBreakEnable <= '1' when (isl_rst = '1') ;
-
 --!
 U_divider : u32_div_u16
 		port map(
@@ -143,7 +138,6 @@ U_divider : u32_div_u16
 		remain		=> open--: OUT STD_LOGIC_VECTOR (15 DOWNTO 0)
 	);
 
---n16_absValue <= abs(n16_ValueShadow);
 n16_absValue <= abs(in16_Value);
 
 un32_PulseBreakActSetting <= 
