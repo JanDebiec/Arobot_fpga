@@ -14,7 +14,8 @@ vmap work rtl_work
 
 vcom -93 -work work $localpath/ip/baudrate_counter.vhd
 vcom -93 -work work $localpath/ip/shift_reg_48bits.vhd
-vcom -93 -work work $localpath/source/arobot_tcc_pkg.vhd
+vcom -93 -work work $localpath/source/globals/arobot_constant_pkg.vhd
+vcom -93 -work work $localpath/source/globals/arobot_component_pkg.vhd
 #vcom -93 -work work $localpath/source/bit_filter.vhd
 vcom -93 -work work $localpath/source/byte_reader.vhd
 vcom -93 -work work $localpath/source/pulse_generator.vhd
