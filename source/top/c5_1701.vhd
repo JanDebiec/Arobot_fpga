@@ -117,6 +117,7 @@ Library work;
     use work.slice_tick_gen_pkg.all;
     use work.pwm_pulse_pkg.all;
     use work.one_axis_pkg.all;
+    use work.uart_pkg.all;
     use work.velocity_issp_pkg.all;
     use work.version_pkg.all;
 

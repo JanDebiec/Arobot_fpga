@@ -37,10 +37,11 @@ set ProjectFileList {
 		../source/convVel2Pulse.vhd
 		../source/convPulse2Pos.vhd
 		../source/slice_tick_gen.vhd
+		../source/uart/uart_parity.vhd
+		../source/uart/uart_rx.vhd
+		../source/uart/uart_tx.vhd
+		../source/uart/uart.vhd
 		../source/one_axis.vhd
-		../source/top/c4_base_top.vhd
-		../source/top/c4_position.vhd
-		../source/top/c4_velocity.vhd
 		../source/hw_soc/h2flw_interface.vhd
 		../source/top/c5_1701.vhd
 	
