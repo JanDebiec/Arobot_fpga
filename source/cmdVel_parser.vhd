@@ -29,7 +29,7 @@ port (
     isl_clk50Mhz : in std_logic;
     isl_rst : in std_logic;
     isl_inByteValid : in std_logic;
-    islv8_byteValue : in std_logic;
+    islv8_byteValue : in std_logic_vector(7 downto 0);
     oslv_shortA : out signed(15 downto 0);
     oslv_shortB : out signed(15 downto 0);
     osl_outputValid : out std_logic
@@ -50,7 +50,7 @@ port (
     isl_clk50Mhz : in std_logic;
     isl_rst : in std_logic;
     isl_inByteValid : in std_logic;
-    islv8_byteValue : in std_logic;
+    islv8_byteValue : in std_logic_vector(7 downto 0);
     oslv_shortA : out signed(15 downto 0);
     oslv_shortB : out signed(15 downto 0);
     osl_outputValid : out std_logic
