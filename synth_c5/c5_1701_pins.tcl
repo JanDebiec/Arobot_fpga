@@ -2,10 +2,14 @@
 #============================================================
 # ARDUINO
 #============================================================
-set_location_assignment PIN_AG13 -to ARDUINO_IO[0]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ARDUINO_IO[0]
-set_location_assignment PIN_AF13 -to ARDUINO_IO[1]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ARDUINO_IO[1]
+set_location_assignment PIN_AG13 -to isl_SerialRx
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to isl_SerialRx
+set_location_assignment PIN_AF13 -to osl_SerialTx
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_SerialTx
+#set_location_assignment PIN_AG13 -to ARDUINO_IO[0]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ARDUINO_IO[0]
+#set_location_assignment PIN_AF13 -to ARDUINO_IO[1]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ARDUINO_IO[1]
 set_location_assignment PIN_AG10 -to ARDUINO_IO[2]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to ARDUINO_IO[2]
 set_location_assignment PIN_AG9 -to ARDUINO_IO[3]

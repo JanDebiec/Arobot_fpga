@@ -95,7 +95,10 @@ package c5_1701_pkg is
 	osl_outX1B		: out std_logic;
 	osl_outX2A		: out std_logic;
 	osl_outX2B		: out std_logic;
-	osl_slice_tick		: out std_logic;	--!
+	osl_slice_tick		: out std_logic;	
+--!
+    isl_SerialRx    : in std_logic;	
+    osl_SerialTx    : out std_logic; 
 --! testing
     osl_PerfTest  : out std_logic
     );
@@ -196,6 +199,9 @@ port (
 	osl_outX2A		: out std_logic;
 	osl_outX2B		: out std_logic;
 	osl_slice_tick		: out std_logic;	--!
+--!
+    isl_SerialRx    : in std_logic; 
+    osl_SerialTx    : out std_logic; 
 --! testing
     osl_PerfTest  : out std_logic
     );
@@ -292,11 +298,6 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 -- signals io for the h2f:
 	signal uH2flw_n16_rampValue  	: signed (15 downto 0);
 	signal uH2flw_n32_periodCount	: signed (31 downto 0);
-	signal	uH2flw_n16_H2FinputVectorL : signed (15 downto 0);
-	signal	n16_H2FinputVectorL : signed (15 downto 0);
-	signal	uH2flw_n16_H2FinputVectorR : signed (15 downto 0);
-	signal	n16_H2FinputVectorR : signed (15 downto 0);
-	signal uH2flw_sl_inputValid : std_logic;
 	signal uAxisR_oslv6_PosModulo : std_logic_vector(5 downto 0);
 	signal uAxisL_oslv6_PosModulo : std_logic_vector(5 downto 0);
 	signal uH2flw_sl_periodValid : std_logic;
@@ -309,11 +310,34 @@ signal uH2flw_sl_AdcDelayValid : std_logic;
 	signal  uH2flw_u8_microResProStepR : unsigned(7 downto 0);
 	signal  uH2flw_sl_microStepValid : std_logic;
 
+--	signal	uRx2Cmd_slv_shortA : signed(15 downto 0);
+--	signal	uRx2Cmd_slv_shortB : signed(15 downto 0);
+--	signal uRx2Cmd_sl_outputValid : std_logic;
+	
+-- config H2F or uart
+	signal sl_configH2fOrUart : std_logic; -- high h2f, low uart
+-- h2f
+    signal uH2flw_sl_inputValid : std_logic;
+	signal	uH2flw_n16_H2FinputVectorL : signed (15 downto 0);
+	signal	uH2flw_n16_H2FinputVectorR : signed (15 downto 0);
+-- uart
+    signal uRx_sl_inputValid : std_logic;
 	signal	uRx_n16_H2FinputVectorR : signed (15 downto 0);
 	signal	uRx_n16_H2FinputVectorL : signed (15 downto 0);
-	signal	uRx2Cmd_slv_shortA : signed(15 downto 0);
-	signal	uRx2Cmd_slv_shortB : signed(15 downto 0);
-	signal uRx2Cmd_sl_outputValid : std_logic;
+-- global
+	signal	n16_H2FinputVectorL : signed (15 downto 0);
+	signal	n16_H2FinputVectorR : signed (15 downto 0);
+	
+-- uart
+    -- USER DATA INPUT INTERFACE
+    signal  data_in     : std_logic_vector(7 downto 0);
+    signal  data_send   : std_logic; -- when DATA_SEND = 1, data on DATA_IN will be transmit, DATA_SEND can set to 1 only when BUSY = 0
+    signal  uUart_busy        : std_logic; -- when BUSY = 1 transiever is busy, you must not set DATA_SEND to 1
+    -- USER DATA OUTPUT INTERFACE
+    signal  uUart_data_out    : std_logic_vector(7 downto 0);
+    signal  uUart_data_vld    : std_logic; -- when DATA_VLD = 1, data on DATA_OUT are valid
+    signal  uUart_frame_error : std_logic;  -- when FRAME_ERROR = 1, stop bit was invalid, current and next data may be invalid
+	
 begin
 
 -------------------------------------------------------------
@@ -327,7 +351,7 @@ sl_clk50Mhz  <= CLOCK_50;
 osl_PerfTest <= '1';-- when (uH2flw_slv32_TimerReload = uH2flw_slv32_Modus) else '0'; --slv16_TestPoints(15);
 slv4_keys    <= KEY;
 slv4_switch <= SW;
-
+sl_configH2fOrUart <= slv4_switch(0);
 -------------------------------------------------------------
 -- outputs
 -------------------------------------------------------------
@@ -475,8 +499,14 @@ pInputL : process (
     if (sl_Reset = '1') then
         n16_H2FinputVectorL <= x"0000";
     elsif (rising_edge(sl_clk50Mhz)) then
-        if (uH2flw_sl_inputValid = '1') then
-        n16_H2FinputVectorL <= uH2flw_n16_H2FinputVectorL;
+        if(sl_configH2fOrUart = '1') then
+            if (uH2flw_sl_inputValid = '1') then
+                n16_H2FinputVectorL <= uH2flw_n16_H2FinputVectorL;
+            end if;
+        else
+            if uRx_sl_inputValid = '1' then
+                n16_H2FinputVectorL <= uRx_n16_H2FinputVectorL;
+            end if;
         end if;
     END IF;
 end process;
@@ -487,8 +517,14 @@ pInputR : process (
     if (sl_Reset = '1') then
         n16_H2FinputVectorR <= x"0000";
     elsif (rising_edge(sl_clk50Mhz)) then
-        if (uH2flw_sl_inputValid = '1') then
-        n16_H2FinputVectorR <= uH2flw_n16_H2FinputVectorR;
+        if(sl_configH2fOrUart = '1') then
+            if (uH2flw_sl_inputValid = '1') then
+                n16_H2FinputVectorR <= uH2flw_n16_H2FinputVectorR;
+            end if;
+        else
+            if uRx_sl_inputValid = '1' then
+                n16_H2FinputVectorR <= uRx_n16_H2FinputVectorR;
+            end if;
         end if;
     END IF;
 end process;
@@ -632,17 +668,39 @@ port map
 	osl_output2B		=> uAxisR_sl_output2B --	: out std_logic
 );
 
-uRx2Cmd : byte_and_shift
-port map
-(
-	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
-	isl_rst 			=> sl_Reset,--: in std_logic;
-	isl_bitInput 		=> sl_bitInput,--: in std_logic;
-	islv8_MagicWord 	=> slv8_MagicWord,--: in std_logic_vector(7 downto 0);
-	oslv_shortA 		=> uRx2Cmd_slv_shortA,--: out signed(15 downto 0);
-	oslv_shortB 		=> uRx2Cmd_slv_shortB,--: out signed(15 downto 0);
-	osl_outputValid 	=> uRx2Cmd_sl_outputValid--: out std_logic
-);        
+--uRx2Cmd : byte_and_shift
+--port map
+--(
+--	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
+--	isl_rst 			=> sl_Reset,--: in std_logic;
+--	isl_bitInput 		=> sl_bitInput,--: in std_logic;
+--	islv8_MagicWord 	=> slv8_MagicWord,--: in std_logic_vector(7 downto 0);
+--	oslv_shortA 		=> uRx2Cmd_slv_shortA,--: out signed(15 downto 0);
+--	oslv_shortB 		=> uRx2Cmd_slv_shortB,--: out signed(15 downto 0);
+--	osl_outputValid 	=> uRx2Cmd_sl_outputValid--: out std_logic
+--);        
+
+uUart: UART
+generic map (
+    CLK_FREQ    => 50e6,
+    BAUD_RATE   => 115200,
+    PARITY_BIT  => "none"
+)
+port map (
+    CLK         => sl_clk50MHz,
+    RST         => sl_Reset,
+    -- UART INTERFACE
+    UART_TXD    => osl_SerialTx,
+    UART_RXD    => isl_SerialRx,
+    -- USER DATA INPUT INTERFACE
+    DATA_OUT    => uUart_data_out,
+    DATA_VLD    => uUart_data_vld,
+    FRAME_ERROR => uUart_frame_error,
+    -- USER DATA OUTPUT INTERFACE
+    DATA_IN     => data_in,
+    DATA_SEND   => data_send,
+    BUSY        => uUart_busy
+);
 
 
 end architecture RTL;

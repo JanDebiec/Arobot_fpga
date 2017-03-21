@@ -16,11 +16,6 @@ set ProjectFileList {
 		../source/basics/deflipflop.vhd
 		../source/basics/monoshot.vhd
 		../source/basics/delay2.vhd
-		../source/bit_filter.vhd
-		../source/byte_reader.vhd
-		../source/receiver.vhd
-		../source/shift_latch.vhd
-		../source/byte_and_shift.vhd
 		../source/issp/velocity_issp.vhd
 		../source/issp/slice_tick_issp.vhd
 		../source/ramp.vhd
@@ -47,14 +42,11 @@ set ProjectFileList {
 	
 	}
 	sim_LIB {
-		../testbench/bit_filter_tb.vhd
-		../testbench/byte_reader_tb.vhd
-		../testbench/byte_and_shift_tb.vhd
+		../testbench/uart_tb.vhd
 		../testbench/integrator_tb.vhd
 		../testbench/modulo_divider_tb.vhd
 		../testbench/pulse_generator_tb.vhd
 		../testbench/ramp_tb.vhd
-		../testbench/receiver_tb.vhd
 		../testbench/sinus_calc_tb.vhd
 		../testbench/pwm_single_tb.vhd
 		../testbench/pwm_double_tb.vhd
