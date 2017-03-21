@@ -43,7 +43,7 @@ U_DUT : cmdVel_parser
     slv8_Inputbyte <= slv8_InputValue;
     wait until ((sl_clk50MHz = '1'));
     sl_byteValid <= '1';
-    wait until ((sl_clk50MHz = '0'));
+    wait until ((sl_clk50MHz = '1'));
     sl_byteValid <= '0';
     wait until ((sl_clk50MHz = '1'));
     slv8_Inputbyte <= x"00";

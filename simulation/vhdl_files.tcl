@@ -2,6 +2,7 @@
 
 set ProjectFileList {
 	pkg_LIB {
+        ../source/globals/arobot_typedef_pkg.vhd
 		../source/globals/arobot_constant_pkg.vhd
 		../source/globals/arobot_component_pkg.vhd
 		../testbench/byte_reader_stim_fp_pkg.vhd
@@ -36,6 +37,7 @@ set ProjectFileList {
 		../source/uart/uart_rx.vhd
 		../source/uart/uart_tx.vhd
 		../source/uart/uart.vhd
+        ../source/cmdVel_parser.vhd
 		../source/one_axis.vhd
 		../source/hw_soc/h2flw_interface.vhd
 		../source/top/c5_1701.vhd
@@ -43,6 +45,7 @@ set ProjectFileList {
 	}
 	sim_LIB {
 		../testbench/uart_tb.vhd
+        ../testbench/cmdVel_parser_tb.vhd
 		../testbench/integrator_tb.vhd
 		../testbench/modulo_divider_tb.vhd
 		../testbench/pulse_generator_tb.vhd
