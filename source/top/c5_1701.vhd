@@ -669,17 +669,6 @@ port map
 	osl_output2B		=> uAxisR_sl_output2B --	: out std_logic
 );
 
---uRx2Cmd : byte_and_shift
---port map
---(
---	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
---	isl_rst 			=> sl_Reset,--: in std_logic;
---	isl_bitInput 		=> sl_bitInput,--: in std_logic;
---	islv8_MagicWord 	=> slv8_MagicWord,--: in std_logic_vector(7 downto 0);
---	oslv_shortA 		=> uRx2Cmd_slv_shortA,--: out signed(15 downto 0);
---	oslv_shortB 		=> uRx2Cmd_slv_shortB,--: out signed(15 downto 0);
---	osl_outputValid 	=> uRx2Cmd_sl_outputValid--: out std_logic
---);        
 uRxCmd : cmdVel_parser
 port map
 (
