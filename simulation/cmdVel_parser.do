@@ -27,6 +27,7 @@ add wave cmdVel_parser_TB/*
 add wave cmdVel_parser_TB/U_DUT/i*
 add wave cmdVel_parser_TB/U_DUT/t*
 add wave cmdVel_parser_TB/U_DUT/sl*
+add wave cmdVel_parser_TB/U_DUT/o*
 radix -hexadecimal
 view structure
 view signals
