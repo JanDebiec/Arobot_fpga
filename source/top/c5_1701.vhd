@@ -121,6 +121,7 @@ Library work;
     use work.pwm_pulse_pkg.all;
     use work.one_axis_pkg.all;
     use work.uart_pkg.all;
+    use work.cmdVel_parser_pkg.all;
     use work.velocity_issp_pkg.all;
     use work.version_pkg.all;
 
@@ -679,6 +680,17 @@ port map
 --	oslv_shortB 		=> uRx2Cmd_slv_shortB,--: out signed(15 downto 0);
 --	osl_outputValid 	=> uRx2Cmd_sl_outputValid--: out std_logic
 --);        
+uRxCmd : cmdVel_parser
+port map
+(
+    isl_clk50Mhz        => sl_clk50MHz,--: in std_logic;
+    isl_rst             => sl_Reset,--: in std_logic;
+    isl_inByteValid     => uUart_data_vld,--: in std_logic;
+    islv8_byteValue     => uUart_data_out,--: in std_logic_vector(7 downto 0);
+    oslv_shortA         => uRx_n16_H2FinputVectorL,--: out signed(15 downto 0);
+    oslv_shortB         => uRx_n16_H2FinputVectorR,--: out signed(15 downto 0);
+    osl_outputValid     => uRx_sl_inputValid--: out std_logic
+);        
 
 uUart: UART
 generic map (

@@ -42,7 +42,7 @@ U_DUT : cmdVel_parser
     wait until (sl_clk50MHz = '1');
     slv8_Inputbyte <= slv8_InputValue;
     wait until ((sl_clk50MHz = '1'));
-    sl_byteValid <= '1';
+    sl_byteValid <= '1'uRx_n16_H2FinputVectorRuRx_n16_H2FinputVectorR;
     wait until ((sl_clk50MHz = '1'));
     sl_byteValid <= '0';
     wait until ((sl_clk50MHz = '1'));
