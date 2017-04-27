@@ -40,7 +40,9 @@ USE ieee.std_logic_arith.all;
 use ieee.numeric_std.all;
 library work;
 --    use work.deflipflop_pkg.all;
-    use work.msystem_tcc_pkg.all;
+    use work.arobot_constant_pkg.all;
+    use work.arobot_component_pkg.all;
+    use work.arobot_typedef_pkg.all;
     use work.monoshot_pkg.all;
 
 entity spi_receiver is

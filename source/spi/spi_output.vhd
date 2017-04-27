@@ -46,7 +46,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 Library work;           
-    use work.msystem_tcc_pkg.all;
+    use work.arobot_constant_pkg.all;
+    use work.arobot_component_pkg.all;
+    use work.arobot_typedef_pkg.all;
     use work.deflipflop_pkg.all;
     use work.monoshot_pkg.all;
     use work.spi_transmitter_pkg.all;
@@ -166,7 +168,7 @@ uM : monoshot
     --    bModelSim           : boolean := FALSE
     --);
     port map     (
-        isl_clk50Mhz        => sl_SystemClock,--: in std_logic; --! master clock 50 MHz
+        isl_clk        => sl_SystemClock,--: in std_logic; --! master clock 50 MHz
         isl_rst             => isl_reset,--: in std_logic; --! master reset active high
         isl_input           => isl_TxActive,--: in std_logic; --!
         osl_outputMono      => uM_sl_TxActive_m--: out std_logic --! pwm output

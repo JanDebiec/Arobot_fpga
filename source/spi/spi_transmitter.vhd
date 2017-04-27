@@ -40,7 +40,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 library work;
-    use work.msystem_tcc_pkg.all;
+    use work.arobot_constant_pkg.all;
+    use work.arobot_component_pkg.all;
+    use work.arobot_typedef_pkg.all;
 
 entity spi_transmitter is
     port (
