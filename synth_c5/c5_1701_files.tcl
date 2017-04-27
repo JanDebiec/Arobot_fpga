@@ -11,6 +11,7 @@ set_global_assignment -name VHDL_FILE ../qsys/soc_jtag_irq/synthesis/soc_jtag_ir
 set_global_assignment -name QIP_FILE ../qsys/soc_jtag_irq/synthesis/soc_jtag_irq.qip
 ##########################
 set_global_assignment -name VHDL_FILE ../source/globals/arobot_constant_pkg.vhd
+set_global_assignment -name VHDL_FILE ../source/globals/arobot_typedef_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/globals/arobot_component_pkg.vhd
 set_global_assignment -name VHDL_FILE ../source/globals/version.vhd
 ##########################
@@ -40,6 +41,11 @@ set_global_assignment -name VHDL_FILE ../source/convVel2Pulse.vhd
 set_global_assignment -name VHDL_FILE ../source/convPulse2Pos.vhd
 set_global_assignment -name VHDL_FILE ../source/convPos2Pwm.vhd
 set_global_assignment -name VHDL_FILE ../source/one_axis.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_rx.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_tx.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_parity.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart.vhd
+set_global_assignment -name VHDL_FILE ../source/cmdVel_parser.vhd
 set_global_assignment -name VHDL_FILE ../source/hw_soc/h2flw_interface.vhd
 
 ########################## 
