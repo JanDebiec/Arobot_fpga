@@ -74,9 +74,11 @@ end entity c4_1702;
 architecture RTL of c4_1702 is
 	signal sl_clk50MHz  		: STD_LOGIC := '0';     -- clock 50MHz
 	signal sl_Reset 			: STD_LOGIC := '0';
-	signal n16_rampValue  	: signed (15 downto 0) := x"0040";
-	signal n16_outValue 		: signed (15 downto 0) := x"0000";
-	signal n16_Value 			: signed (15 downto 0) :=  x"0080";
+	signal slv4_switch       : std_logic_vector(3 downto 0);
+	
+	signal n16_rampValue  	: signed (15 downto 0);
+	signal n16_outValue 		: signed (15 downto 0);
+	signal n16_Value 			: signed (15 downto 0);
 	signal sl_output1A		: std_logic;
 	signal sl_output1B		: std_logic;
 	signal sl_output2A		: std_logic;
@@ -142,15 +144,15 @@ architecture RTL of c4_1702 is
     signal sl_configSpiOrUart : std_logic; -- high h2f, low uart
 -- h2f
     signal uSpi_sl_inputValid : std_logic;
-    signal  uSpi_n16_H2FinputVectorL : signed (15 downto 0);
-    signal  uSpi_n16_H2FinputVectorR : signed (15 downto 0);
+    signal  uSpi_n16_inputVectorL : signed (15 downto 0);
+    signal  uSpi_n16_inputVectorR : signed (15 downto 0);
 -- uart
     signal uRx_sl_inputValid : std_logic;
-    signal  uRx_n16_H2FinputVectorR : signed (15 downto 0);
-    signal  uRx_n16_H2FinputVectorL : signed (15 downto 0);
+    signal  uRx_n16_inputVectorR : signed (15 downto 0);
+    signal  uRx_n16_inputVectorL : signed (15 downto 0);
 -- global
-    signal  n16_H2FinputVectorL : signed (15 downto 0);
-    signal  n16_H2FinputVectorR : signed (15 downto 0);
+    signal  n16_inputVectorL : signed (15 downto 0);
+    signal  n16_inputVectorR : signed (15 downto 0);
     
 -- uart
     -- USER DATA INPUT INTERFACE
@@ -192,6 +194,45 @@ sl_Reset <= not (KEY(0));
     osl_slice_tick <= uST_sl_sliceTick;
 
 --!
+
+pRamp : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_rampValue <= x"0040";
+--    elsif (rising_edge(sl_clk50Mhz)) then
+--        if (uH2flw_sl_rampValid = '1') then
+--        n16_rampValue <= uH2flw_n16_rampValue;
+--        end if;
+    END IF;
+end process;
+
+pMicroL : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        u8_microResProStepL <= x"10";
+--    elsif (rising_edge(sl_clk50Mhz)) then
+--        if (uH2flw_sl_microStepValid = '1') then
+--        u8_microResProStepL <= uH2flw_u8_microResProStepL;
+--        end if;
+    END IF;
+end process;
+
+pMicroR : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        u8_microResProStepR <= x"10";
+--    elsif (rising_edge(sl_clk50Mhz)) then
+--        if (uH2flw_sl_microStepValid = '1') then
+--        u8_microResProStepR <= uH2flw_u8_microResProStepR;
+--        end if;
+    END IF;
+end process;
+
+
+
 U_PwmPulseGen : pwm_pulse
 port map
 (
@@ -267,6 +308,8 @@ end generate;
 slv6_InputIndexModulo <= slv6_InputIndexIssp when (bISSP = TRUE and bModelSim = FALSE) else
 				slv6_PosModulo;
 
+slv4_switch <= SW;
+sl_configSpiOrUart <= slv4_switch(0);
 --!
 --U_SingleAxis : convPos2Pwm
 --port map
@@ -281,6 +324,43 @@ slv6_InputIndexModulo <= slv6_InputIndexIssp when (bISSP = TRUE and bModelSim = 
 --	osl_output2A		=> sl_output2A ,--	: out std_logic;
 --	osl_output2B		=> sl_output2B --	: out std_logic
 --);
+pInputL : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_inputVectorL <= x"0000";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if(sl_configSpiOrUart = '1') then
+--            if (uH2flw_sl_inputValid = '1') then
+--                n16_inputVectorL <= uH2flw_n16_inputVectorL;
+--            end if;
+        else
+            if uRx_sl_inputValid = '1' then
+                n16_inputVectorL <= uRx_n16_inputVectorL;
+            end if;
+        end if;
+    END IF;
+end process;
+
+pInputR : process (
+   all 
+)begin
+    if (sl_Reset = '1') then
+        n16_inputVectorR <= x"0000";
+    elsif (rising_edge(sl_clk50Mhz)) then
+        if(sl_configSpiOrUart = '1') then
+--            if (uH2flw_sl_inputValid = '1') then
+--                n16_inputVectorR <= uH2flw_n16_inputVectorR;
+--            end if;
+        else
+            if uRx_sl_inputValid = '1' then
+                n16_inputVectorR <= uRx_n16_inputVectorR;
+            end if;
+        end if;
+    END IF;
+end process;
+
+
 
 uM : monoshot 
 port map     (
@@ -320,7 +400,7 @@ port map
     isl_clk50Mhz        => sl_clk50MHz,--: in std_logic;
     isl_rst             => sl_Reset,--: in std_logic;
     isl_sliceTick       => uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
-    in16_inputVector    => n16_H2FinputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
+    in16_inputVector    => n16_inputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepL,-- in unsigned(7 downto 0);
     isl_extStep         => sl_extStep_m,--: in std_logic;
@@ -343,7 +423,7 @@ port map
     isl_clk50Mhz        => sl_clk50MHz,--: in std_logic;
     isl_rst             => sl_Reset,--: in std_logic;
     isl_sliceTick       => uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
-    in16_inputVector    => n16_H2FinputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
+    in16_inputVector    => n16_inputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepR,-- in unsigned(7 downto 0);
     isl_extStep         => sl_extStep_m,--: in std_logic;
@@ -362,7 +442,7 @@ port map
 --! signals on OutputCLock domain
     isl_SpiClk          => sl_SpiClk,
     isl_reset           => sl_Reset,--: in std_logic;
-    isl_mosi            => sl_mosi,--: in std_logic;
+    isl_mosi            => isl_mosi,--: in std_logic;
     isl_RxActive        => sl_RxActive,--: in std_logic;
     osl_validData       => sl_validRxData,--: out std_logic;
     oslv8_Data          => slv8_RxData--: out std_logic_vector(7 downto 0)
@@ -374,7 +454,7 @@ port map
 --! signals on OutputCLock domain
     isl_SpiClk       => sl_SpiClk,
     isl_TxActive     => sl_TxActive,--: in std_logic;
-    osl_miso         => sl_miso,--,: out std_logic;
+    osl_miso         => osl_miso,--,: out std_logic;
 -- system side
     isl_SystemClock  => sl_clk50MHz,--: in STD_LOGIC ;
     isl_reset        => sl_reset,--: in std_logic;
@@ -393,8 +473,8 @@ port map
     isl_rst             => sl_Reset,--: in std_logic;
     isl_inByteValid     => uUart_data_vld,--: in std_logic;
     islv8_byteValue     => uUart_data_out,--: in std_logic_vector(7 downto 0);
-    oslv_shortA         => uRx_n16_H2FinputVectorL,--: out signed(15 downto 0);
-    oslv_shortB         => uRx_n16_H2FinputVectorR,--: out signed(15 downto 0);
+    oslv_shortA         => uRx_n16_inputVectorL,--: out signed(15 downto 0);
+    oslv_shortB         => uRx_n16_inputVectorR,--: out signed(15 downto 0);
     osl_outputValid     => uRx_sl_inputValid--: out std_logic
 );        
 
