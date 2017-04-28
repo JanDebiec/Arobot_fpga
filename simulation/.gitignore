@@ -5,5 +5,7 @@ transcript
 modelsim.ini
 *.wlf
 *.vstf
+local_path.tcl
+
 
 
