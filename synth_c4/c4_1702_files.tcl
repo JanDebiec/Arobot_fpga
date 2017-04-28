@@ -41,5 +41,13 @@ set_global_assignment -name VHDL_FILE ../source/convVel2Pulse.vhd
 set_global_assignment -name VHDL_FILE ../source/convPulse2Pos.vhd
 set_global_assignment -name VHDL_FILE ../source/convPos2Pwm.vhd
 set_global_assignment -name VHDL_FILE ../source/one_axis.vhd
-#set_global_assignment -name VHDL_FILE ../source/top/c4_1702.vhd
+set_global_assignment -name VHDL_FILE ../source/spi/spi_receiver.vhd
+set_global_assignment -name VHDL_FILE ../source/spi/spi_transmitter.vhd
+set_global_assignment -name VHDL_FILE ../source/spi/spi_output.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_rx.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_tx.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart_parity.vhd
+set_global_assignment -name VHDL_FILE ../source/uart/uart.vhd
+set_global_assignment -name VHDL_FILE ../source/cmdVel_parser.vhd
+set_global_assignment -name VHDL_FILE ../source/top/c4_1702.vhd
 

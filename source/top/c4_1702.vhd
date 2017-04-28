@@ -39,16 +39,15 @@ Library work;
 --!
 entity c4_1702 is
     generic(
---			bModelSim : boolean := FALSE;
---			bISSP     : boolean := TRUE
-			bModelSim : boolean;
-			bISSP     : boolean
+			bModelSim : boolean := FALSE;
+			bISSP     : boolean := TRUE
+--			bModelSim : boolean;
+--			bISSP     : boolean
     );
 	port (
 		CLOCK_50 	: in std_logic;
-		SW 		: in std_logic_vector(3 downto 0) ; 
+		SW 		    : in std_logic_vector(3 downto 0) ; 
 		KEY 		: in std_logic_vector(1 downto 0) ; --reset active low
---		SW[0] 		: in std_logic ;
 --		GPIO_2 : out std_logic_vector (7 downto 0);
 		GPIO_0 	: out std_logic_vector(31 downto 0);
         isl_SpiClk  : in std_logic;
