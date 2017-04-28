@@ -32,6 +32,8 @@ Library work;
     use work.position_issp_pkg.all;
     use work.velocity_issp_pkg.all;
     use work.one_axis_pkg.all;
+    use work.uart_pkg.all;
+    use work.cmdVel_parser_pkg.all;
     use work.version_pkg.all;
 
 --!
@@ -118,6 +120,12 @@ architecture RTL of c4_1702 is
     signal sl_RxActive     : std_logic;
     signal sl_validRxData    : std_logic;
     signal slv8_RxData       : std_logic_vector(7 downto 0);
+    signal slv8_command : STD_LOGIC_VECTOR (7 DOWNTO 0);
+    signal slv11_OutWrAddr : STD_LOGIC_VECTOR (10 DOWNTO 0);
+    signal sl_SysClkEna : STD_LOGIC;
+    signal sl_OutWrEna : STD_LOGIC;
+    signal slv8_WrData:  STD_LOGIC_VECTOR (7 DOWNTO 0);
+    signal slv8_status : STD_LOGIC_VECTOR (7 DOWNTO 0);
 	
 -- axis
     signal  u8_microResProStepL : unsigned(7 downto 0);
@@ -369,14 +377,14 @@ port map
     isl_TxActive     => sl_TxActive,--: in std_logic;
     osl_miso         => sl_miso,--,: out std_logic;
 -- system side
-    isl_SystemClock  => sl_SystemClk,--: in STD_LOGIC ;
+    isl_SystemClock  => sl_clk50MHz,--: in STD_LOGIC ;
     isl_reset        => sl_reset,--: in std_logic;
     islv8_status     => slv8_status,--: STD_LOGIC_VECTOR (7 DOWNTO 0);
-    islv8_command    => slv8_command,--: STD_LOGIC_VECTOR (7 DOWNTO 0);
-    islv11_OutWrAddr => slv11_OutWrAddr,--: in STD_LOGIC_VECTOR (10 DOWNTO 0);
-    isl_SysClkEna    => sl_SysClkEna,--: in STD_LOGIC;
-    isl_OutWrEna     => sl_OutWrEna,--: in STD_LOGIC;
-    islv8_WrData     => slv8_WrData--: in STD_LOGIC_VECTOR (7 DOWNTO 0)
+    islv8_command    => slv8_command--: STD_LOGIC_VECTOR (7 DOWNTO 0);
+--    islv11_OutWrAddr => slv11_OutWrAddr,--: in STD_LOGIC_VECTOR (10 DOWNTO 0);
+--    isl_SysClkEna    => sl_SysClkEna,--: in STD_LOGIC;
+--    isl_OutWrEna     => sl_OutWrEna,--: in STD_LOGIC;
+--    islv8_WrData     => slv8_WrData--: in STD_LOGIC_VECTOR (7 DOWNTO 0)
 );
 
 uRxCmd : cmdVel_parser
