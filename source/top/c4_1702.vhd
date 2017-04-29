@@ -151,8 +151,11 @@ architecture RTL of c4_1702 is
     signal  uRx_n16_inputVectorR : signed (15 downto 0);
     signal  uRx_n16_inputVectorL : signed (15 downto 0);
 -- global
-    signal  n16_inputVectorL : signed (15 downto 0);
+    signal  inp_n16_inputVectorL : signed (15 downto 0); -- after input mux
+    signal  IsspOut_n16_inputVectorL : signed (15 downto 0); -- after Issp
+    signal  n16_inputVectorL : signed (15 downto 0);-- input to axis
     signal  n16_inputVectorR : signed (15 downto 0);
+    signal uISSP_sl_mux : std_logic;
     
 -- uart
     -- USER DATA INPUT INTERFACE
@@ -175,6 +178,10 @@ sl_clk50MHz <= CLOCK_50;
 sl_Reset <= not (KEY(0));
     sl_SpiClk <= isl_SpiClk;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4bf663ce33225ee2626a7afbacb69a361e4ae59e
     osl_outL1A  <= uAxisL_sl_output1A;
     osl_outL1B  <= uAxisL_sl_output1B;
     osl_outL2A  <= uAxisL_sl_output2A;
@@ -224,14 +231,14 @@ end process;
 
 
 
-U_PwmPulseGen : pwm_pulse
-port map
-(
-	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
-	isl_rst 			=> sl_Reset,--: in std_logic;	--!
-	osl_PwmPeriodPulse 	=> sl_PwmPeriodPulse,--: in std_logic;
-	ou16_loopCounter	=> u16_loopCounter--: out integer	--!
-);
+--U_PwmPulseGen : pwm_pulse
+--port map
+--(
+--	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;	--!
+--	isl_rst 			=> sl_Reset,--: in std_logic;	--!
+--	osl_PwmPeriodPulse 	=> sl_PwmPeriodPulse,--: in std_logic;
+--	ou16_loopCounter	=> u16_loopCounter--: out integer	--!
+--);
 
 --!
 uST : slice_tick_gen
@@ -248,86 +255,42 @@ port map
 );
 
 
-U_VELOCITY_ISSP : velocity_issp
+uVel_JTAG : if (bISSP = TRUE and bModelSim = FALSE) generate
+begin
+uISSP : velocity_issp
 port map (
 	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
 	isl_rst 			=> sl_Reset,--: in std_logic;
-	in16_inputVector 	=> n16_inputVector,--: in signed (15 downto 0);
-	on16_outputVector 	=> n16_outputVector--: out signed (15 downto 0);
+	in16_inputVector 	=> inp_n16_inputVectorL,--: in signed (15 downto 0);
+	on16_outputVector 	=> IsspOut_n16_inputVectorL--: out signed (15 downto 0);
 );
-
-U_convVel2Pulse : convVel2Pulse
-port map
-(
-	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
-	isl_rst 			=> sl_Reset,--: in std_logic;
-	isl_sliceTick 		=> uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
-	in16_inputVector 	=> n16_inputVector,--in signed (15 downto 0);--! input velocity 15 bits + sign
-	in16_rampValue  	=> n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
---	oslv16_testValue  	=> ,--out std_logic_vector (15 downto 0);--! used for tesing
-	osl_pulse			=> sl_step--out std_logic--! used for tesing
-);
-
-
-
-U_convPulse2Pos : convPulse2Pos
-port map
-(
-	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
-	isl_rst 			=> sl_Reset,--: in std_logic;
-	isl_direction		=> sl_direction,--: in std_logic;
-	isl_pulse			=> sl_step,--: in std_logic;
-	oslv6_OutputValue  	=> slv6_PosModulo--: out std_logic_vector (5 downto 0)--! 
-);
-
-U_POSITION_JTAG : if (bISSP = TRUE and bModelSim = FALSE) generate
-begin
-	U_POSITION_ISSP : entity work.position_issp
-	generic map(
---		bISSP     =>TRUE,
-		bModelSim => FALSE
-	)
-	port map (
-		isl_clk50Mhz 		=> sl_clk50Mhz,--: in std_logic;
-		isl_rst 			=> sl_Reset,--: in std_logic;
-		islv6_inputPosition 	=> slv6_PosModulo,--: in signed (15 downto 0);
-		oslv6_outputPosition 	=> slv6_InputIndexIssp--: out signed (15 downto 0);
-	);
+n16_inputVectorL <= IsspOut_n16_inputVectorL when (uISSP_sl_mux = '1') else
+                inp_n16_inputVectorL;
 end generate;
 
+uNISSP : if (bISSP = FALSE) generate
+begin
+    n16_inputVectorL <= inp_n16_inputVectorL;
+    uISSP_sl_mux <= '0';
+end generate;   
 
-slv6_InputIndexModulo <= slv6_InputIndexIssp when (bISSP = TRUE and bModelSim = FALSE) else
-				slv6_PosModulo;
 
 slv4_switch <= SW;
 sl_configSpiOrUart <= slv4_switch(0);
---!
---U_SingleAxis : convPos2Pwm
---port map
---(
---	isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
---	isl_rst 			=> sl_Reset,--: in std_logic;
---	islv6_InputIndex 	=> slv6_InputIndexModulo,--: in std_logic_vector(7 downto 0);
---	iu16_loopCounter 	=> u16_loopCounter,--: in integer;
---	isl_InputSync		=> sl_PwmPeriodPulse,--: in std_logic;
---	osl_output1A		=> sl_output1A ,--	: out std_logic;
---	osl_output1B		=> sl_output1B ,--	: out std_logic;
---	osl_output2A		=> sl_output2A ,--	: out std_logic;
---	osl_output2B		=> sl_output2B --	: out std_logic
---);
+
 pInputL : process (
    all 
 )begin
     if (sl_Reset = '1') then
-        n16_inputVectorL <= x"0000";
+        inp_n16_inputVectorL <= x"0000";
     elsif (rising_edge(sl_clk50Mhz)) then
         if(sl_configSpiOrUart = '1') then
 --            if (uH2flw_sl_inputValid = '1') then
---                n16_inputVectorL <= uH2flw_n16_inputVectorL;
+--                inp_n16_inputVectorL <= uH2flw_n16_inputVectorL;
 --            end if;
         else
             if uRx_sl_inputValid = '1' then
-                n16_inputVectorL <= uRx_n16_inputVectorL;
+                inp_n16_inputVectorL <= uRx_n16_inputVectorL;
             end if;
         end if;
     END IF;
@@ -350,8 +313,6 @@ pInputR : process (
         end if;
     END IF;
 end process;
-
-
 
 uM : monoshot 
 port map     (
