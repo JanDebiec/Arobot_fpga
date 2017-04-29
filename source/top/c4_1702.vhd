@@ -178,10 +178,6 @@ sl_clk50MHz <= CLOCK_50;
 sl_Reset <= not (KEY(0));
     sl_SpiClk <= isl_SpiClk;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 4bf663ce33225ee2626a7afbacb69a361e4ae59e
     osl_outL1A  <= uAxisL_sl_output1A;
     osl_outL1B  <= uAxisL_sl_output1B;
     osl_outL2A  <= uAxisL_sl_output2A;
