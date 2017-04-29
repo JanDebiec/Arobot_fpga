@@ -175,14 +175,6 @@ sl_clk50MHz <= CLOCK_50;
 sl_Reset <= not (KEY(0));
     sl_SpiClk <= isl_SpiClk;
 
---GPIO_2(1) <= sl_slice_tick;
---GPIO_2(2) <= sl_output1A;
---GPIO_2(3) <= sl_output1B;
---GPIO_2(4) <= sl_output2A;
---GPIO_2(5) <= sl_output2B;
---GPIO_2(6) <= sl_step;
---GPIO_2(7) <= sl_PwmPeriodPulse;
-
     osl_outL1A  <= uAxisL_sl_output1A;
     osl_outL1B  <= uAxisL_sl_output1B;
     osl_outL2A  <= uAxisL_sl_output2A;
@@ -192,7 +184,6 @@ sl_Reset <= not (KEY(0));
     osl_outR2A  <= uAxisR_sl_output2A;
     osl_outR2B  <= uAxisR_sl_output2B;
     osl_slice_tick <= uST_sl_sliceTick;
-
 --!
 
 pRamp : process (
