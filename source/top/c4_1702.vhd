@@ -40,7 +40,8 @@ Library work;
 entity c4_1702 is
     generic(
 			bModelSim : boolean := FALSE;
-			bISSP     : boolean := TRUE
+			bISSP     : boolean := FALSE
+--            bISSP     : boolean := TRUE
 --			bModelSim : boolean;
 --			bISSP     : boolean
     );
@@ -371,7 +372,8 @@ port map
 uUart: UART
 generic map (
     CLK_FREQ    => 50e6,
-    BAUD_RATE   => 115200,
+--    BAUD_RATE   => 115200,
+    BAUD_RATE   => 9600,
     PARITY_BIT  => "none"
 )
 port map (

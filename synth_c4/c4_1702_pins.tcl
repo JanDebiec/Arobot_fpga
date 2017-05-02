@@ -288,12 +288,20 @@ set_location_assignment PIN_C11 -to GPIO_0[28]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[28]
 set_location_assignment PIN_B11 -to GPIO_0[29]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[29]
-set_location_assignment PIN_A12 -to GPIO_0[30]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[30]
+
+set_location_assignment PIN_A12 -to osl_SerialTx
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to osl_SerialTx
+#set_location_assignment PIN_A12 -to GPIO_0[30]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[30]
+
 set_location_assignment PIN_D11 -to GPIO_0[31]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[31]
-set_location_assignment PIN_D12 -to GPIO_0[32]
-set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[32]
+
+set_location_assignment PIN_D12 -to isl_SerialRx
+set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to isl_SerialRx
+#set_location_assignment PIN_D12 -to GPIO_0[32]
+#set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[32]
+
 set_location_assignment PIN_B12 -to GPIO_0[33]
 set_instance_assignment -name IO_STANDARD "3.3-V LVTTL" -to GPIO_0[33]
 
