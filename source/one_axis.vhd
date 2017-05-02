@@ -36,9 +36,9 @@ package one_axis_pkg is
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 		iu8_microResProStep : in unsigned(7 downto 0);
-		isl_extStep			: in std_logic;
-		isl_extDir			: in std_logic;
-		isl_extStepEnable	: in std_logic;
+--		isl_extStep			: in std_logic;
+--		isl_extDir			: in std_logic;
+--		isl_extStepEnable	: in std_logic;
 		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
@@ -75,9 +75,9 @@ entity one_axis is
 		in16_inputVector 	: in signed (15 downto 0);--! input velocity 15 bits + sign
 		in16_rampValue  	: in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
 		iu8_microResProStep : in unsigned(7 downto 0);
-		isl_extStep			: in std_logic;
-		isl_extDir			: in std_logic;
-		isl_extStepEnable	: in std_logic;
+--		isl_extStep			: in std_logic;
+--		isl_extDir			: in std_logic;
+--		isl_extStepEnable	: in std_logic;
 		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
@@ -116,7 +116,7 @@ architecture RTL of one_axis is
 	signal uV2P_sl_direction : std_logic;
 	signal sl_sliceTick : std_logic;
 	signal uV2P_sl_step : std_logic;
-	signal sl_step : std_logic;
+--	signal sl_step : std_logic;
 begin
 --system signals
 --GPIO_0(31 downto 16) <= slv16_testValue;
@@ -126,7 +126,7 @@ sl_sliceTick <= isl_sliceTick;
 
 --configuration
 -- internal/external step/dir interface
-sl_step <= uV2P_sl_step when (isl_extStepEnable = '0') else isl_extStep;
+--sl_step <= uV2P_sl_step when (isl_extStepEnable = '0') else isl_extStep;
 
 --uV2P_sl_direction <= n16_inputVector(15) when (isl_extStepEnable = '0') else isl_extDir;
 
