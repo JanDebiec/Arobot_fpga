@@ -1,4 +1,6 @@
 transcript
 .settings/
 _info
+*.bak
+
 

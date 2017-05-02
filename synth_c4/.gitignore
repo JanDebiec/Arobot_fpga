@@ -12,5 +12,5 @@ incremental_db/
 *.summary
 simulation/
 simulation/modelsim/
-
+output_files/
 
