@@ -42,7 +42,7 @@ set ProjectFileList {
         ../source/spi/spi_receiver.vhd
         ../source/spi/spi_transmitter.vhd
         ../source/spi/spi_output.vhd
-		../source/top/c4_1702.vhd
+		../source/top/c4_1703.vhd
 	
 	}
 	sim_LIB {

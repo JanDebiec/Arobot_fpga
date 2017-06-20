@@ -1,7 +1,7 @@
 ----------------------------------------------------------------------
 --! @file  
 --! @brief top file for c4 arobot
---! interface SPI
+--! interface serial for BT
 --!
 --! @author 
 --! @date 
