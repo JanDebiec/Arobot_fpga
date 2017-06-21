@@ -19,7 +19,7 @@ use ieee.numeric_std.all;
 Library work;           
 	use work.arobot_constant_pkg.all;
 	use work.arobot_component_pkg.all;
-    use work.deflipflop_pkg.all;
+    use work.flipflop_d1_pkg.all;
     use work.monoshot_pkg.all;
     use work.spi_receiver_pkg.all;
     use work.spi_transmitter_pkg.all;
@@ -37,7 +37,7 @@ Library work;
     use work.version_pkg.all;
 
 --!
-entity c4_1702 is
+entity c4_1703 is
     generic(
 			bModelSim : boolean := FALSE;
 			bISSP     : boolean := FALSE
@@ -70,9 +70,9 @@ entity c4_1702 is
     isl_SerialRx    : in std_logic; 
     osl_SerialTx    : out std_logic 
 	);
-end entity c4_1702;
+end entity c4_1703;
 
-architecture RTL of c4_1702 is
+architecture RTL of c4_1703 is
 	signal sl_clk50MHz  		: STD_LOGIC := '0';     -- clock 50MHz
 	signal sl_Reset 			: STD_LOGIC := '0';
 	signal slv4_switch       : std_logic_vector(3 downto 0);
