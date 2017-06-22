@@ -14,7 +14,7 @@ set ProjectFileList {
 
 	design_LIB {
 		../source/globals/version.vhd
-		../source/basics/deflipflop.vhd
+		../source/basics/flipflop_d1.vhd
 		../source/basics/monoshot.vhd
 		../source/basics/delay2.vhd
 		../source/issp/velocity_issp.vhd

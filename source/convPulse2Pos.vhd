@@ -9,7 +9,7 @@
 --! @date 13.05.2015
 --! @version 0.3 
 --! 
--- note 
+--! note 
 --! @todo test
 --! @test 
 --! @bug  
@@ -34,6 +34,7 @@ package convPulse2Pos_pkg is
 		isl_rst 			: in std_logic;	--! master reset active high
 		isl_direction		: in std_logic;
 		isl_pulse			: in std_logic;
+        on32_OutPosition    : out signed (31 downto 0);
 		oslv6_OutputValue  	: out std_logic_vector (5 downto 0)--! 
     );        
     end component convPulse2Pos;
@@ -62,6 +63,7 @@ entity convPulse2Pos is
 		isl_rst 			: in std_logic;	--! master reset active high
 		isl_direction		: in std_logic;
 		isl_pulse			: in std_logic;
+        on32_OutPosition    : out signed (31 downto 0);
 		oslv6_OutputValue  	: out std_logic_vector (5 downto 0)--! 
 	);
 end entity convPulse2Pos;
@@ -80,6 +82,7 @@ architecture RTL of convPulse2Pos is
 	
 	
 begin
+    on32_OutPosition <= n32_OutPosition;
 n32_InPosition <= n32_OutPosition;
 oslv6_OutputValue <= slv8_OutputValue(5 downto 0);
 

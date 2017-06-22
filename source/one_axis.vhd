@@ -39,6 +39,7 @@ package one_axis_pkg is
 --		isl_extStep			: in std_logic;
 --		isl_extDir			: in std_logic;
 --		isl_extStepEnable	: in std_logic;
+        on32_OutPosition     : out signed (31 downto 0);
 		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
@@ -78,6 +79,7 @@ entity one_axis is
 --		isl_extStep			: in std_logic;
 --		isl_extDir			: in std_logic;
 --		isl_extStepEnable	: in std_logic;
+        on32_OutPosition     : out signed (31 downto 0);
 		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
@@ -116,10 +118,12 @@ architecture RTL of one_axis is
 	signal uV2P_sl_direction : std_logic;
 	signal sl_sliceTick : std_logic;
 	signal uV2P_sl_step : std_logic;
+	
+	signal  n32_OutPosition : signed (31 downto 0);
+    signal  n32_OutPositionR : signed (31 downto 0);
 --	signal sl_step : std_logic;
 begin
 --system signals
---GPIO_0(31 downto 16) <= slv16_testValue;
 sl_clk50MHz <= isl_clk50Mhz;
 sl_Reset <= isl_rst;
 sl_sliceTick <= isl_sliceTick;
@@ -135,10 +139,24 @@ n16_inputVector 	<= in16_inputVector;
 n16_rampValue  	<= in16_rampValue;
 
 -- outputs
+on32_OutPosition <= n32_OutPositionR;
 osl_output1A <= uAx_sl_output1A;
 osl_output1B <= uAx_sl_output1B;
 osl_output2A <= uAx_sl_output2A;
 osl_output2B <= uAx_sl_output2B;
+
+pOutRegister : process (
+    isl_clk50Mhz
+    ) is
+begin
+    if (isl_rst = '1') then
+        n32_OutPositionR <= x"00000000";
+    elsif (rising_edge(isl_clk50Mhz)) and (sl_sliceTick = '1') then
+        n32_OutPositionR <= n32_OutPosition;
+    END IF;
+    
+end process;    
+
 
 --!
 uPwmPG : pwm_pulse
@@ -172,6 +190,7 @@ port map
 	isl_rst 			=> sl_Reset,--: in std_logic;
 	isl_direction		=> uV2P_sl_direction,--: in std_logic;
 	isl_pulse			=> uV2P_sl_step,--: in std_logic;
+    on32_OutPosition    => n32_OutPosition,--: out signed (31 downto 0);
 	oslv6_OutputValue  	=> uP2P_slv6_PosModulo--: out std_logic_vector (5 downto 0)--! 
 );
 
