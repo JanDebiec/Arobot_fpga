@@ -1,7 +1,7 @@
 # At first we call the makeVHDL to compile all VHDL files
 # Later release will call a external make file tool
 
-source vhdl_files.tcl
+source vhdl_files_c4.tcl
 
 # Next we define to functions for easier modelsim simulation
 # At this time we need the name of the toplevel vhdl simulation entity

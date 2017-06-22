@@ -21,6 +21,7 @@ Library ieee;
   --! global constants and defines used in whole design
 PACKAGE arobot_constant_pkg IS
 
+
     constant str_ISSP_SLICE_TICK        : string := "0001";
     constant str_ISSP_SLICE_TICK_MUX    : string := "0002";
     constant str_ISSP_VELOCITY        	: string := "0003";
@@ -30,6 +31,11 @@ PACKAGE arobot_constant_pkg IS
     constant n32_100ms_tick_reload		: string := x"004C4B40";
     constant n16_velocity_55			: string := x"0055";
     constant slv6_position_08			: string := "001000";
+
+
+    constant eMagicRead                 : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"A3";
+    constant eMagicWrite                : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"AC";
+
 
 -- addr 7,6 block, 5 .. 0 detail
 -- 11 pll

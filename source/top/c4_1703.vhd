@@ -160,9 +160,10 @@ architecture RTL of c4_1703 is
     signal  uUart_data_vld    : std_logic; -- when DATA_VLD = 1, data on DATA_OUT are valid
     signal  uUart_frame_error : std_logic;  -- when FRAME_ERROR = 1, stop bit was invalid, current and next data may be invalid
 	-- signals for feedback
-	signal uAxisL_oslv6_PosModulo : std_logic_vector(5 downto 0);
-    signal uAxisR_oslv6_PosModulo : std_logic_vector(5 downto 0);
-
+--	signal uAxisL_oslv6_PosModulo : std_logic_vector(5 downto 0);
+--    signal uAxisR_oslv6_PosModulo : std_logic_vector(5 downto 0);
+    signal uAxisR_n32_OutPosition : signed (31 downto 0);
+    signal uAxisL_n32_OutPosition : signed (31 downto 0);
     signal  slv8_RxByte    : std_logic_vector(7 downto 0);
     signal  sl_RxByteValid    : std_logic;
 	
@@ -300,7 +301,7 @@ port map
     in16_inputVector    => n16_inputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepL,-- in unsigned(7 downto 0);
-    oslv6_PosModulo     => uAxisL_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+--    oslv6_PosModulo     => uAxisL_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
     osl_output1A        => uAxisL_sl_output1A ,--   : out std_logic;
     osl_output1B        => uAxisL_sl_output1B ,--   : out std_logic;
     osl_output2A        => uAxisL_sl_output2A ,--   : out std_logic;
@@ -320,7 +321,8 @@ port map
     in16_inputVector    => n16_inputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepR,-- in unsigned(7 downto 0);
-    oslv6_PosModulo     => uAxisR_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+--    oslv6_PosModulo     => uAxisR_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+    on32_OutPosition    => uAxisR_n32_OutPosition : out signed (31 downto 0);
     osl_output1A        => uAxisR_sl_output1A ,--   : out std_logic;
     osl_output1B        => uAxisR_sl_output1B ,--   : out std_logic;
     osl_output2A        => uAxisR_sl_output2A ,--   : out std_logic;

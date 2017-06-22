@@ -1,0 +1,7 @@
+Thu Jun 22 13:27:44 CEST 2017
+Trace back: floating point value is Not a Number
+    while executing
+".main_pane.transcript.interior.cs.body.s set 0.97785977859778594 1.0"
+    (vertical scrolling command executed by text)
+  <2:/home/jan/altera/15.0/modelsim_ase/linuxaloem/tk8.5/bgerror.tcl:92: ::tkerror {floating point value is Not a Number}
+  <1:eval:1: ::tk::dialog::error::bgerror {floating point value is Not a Number}

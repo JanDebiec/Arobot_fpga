@@ -40,7 +40,7 @@ package one_axis_pkg is
 --		isl_extDir			: in std_logic;
 --		isl_extStepEnable	: in std_logic;
         on32_OutPosition     : out signed (31 downto 0);
-		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
+--		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
 		osl_output2A		: out std_logic;--! pwm output
@@ -80,7 +80,7 @@ entity one_axis is
 --		isl_extDir			: in std_logic;
 --		isl_extStepEnable	: in std_logic;
         on32_OutPosition     : out signed (31 downto 0);
-		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
+--		oslv6_PosModulo 	: out std_logic_vector(5 downto 0);
 		osl_output1A		: out std_logic;--! pwm output
 		osl_output1B		: out std_logic;--! pwm output
 		osl_output2A		: out std_logic;--! pwm output
