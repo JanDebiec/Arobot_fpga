@@ -32,9 +32,13 @@ WORK__uart_parity__full = $(LIB_WORK)/_lib.qdb
 WORK__uart_parity = $(LIB_WORK)/_lib.qdb
 WORK__uart__full = $(LIB_WORK)/_lib.qdb
 WORK__uart = $(LIB_WORK)/_lib.qdb
+WORK__spi_transmitter_tb__behave = $(LIB_WORK)/_lib.qdb
+WORK__spi_transmitter_tb = $(LIB_WORK)/_lib.qdb
 WORK__spi_transmitter_pkg = $(LIB_WORK)/_lib.qdb
 WORK__spi_transmitter__rtl = $(LIB_WORK)/_lib.qdb
 WORK__spi_transmitter = $(LIB_WORK)/_lib.qdb
+WORK__spi_receiver_tb__behave = $(LIB_WORK)/_lib.qdb
+WORK__spi_receiver_tb = $(LIB_WORK)/_lib.qdb
 WORK__spi_receiver_pkg = $(LIB_WORK)/_lib.qdb
 WORK__spi_receiver__rtl = $(LIB_WORK)/_lib.qdb
 WORK__spi_receiver = $(LIB_WORK)/_lib.qdb
@@ -127,6 +131,10 @@ WORK__c4_1703 = $(LIB_WORK)/_lib.qdb
 WORK__byte_reader_stim_fp__body = $(LIB_WORK)/_lib.qdb
 WORK__byte_reader_stim_fp = $(LIB_WORK)/_lib.qdb
 WORK__arobot_typedef_pkg = $(LIB_WORK)/_lib.qdb
+WORK__arobot_stim_tcc_pkg__body = $(LIB_WORK)/_lib.qdb
+WORK__arobot_stim_tcc_pkg = $(LIB_WORK)/_lib.qdb
+WORK__arobot_stim_fp_pkg__body = $(LIB_WORK)/_lib.qdb
+WORK__arobot_stim_fp_pkg = $(LIB_WORK)/_lib.qdb
 WORK__arobot_constant_pkg = $(LIB_WORK)/_lib.qdb
 WORK__arobot_component_pkg = $(LIB_WORK)/_lib.qdb
 WORK__arobot_base_stim_fp__body = $(LIB_WORK)/_lib.qdb
@@ -148,6 +156,14 @@ $(LIB_WORK)/_lib.qdb : ../testbench/arobot_base_stim_fp_pkg.vhd \
 		$(IEEE__numeric_std) \
 		$(STD__textio) \
 		$(IEEE__std_logic_1164) ../source/globals/arobot_constant_pkg.vhd \
+		$(IEEE__numeric_std) \
+		$(STD__textio) \
+		$(IEEE__std_logic_1164) ../testbench/globals/arobot_stim_fp_pkg.vhd \
+		$(WORK__arobot_stim_tcc_pkg) \
+		$(IEEE__math_real) \
+		$(IEEE__numeric_std) \
+		$(STD__textio) \
+		$(IEEE__std_logic_1164) ../testbench/globals/arobot_stim_tcc_pkg.vhd \
 		$(IEEE__numeric_std) \
 		$(STD__textio) \
 		$(IEEE__std_logic_1164) ../source/globals/arobot_typedef_pkg.vhd \
@@ -370,9 +386,27 @@ $(LIB_WORK)/_lib.qdb : ../testbench/arobot_base_stim_fp_pkg.vhd \
 		$(IEEE__std_logic_arith) \
 		$(IEEE__numeric_std) \
 		$(STD__textio) \
+		$(IEEE__std_logic_1164) ../testbench/spi/spi_receiver_tb.vhd \
+		$(WORK__spi_receiver_pkg) \
+		$(IEEE__math_real) \
+		$(WORK__arobot_stim_fp_pkg) \
+		$(WORK__arobot_stim_tcc_pkg) \
+		$(WORK__arobot_typedef_pkg) \
+		$(WORK__arobot_constant_pkg) \
+		$(IEEE__numeric_std) \
+		$(STD__textio) \
 		$(IEEE__std_logic_1164) ../source/spi/spi_transmitter.vhd \
 		$(WORK__arobot_typedef_pkg) \
 		$(WORK__arobot_component_pkg) \
+		$(WORK__arobot_constant_pkg) \
+		$(IEEE__numeric_std) \
+		$(STD__textio) \
+		$(IEEE__std_logic_1164) ../testbench/spi/spi_transmitter_tb.vhd \
+		$(WORK__spi_transmitter_pkg) \
+		$(IEEE__math_real) \
+		$(WORK__arobot_stim_fp_pkg) \
+		$(WORK__arobot_stim_tcc_pkg) \
+		$(WORK__arobot_typedef_pkg) \
 		$(WORK__arobot_constant_pkg) \
 		$(IEEE__numeric_std) \
 		$(STD__textio) \
@@ -425,6 +459,8 @@ $(LIB_WORK)/_lib.qdb : ../testbench/arobot_base_stim_fp_pkg.vhd \
 	$(VCOM) -2008 ../testbench/arobot_base_stim_fp_pkg.vhd
 	$(VCOM) -2008 ../source/globals/arobot_component_pkg.vhd
 	$(VCOM) -2008 ../source/globals/arobot_constant_pkg.vhd
+	$(VCOM) -2008 ../testbench/globals/arobot_stim_fp_pkg.vhd
+	$(VCOM) -2008 ../testbench/globals/arobot_stim_tcc_pkg.vhd
 	$(VCOM) -2008 ../source/globals/arobot_typedef_pkg.vhd
 	$(VCOM) -2008 ../testbench/byte_reader_stim_fp_pkg.vhd
 	$(VCOM) -2008 ../source/top/c4_1703.vhd
@@ -460,7 +496,9 @@ $(LIB_WORK)/_lib.qdb : ../testbench/arobot_base_stim_fp_pkg.vhd \
 	$(VCOM) -2008 ../source/issp/slice_tick_issp.vhd
 	$(VCOM) -2008 ../source/spi/spi_output.vhd
 	$(VCOM) -2008 ../source/spi/spi_receiver.vhd
+	$(VCOM) -2008 ../testbench/spi/spi_receiver_tb.vhd
 	$(VCOM) -2008 ../source/spi/spi_transmitter.vhd
+	$(VCOM) -2008 ../testbench/spi/spi_transmitter_tb.vhd
 	$(VCOM) -2008 ../source/uart/uart_parity.vhd
 	$(VCOM) -2008 ../source/uart/uart.vhd
 	$(VCOM) -2008 ../source/uart/uart_rx.vhd

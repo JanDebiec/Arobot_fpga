@@ -7,6 +7,8 @@ set ProjectFileList {
 		../source/globals/arobot_component_pkg.vhd
 		../testbench/byte_reader_stim_fp_pkg.vhd
 		../testbench/arobot_base_stim_fp_pkg.vhd
+        ../testbench/globals/arobot_stim_tcc_pkg.vhd
+        ../testbench/globals/arobot_stim_fp_pkg.vhd
 	}
 	ip_LIB {
 	    ../source/issp/issp_inout.vhd
@@ -56,6 +58,8 @@ set ProjectFileList {
 		../testbench/pwm_single_tb.vhd
 		../testbench/pwm_double_tb.vhd
 		../testbench/convPos2Pwm_tb.vhd
+        ../testbench/spi/spi_receiver_tb.vhd
+        ../testbench/spi/spi_transmitter_tb.vhd
 		
 	}
 }

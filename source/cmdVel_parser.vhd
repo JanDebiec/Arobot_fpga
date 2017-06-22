@@ -31,8 +31,8 @@ port (
     isl_rst : in std_logic;
     isl_inByteValid : in std_logic;
     islv8_byteValue : in std_logic_vector(7 downto 0);
-    oslv_shortA : out signed(15 downto 0);
-    oslv_shortB : out signed(15 downto 0);
+    oslv_shortVelA : out signed(15 downto 0);
+    oslv_shortVelB : out signed(15 downto 0);
     osl_outputValid : out std_logic
 );        
 end component cmdVel_parser;
@@ -56,8 +56,8 @@ port (
     isl_rst : in std_logic;
     isl_inByteValid : in std_logic;
     islv8_byteValue : in std_logic_vector(7 downto 0);
-    oslv_shortA : out signed(15 downto 0);
-    oslv_shortB : out signed(15 downto 0);
+    oslv_shortVelA : out signed(15 downto 0);
+    oslv_shortVelB : out signed(15 downto 0);
     osl_outputValid : out std_logic
 );
 end entity cmdVel_parser;
@@ -67,16 +67,16 @@ architecture RTL of cmdVel_parser is
     signal sl_MagicFound : std_logic;
     signal sl_MagicFoundM : std_logic;
     signal sl_cmdVelFound : std_logic;
-    signal sls_shortA : signed(15 downto 0);
-    signal sls_shortB : signed(15 downto 0);
+    signal sls_shortVelA : signed(15 downto 0);
+    signal sls_shortVelB : signed(15 downto 0);
     signal slv16_shortA : std_logic_vector(15 downto 0);
     signal slv16_shortB : std_logic_vector(15 downto 0);
     
 begin
 
 osl_outputValid <= sl_cmdVelFound;
-oslv_shortA <= sls_shortA;
-oslv_shortB <= sls_shortB;
+oslv_shortVelA <= sls_shortVelA;
+oslv_shortVelB <= sls_shortVelB;
 slv16_shortA <= tShiftReg(3) & tShiftReg(2);
 slv16_shortB <= tShiftReg(1) & tShiftReg(0);
 
@@ -86,13 +86,13 @@ pVelOut : process(
 is
 begin
     if isl_rst = '1' then
-        sls_shortA <= x"0000";
-        sls_shortB <= x"0000";
+        sls_shortVelA <= x"0000";
+        sls_shortVelB <= x"0000";
     else
         if rising_edge(isl_clk50Mhz) then
             if(sl_cmdVelFound = '1') then
-                sls_shortA <= signed(slv16_shortA);
-                sls_shortB <= signed(slv16_shortB);
+                sls_shortVelA <= signed(slv16_shortA);
+                sls_shortVelB <= signed(slv16_shortB);
             end if;    
         end if;
     end if;        

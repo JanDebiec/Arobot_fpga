@@ -27,8 +27,8 @@ U_DUT : cmdVel_parser
 		isl_rst 			=> sl_Reset,--: in std_logic;
 		isl_inByteValid 	=> sl_byteValid,--: in std_logic;
 		islv8_byteValue 	=> slv8_Inputbyte,--: in std_logic_vector(7 downto 0);
-		oslv_shortA 		=> slv_shortA,--: out signed(15 downto 0);
-		oslv_shortB 		=> slv_shortB,--: out signed(15 downto 0);
+		oslv_shortVelA 		=> slv_shortA,--: out signed(15 downto 0);
+		oslv_shortVelB 		=> slv_shortB,--: out signed(15 downto 0);
 		osl_outputValid 	=> sl_outputValid--: out std_logic
     );        
 

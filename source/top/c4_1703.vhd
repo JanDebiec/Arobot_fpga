@@ -302,6 +302,7 @@ port map
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepL,-- in unsigned(7 downto 0);
 --    oslv6_PosModulo     => uAxisL_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
+    on32_OutPosition    => uAxisL_n32_OutPosition,-- : out signed (31 downto 0);
     osl_output1A        => uAxisL_sl_output1A ,--   : out std_logic;
     osl_output1B        => uAxisL_sl_output1B ,--   : out std_logic;
     osl_output2A        => uAxisL_sl_output2A ,--   : out std_logic;
@@ -322,7 +323,7 @@ port map
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepR,-- in unsigned(7 downto 0);
 --    oslv6_PosModulo     => uAxisR_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
-    on32_OutPosition    => uAxisR_n32_OutPosition : out signed (31 downto 0);
+    on32_OutPosition    => uAxisR_n32_OutPosition,-- : out signed (31 downto 0);
     osl_output1A        => uAxisR_sl_output1A ,--   : out std_logic;
     osl_output1B        => uAxisR_sl_output1B ,--   : out std_logic;
     osl_output2A        => uAxisR_sl_output2A ,--   : out std_logic;
@@ -366,8 +367,8 @@ port map
     isl_rst             => sl_Reset,--: in std_logic;
     isl_inByteValid     => sl_RxByteValid,--: in std_logic;
     islv8_byteValue     => slv8_RxByte,--: in std_logic_vector(7 downto 0);
-    oslv_shortA         => uRx_n16_inputVectorL,--: out signed(15 downto 0);
-    oslv_shortB         => uRx_n16_inputVectorR,--: out signed(15 downto 0);
+    oslv_shortVelA      => uRx_n16_inputVectorL,--: out signed(15 downto 0);
+    oslv_shortVelB      => uRx_n16_inputVectorR,--: out signed(15 downto 0);
     osl_outputValid     => uRx_sl_inputValid--: out std_logic
 );        
 
