@@ -1,25 +1,25 @@
-#on windows
-set localpath "c:\\project\\msystem\\fpga\\design\\de0_custom_nios"
-#on linux
-#set localpath "/home/jan/project/arobot/fpga/c4_base"
+
+source local_path.tcl
 
 transcript on
 if {[file exists rtl_work]} {
-	vdel -lib rtl_work -all
+    vdel -lib rtl_work -all
 }
 vlib rtl_work
 vmap work rtl_work
 
 
 # from source
-vcom -2008  -work work $localpath\\source\\msystem_tcc_pkg.vhd
-vcom -2008  -work work $localpath\\source\\monoshot.vhd
-vcom -2008  -work work $localpath\\source\\spi_transmitter.vhd
+vcom -2008 -work work $localpath/source/globals/arobot_typedef_pkg.vhd
+vcom -2008 -work work $localpath/source/globals/arobot_constant_pkg.vhd
+vcom -2008 -work work $localpath/source/globals/arobot_component_pkg.vhd
+vcom -2008  -work work $localpath/source/basics/monoshot.vhd
+vcom -2008  -work work $localpath/source/spi/spi_transmitter.vhd
 
 # from testbench
-vcom -2008  -work work $localpath\\testbench\\msystem_stim_tcc_pkg.vhd
-vcom -2008  -work work $localpath\\testbench\\msystem_stim_fp_pkg.vhd
-vcom -2008  -work work $localpath\\testbench\\spi_transmitter_TB.vhd
+vcom -2008  -work work $localpath/testbench/globals/arobot_stim_tcc_pkg.vhd
+vcom -2008  -work work $localpath/testbench/globals/arobot_stim_fp_pkg.vhd
+vcom -2008  -work work $localpath/testbench/spi/spi_transmitter_tb.vhd
 
 vsim -t 1ps -L altera -L lpm -L sgate -L altera_mf -L altera_lnsim -L cycloneiv -L rtl_work -L work -voptargs="+acc"  spi_transmitter_TB
 

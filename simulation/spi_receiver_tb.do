@@ -13,7 +13,6 @@ vmap work rtl_work
 vcom -2008 -work work $localpath/source/globals/arobot_typedef_pkg.vhd
 vcom -2008 -work work $localpath/source/globals/arobot_constant_pkg.vhd
 vcom -2008 -work work $localpath/source/globals/arobot_component_pkg.vhd
-vcom -2008 -work work $localpath/source/basics/monoshot.vhd
 vcom -2008  -work work $localpath/source/basics/monoshot.vhd
 vcom -2008  -work work $localpath/source/spi/spi_receiver.vhd
 

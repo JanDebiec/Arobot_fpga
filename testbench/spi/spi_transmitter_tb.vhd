@@ -5,9 +5,10 @@ Library ieee;
     use ieee.numeric_std.all;
 
 Library work;           
---	use work.msystem_tcc_pkg.all;
-    use work.msystem_stim_tcc_pkg.all;
-    use work.msystem_stim_fp_pkg.all;
+    use work.arobot_constant_pkg.all;
+    use work.arobot_typedef_pkg.all;
+    use work.arobot_stim_tcc_pkg.all;
+    use work.arobot_stim_fp_pkg.all;
     use work.spi_transmitter_pkg.all;
                             
 entity spi_transmitter_tb is
@@ -121,7 +122,7 @@ port map
     isl_TxActive     => sl_TxActive,--: in std_logic;
     isl_FirstByteValid => sl_FirstByteValid,
     isl_validData    => sl_validData,--: in std_logic;
-    islvn_Data       => slv8_Data,--: in std_logic_vector(7 downto 0);
+    islv8_Data       => slv8_Data,--: in std_logic_vector(7 downto 0);
     osl_dataReq      => sl_dataReq,--
     osl_TxReady      => sl_TxReady,--
     osl_miso         => sl_miso--: out std_logic := 'Z'
