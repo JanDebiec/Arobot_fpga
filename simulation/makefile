@@ -201,6 +201,7 @@ $(LIB_WORK)/_lib.qdb : ../testbench/arobot_base_stim_fp_pkg.vhd \
 		$(IEEE__std_logic_1164) ../source/cmdVel_parser.vhd \
 		$(WORK__monoshot_pkg) \
 		$(WORK__arobot_typedef_pkg) \
+		$(WORK__arobot_constant_pkg) \
 		$(IEEE__numeric_std) \
 		$(IEEE__std_logic_arith) \
 		$(IEEE__std_logic_unsigned) \

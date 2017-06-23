@@ -22,10 +22,6 @@ Library ieee;
 --
 package cmdVel_parser_pkg is
 component cmdVel_parser 
-generic (
-    eslv8_MagicWord : std_logic_vector(7 downto 0) := x"a5";
-    eslv8_CmdVelWord : std_logic_vector(7 downto 0) := x"00"
-);
 port (
     isl_clk50Mhz : in std_logic;
     isl_rst : in std_logic;
@@ -43,14 +39,11 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 library work;
+    use work.arobot_constant_pkg.all;
     use work.arobot_typedef_pkg.all;
     use work.monoshot_pkg.all;
 
 entity cmdVel_parser is
-generic (
-    eslv8_MagicWord : std_logic_vector(7 downto 0) := x"a5";
-    eslv8_CmdVelWord : std_logic_vector(7 downto 0) := x"00"
-);
 port (
     isl_clk50Mhz : in std_logic;
     isl_rst : in std_logic;

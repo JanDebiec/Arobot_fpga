@@ -33,10 +33,22 @@ PACKAGE arobot_constant_pkg IS
     constant slv6_position_08			: string := "001000";
 
 
+----------------------------------------------------------------------
+-- defines for SPI, serial
+----------------------------------------------------------------------
     constant eMagicRead                 : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"A3";
     constant eMagicWrite                : STD_LOGIC_VECTOR(7 DOWNTO 0) := x"AC";
+----------------------------------------------------------------------
+-- defines for cmd parser
+----------------------------------------------------------------------
+
+    constant eslv8_MagicWord : std_logic_vector(7 downto 0) := x"a5";
+    constant eslv8_CmdVelWord : std_logic_vector(7 downto 0) := x"00";
 
 
+----------------------------------------------------------------------
+-- addresses for C5 implementation H2F
+----------------------------------------------------------------------
 -- addr 7,6 block, 5 .. 0 detail
 -- 11 pll
 -- 10 reserve
