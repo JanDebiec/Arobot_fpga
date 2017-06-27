@@ -9,6 +9,7 @@ Library work;
     use work.arobot_typedef_pkg.all;
     use work.arobot_stim_tcc_pkg.all;
     use work.arobot_stim_fp_pkg.all;
+    use work.flipflop_d1_pkg.all;
     use work.spi_transmitter_pkg.all;
                             
 entity spi_transmitter_tb is
@@ -18,7 +19,7 @@ architecture behave of spi_transmitter_tb is
     signal sl_OutputClk : STD_LOGIC := '0';     -- clock 30 - 128 MHz
     signal sl_SpiClk : STD_LOGIC := '0';     -- clock 30 - 128 MHz
     signal sl_reset           : std_logic := '0';
-    signal slv8_inputByte     : std_logic_vector(7 downto 0);
+--    signal slv8_inputByte     : std_logic_vector(7 downto 0);
     signal sl_dataReq      : std_logic := '0';
     signal sl_TxReady         : std_logic := '0';
     --signal sl_ReadMode        : std_logic := '0'; --! 0 raw spectrum, 1: 3 peaks
@@ -38,7 +39,18 @@ architecture behave of spi_transmitter_tb is
  begin	
     
     sl_SpiClk <= rec_SpiMiso.sl_SpiClk;
-    sl_validData <= sl_dataReq;
+--    sl_validData <= sl_dataReq;
+    
+uFD : flipflop_d1
+port map
+(
+    isl_clock   =>  sl_OutputClk,--: in STD_LOGIC;
+    isl_d       =>  sl_dataReq,--: in STD_LOGIC;
+    isl_ena     =>  '1',--: in STD_LOGIC;
+    isl_reset   =>  '0',--: in STD_LOGIC;
+    osl_out     =>   sl_validData--: out STD_LOGIC
+    );
+    
  --   sl_mosi <= rec_SpiMosi.sl_SpiMosi;
  --   rec_SpiDataByte.slv_Byte2Tx <= slv8_inputByte;
       
@@ -80,7 +92,7 @@ P_STIMUL: process
      wait until rising_edge(sl_OutputClk);
 
 
-    slv8_inputByte <= x"36";
+--    slv8_inputByte <= x"36";
 
 --    SpiMosi_TxByte(
 --        clk => sl_OutputClk,
