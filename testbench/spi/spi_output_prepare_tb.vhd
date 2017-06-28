@@ -22,10 +22,10 @@ architecture behave of spi_output_prepare_tb is
     
 --    signal sl_SpiClk : STD_LOGIC := '0';     -- clock 30 - 128 MHz
     signal sl_reset           : std_logic := '0';
-    signal slv8_MagicWord  : std_logic_vector(7 downto 0); 
-    signal slv8_Header     : std_logic_vector(7 downto 0);  
-    signal slv32_DataL     : std_logic_vector(31 downto 0); 
-    signal slv32_DataR     : std_logic_vector(31 downto 0); 
+    signal slv8_MagicWord  : std_logic_vector(7 downto 0) := x"a5"; 
+    signal slv8_Header     : std_logic_vector(7 downto 0) := x"22";  
+    signal slv32_DataL     : std_logic_vector(31 downto 0) := x"12345678"; 
+    signal slv32_DataR     : std_logic_vector(31 downto 0) := x"9ABCDEF0"; 
     signal sl_transferData : std_logic;                     
     signal slv8_outData    : std_logic_vector(7 downto 0);  
     signal sl_firstByteValid : std_logic;                
@@ -45,54 +45,23 @@ P_STIMUL: process
  	--do nothing
     wait for 300 ns;
 
---    wait until rising_edge(sl_OutputClk);
---    slv8_Data <= slv8_status;
---     wait until rising_edge(sl_OutputClk);
---    sl_TxActive <= '0';
---     wait until rising_edge(sl_OutputClk);
--- --    sl_validData <= '1';
---     wait until rising_edge(sl_OutputClk);
--- --    sl_validData <= '0';
---    
---    SpiMiso_TxByte(
---        clk => sl_OutputClk,
---        rec_SpiMiso => rec_SpiMiso
---    );
---    
---     wait until rising_edge(sl_OutputClk);
---    SpiMiso_TxByte(
---        clk => sl_OutputClk,
---        rec_SpiMiso => rec_SpiMiso
---    );
---     wait until rising_edge(sl_OutputClk);
---    SpiMiso_TxByte(
---        clk => sl_OutputClk,
---        rec_SpiMiso => rec_SpiMiso
---    );
---    
---     wait until rising_edge(sl_OutputClk);
---    SpiMiso_TxByte(
---        clk => sl_OutputClk,
---        rec_SpiMiso => rec_SpiMiso
---    );
---    
---     wait until rising_edge(sl_OutputClk);
---
---
---    slv8_inputByte <= x"36";
---
-----    SpiMosi_TxByte(
-----        clk => sl_OutputClk,
-----        rec_SpiDataByte => rec_SpiDataByte,
-----        rec_SpiMosi => rec_SpiMosi
-----    );
+    wait until rising_edge(sl_SystemClk);
+    sl_transferData <= '1';
 
+    wait for 300 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_transferData <= '0';
+--    
+--    SpiMiso_TxByte(
+--        clk => sl_OutputClk,
+--        rec_SpiMiso => rec_SpiMiso
+--    );
+--    
 
 
 	wait; 	
 end process;
 
---    sl_OutputClk    <= not sl_OutputClk after 32 ns;
     sl_SystemClk    <= not sl_SystemClk after 12 ns;
     
     U_RESET: process
