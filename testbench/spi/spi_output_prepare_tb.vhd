@@ -26,11 +26,13 @@ architecture behave of spi_output_prepare_tb is
     signal slv8_Header     : std_logic_vector(7 downto 0) := x"22";  
     signal slv32_DataL     : std_logic_vector(31 downto 0) := x"12345678"; 
     signal slv32_DataR     : std_logic_vector(31 downto 0) := x"9ABCDEF0"; 
-    signal sl_transferData : std_logic;                     
+    signal sl_transferData : std_logic := '0';                     
     signal slv8_outData    : std_logic_vector(7 downto 0);  
-    signal sl_firstByteValid : std_logic;                
-    signal sl_DataValid    : std_logic;                     
-    signal sl_txActive     : std_logic;                     
+    signal sl_firstByteValid : std_logic := '0';                
+    signal sl_DataValid    : std_logic := '0';                     
+    signal sl_txActive     : std_logic := '0';      
+    signal sl_trDataReq    : std_logic := '0';   
+    signal sl_trReady    : std_logic := '0';   
 --    signal slv8_status : STD_LOGIC_VECTOR (7 DOWNTO 0) := x"AA";
 --    signal slv8_command : STD_LOGIC_VECTOR (7 DOWNTO 0) := x"37";
 --    signal slv11_OutWrAddr : STD_LOGIC_VECTOR (10 DOWNTO 0);
@@ -47,11 +49,69 @@ P_STIMUL: process
 
     wait until rising_edge(sl_SystemClk);
     sl_transferData <= '1';
-
-    wait for 300 ns;
     wait until rising_edge(sl_SystemClk);
     sl_transferData <= '0';
---    
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+    
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trDataReq <= '0';               
+
+    wait for 100 ns;
+    wait until rising_edge(sl_SystemClk);
+    sl_trReady <= '1';               
+    wait until rising_edge(sl_SystemClk);
+    sl_trReady <= '0';               
+
 --    SpiMiso_TxByte(
 --        clk => sl_OutputClk,
 --        rec_SpiMiso => rec_SpiMiso
@@ -90,6 +150,8 @@ port map
     islv32_DataL     => slv32_DataL     ,--: in std_logic_vector(31 downto 0);
     islv32_DataR     => slv32_DataR     ,--: in std_logic_vector(31 downto 0);
     isl_transferData => sl_transferData ,--: in std_logic;
+    isl_trDataReq    => sl_trDataReq,
+    isl_trReady      => sl_trReady,
     oslv8_outData    => slv8_outData    ,--: out std_logic_vector(7 downto 0);
     osl_firstByteValid  => sl_firstByteValid,--: out std_logic;
     osl_DataValid    => sl_DataValid,--: out std_logic;

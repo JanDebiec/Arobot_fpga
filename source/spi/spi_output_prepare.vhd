@@ -31,6 +31,8 @@ package spi_output_prepare_pkg is
     islv32_DataL     : in std_logic_vector(31 downto 0);
     islv32_DataR     : in std_logic_vector(31 downto 0);
     isl_transferData : in std_logic;
+    isl_trDataReq    : in std_logic;
+    isl_trReady      : in std_logic;
     oslv8_outData    : out std_logic_vector(7 downto 0);
     osl_firstByteValid  : out std_logic;
     osl_DataValid    : out std_logic;
@@ -42,9 +44,11 @@ package spi_output_prepare_pkg is
 end package spi_output_prepare_pkg;
 
 library ieee;
-use ieee.std_logic_1164.all;
-use ieee.numeric_std.all;
-
+    use ieee.std_logic_1164.all;
+    use ieee.numeric_std.all;
+library work;
+    use work.monoshot_pkg.all;
+ 
 entity spi_output_prepare is
     port (
 -- system side
@@ -54,6 +58,8 @@ entity spi_output_prepare is
     islv32_DataL     : in std_logic_vector(31 downto 0);
     islv32_DataR     : in std_logic_vector(31 downto 0);
     isl_transferData : in std_logic;
+    isl_trDataReq    : in std_logic;
+    isl_trReady      : in std_logic;
     oslv8_outData    : out std_logic_vector(7 downto 0);
     osl_firstByteValid  : out std_logic;
     osl_DataValid    : out std_logic;
@@ -83,6 +89,8 @@ architecture RTL of spi_output_prepare is
     signal slv80_outputRegister : std_logic_vector(79 downto 0);
 
 begin
+    
+    osl_txActive <= '1' when (smLoad_cs /= st_Idle) else '0';
     slv80_outputRegister <= islv8_MagicWord & islv8_Header & islv32_DataL & islv32_DataR;
     oslv8_outData <= slv80_outputRegister(79 downto 72 ) when (smLoad_cs = st_loadFirst) else
                     slv80_outputRegister(71 downto 64 ) when (smLoad_cs = st_loadSecond) else
@@ -95,8 +103,21 @@ begin
                     slv80_outputRegister(15 downto 8 ) when (smLoad_cs = st_loadNinth) else
                     slv80_outputRegister(7 downto 0 ) when (smLoad_cs = st_loadTenth) else
                     x"AA";
-pLoad_comb : process (
+
+
+uFBVMono : monoshot 
+    port map (
+        isl_SystemClock,
+        isl_reset,
+        isl_transferData,
+        osl_firstByteValid
+    );        
+ 
+
+pLoad_com : process (
     isl_transferData,
+    isl_trDataReq,
+    isl_trReady,
     smLoad_cs
 )
 begin
@@ -105,13 +126,47 @@ begin
         if isl_transferData = '1' then
             smLoad_ns <= st_loadFirst;
         end if;    
-        when st_loadFirst =>
-        when st_loadSecond =>
-        when st_loadThird =>
-        when st_loadFourth =>
-        when st_loadFifth =>
-        when st_loadSixth =>
-        when st_end =>
+    when st_loadFirst =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadSecond;
+        end if;    
+    when st_loadSecond =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadThird;
+        end if;    
+    when st_loadThird =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadFourth;
+        end if;    
+    when st_loadFourth =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadFifth;
+        end if;    
+    when st_loadFifth =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadSixth;
+        end if;    
+    when st_loadSixth =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadSeventh;
+        end if;    
+    when st_loadSeventh =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadEight;
+        end if;    
+    when st_loadEight =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadNinth;
+        end if;    
+    when st_loadNinth =>
+        if(isl_trDataReq = '1') then
+            smLoad_ns <= st_loadTenth;
+        end if;    
+    when st_loadTenth =>
+        if(isl_trReady = '1') then
+            smLoad_ns <= st_Idle;
+        end if;    
+--    when st_end =>
         when others =>
             smLoad_ns <= st_Idle;
     end case;
@@ -125,11 +180,7 @@ begin
     if (isl_reset = '1') then
         smLoad_cs <= st_Idle;
     elsif (rising_edge(isl_SystemClock)) then
-        if(isl_transferData = '0') then
-            smLoad_cs <= st_Idle;
-        else    
-            smLoad_cs <= smLoad_ns;
-        end if;    
+        smLoad_cs <= smLoad_ns;
     END IF;
 end process;
 
