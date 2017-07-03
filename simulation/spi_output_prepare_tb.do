@@ -35,5 +35,5 @@ radix -hexadecimal
 set StdArithNoWarnings 1
 
 
-run 2 us
+run 5 us
 wave zoom full

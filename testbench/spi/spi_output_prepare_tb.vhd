@@ -46,71 +46,44 @@ P_STIMUL: process
  begin
  	--do nothing
     wait for 300 ns;
-
     wait until rising_edge(sl_SystemClk);
     sl_transferData <= '1';
     wait until rising_edge(sl_SystemClk);
     sl_transferData <= '0';
 
-    wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
+--    wait for 100 ns;
+--    wait until rising_edge(sl_SystemClk);
+--    sl_trDataReq <= '1';               
+--    wait until rising_edge(sl_SystemClk);
+--    sl_trDataReq <= '0';               
     
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trDataReq <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
     wait for 100 ns;
-    wait until rising_edge(sl_SystemClk);
-    sl_trReady <= '1';               
-    wait until rising_edge(sl_SystemClk);
-    sl_trReady <= '0';               
+    handleOneSpiTxByteSignals(sl_SystemClk, sl_trDataReq, sl_trReady);
 
 --    SpiMiso_TxByte(
 --        clk => sl_OutputClk,

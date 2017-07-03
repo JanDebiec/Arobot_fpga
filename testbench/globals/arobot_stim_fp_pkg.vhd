@@ -7,7 +7,7 @@
 --! @date 
 --! @version  
 --! 
--- note 
+--! note 
 --! @todo 
 --! @test 
 --! @bug  
@@ -111,6 +111,12 @@ function isEqualSl(
 		val2 : std_logic
 	) return boolean;
  
+procedure handleOneSpiTxByteSignals(
+    signal clk : in std_logic;
+    signal txReq : out std_logic;
+    signal txReady : out std_logic
+);
+
 end package arobot_stim_fp_pkg;
 
 library ieee;
@@ -483,5 +489,26 @@ begin
 				false;
 	return retFlag;			
 end;
+
+procedure handleOneSpiTxByteSignals(
+    signal clk : in std_logic;
+    signal txReq : out std_logic;
+    signal txReady : out std_logic
+) is
+begin
+--    wait 100 ns;
+    wait until rising_edge(clk);
+    wait until rising_edge(clk);
+    wait until rising_edge(clk);
+    txReq <= '1';
+    wait until rising_edge(clk);
+    txReq <= '0';
+    wait until rising_edge(clk);
+    wait until rising_edge(clk);
+    wait until rising_edge(clk);
+    txReady <= '1';
+    wait until rising_edge(clk);
+    txReady <= '0';
+end procedure;    
 
 end package body arobot_stim_fp_pkg;
