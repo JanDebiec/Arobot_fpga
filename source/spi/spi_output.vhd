@@ -31,12 +31,10 @@ package spi_output_pkg is
 -- system side
     isl_SystemClock  : in STD_LOGIC ;
     isl_reset        : in std_logic;
-    islv8_status     : STD_LOGIC_VECTOR (7 DOWNTO 0);
-    islv8_command    : STD_LOGIC_VECTOR (7 DOWNTO 0)
---    islv11_OutWrAddr : in STD_LOGIC_VECTOR (10 DOWNTO 0);
---    isl_SysClkEna    : in STD_LOGIC;
---    isl_OutWrEna     : in STD_LOGIC;
---    islv8_WrData     : in STD_LOGIC_VECTOR (7 DOWNTO 0)
+    islv8_MagicWord  : in std_logic_vector(7 downto 0);
+    islv8_Header     : in std_logic_vector(7 downto 0);
+    islv32_DataL     : in std_logic_vector(31 downto 0);
+    islv32_DataR     : in std_logic_vector(31 downto 0)
     );        
     end component spi_output;
             
@@ -51,7 +49,9 @@ Library work;
     use work.arobot_typedef_pkg.all;
     use work.flipflop_d1_pkg.all;
     use work.monoshot_pkg.all;
+    use work.mono_on_border_pkg.all;
     use work.spi_transmitter_pkg.all;
+    use work.spi_output_prepare_pkg.all;
 
 entity spi_output is
     generic(
@@ -68,7 +68,7 @@ entity spi_output is
     islv8_MagicWord  : in std_logic_vector(7 downto 0);
     islv8_Header     : in std_logic_vector(7 downto 0);
     islv32_DataL     : in std_logic_vector(31 downto 0);
-    islv32_DataR     : in std_logic_vector(31 downto 0);
+    islv32_DataR     : in std_logic_vector(31 downto 0)
  --   islv11_OutWrAddr : in STD_LOGIC_VECTOR (10 DOWNTO 0);
 --    isl_SysClkEna    : in STD_LOGIC;
 --    isl_OutWrEna     : in STD_LOGIC;
@@ -93,10 +93,10 @@ architecture RTL of spi_output is
     signal uTxPrep_slv8_Data : std_logic_vector(7 downto 0);
     signal uTx_sl_dataReqSpi : std_logic;
     signal uTxB_sl_dataReqSpi : std_logic;
-    signal sl_dataReqSpiDel : std_logic;
-    signal sl_dataReqSpi2Del : std_logic;
+--    signal sl_dataReqSpiDel : std_logic;
+--    signal sl_dataReqSpi2Del : std_logic;
     
-    signal sl_dataReqSys : std_logic;
+--    signal sl_dataReqSys : std_logic;
     signal uTx_sl_TxReady : std_logic;
     signal uTxB_sl_TxReady : std_logic;
     signal uTx_sl_miso : std_logic;
@@ -105,34 +105,23 @@ architecture RTL of spi_output is
     signal uTxPrep_sl_firstByteValid : std_logic;
     signal uTxPrep_sl_DataValid : std_logic;
     signal uTxPrep_sl_txActive : std_logic;
+    signal sl_txActive : std_logic;
     signal uTxPrepB_sl_firstByteValid : std_logic;
     signal uTxPrepB_sl_DataValid : std_logic;
     signal uTxPrepB_sl_txActive : std_logic;
 ---- signals for DpRam
 ---- read side    
---    signal slv8_RdData : STD_LOGIC_VECTOR (7 DOWNTO 0);
---    signal slv11_rdAddr : STD_LOGIC_VECTOR (10 DOWNTO 0);
---    signal sl_SpiInternalClk : STD_LOGIC;
---    signal sl_SysClkEna : STD_LOGIC;
---    signal sl_RdEna : STD_LOGIC;
----- write side
     signal sl_SystemClock : STD_LOGIC ;
---    signal slv11_wrAddr : STD_LOGIC_VECTOR (10 DOWNTO 0);
---    signal sl_wrClkEna : STD_LOGIC;
---    signal sl_wrEna : STD_LOGIC  ;
---    signal sl_BufReady : STD_LOGIC  ;
---    
---    signal slv8_WrData : STD_LOGIC_VECTOR (7 DOWNTO 0);
---    signal u16_RdAddrCnt : unsigned(15 downto 0);
---    signal u16_RdAddrCntNext : unsigned(15 downto 0);
 begin
+    
+    
     sl_SystemClock <= isl_SystemClock;
     sl_Reset <= isl_Reset;
     --sl_TxActive <= isl_TxActive;
     
 --    uTxPrep_slv8_Data <= islv8_status;-- when (u16_RdAddrCnt(0) = '0') else
                 --islv8_command;
-    sl_validData <= uTx_sl_dataReqSpi;--uM_sl_TxActive_m;-- or sl_dataReqSpi2Del;
+--    sl_validData <= uTx_sl_dataReqSpi;--uM_sl_TxActive_m;-- or sl_dataReqSpi2Del;
     
 -- input signals for transmitter    
     osl_miso <= uTx_sl_miso;
@@ -143,8 +132,8 @@ begin
 --    sl_BufReady <= islv8_status(0);
     
 -- delay for valid data, 2 ticks    
-U_DataReqDel : flipflop_d1 port map(sl_SpiClk, uTx_sl_dataReqSpi, '1', '0', sl_dataReqSpiDel );
-U_DataReq2Del : flipflop_d1 port map(sl_SpiClk, sl_dataReqSpiDel, '1', '0', sl_dataReqSpi2Del );
+--U_DataReqDel : flipflop_d1 port map(sl_SpiClk, uTx_sl_dataReqSpi, '1', '0', sl_dataReqSpiDel );
+--U_DataReq2Del : flipflop_d1 port map(sl_SpiClk, sl_dataReqSpiDel, '1', '0', sl_dataReqSpi2Del );
 
 
 --P_RdAddrCntNext : process( uTx_sl_dataReqSpi,  uM_sl_TxActive_m)
@@ -191,7 +180,7 @@ port map
 --! signals on OutputCLock domain
     isl_SpiClk       => sl_SpiClk,
     isl_reset        => sl_Reset,--: in std_logic;
-    isl_TxActive     => uTxPrepB_sl_txActive,--: in std_logic;
+    isl_TxActive     => uTxPrep_sl_txActive,--: in std_logic;
     isl_FirstByteValid => uTxPrepB_sl_firstByteValid,
     isl_validData    => uTxPrepB_sl_DataValid,--: in std_logic;
     islv8_Data       => uTxPrep_slv8_Data,--: in std_logic_vector(7 downto 0);

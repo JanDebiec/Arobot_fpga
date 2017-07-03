@@ -112,7 +112,7 @@ function isEqualSl(
 	) return boolean;
  
 procedure handleOneSpiTxByteSignals(
-    signal clk : in std_logic;
+    signal spi_clk : in std_logic;
     signal txReq : out std_logic;
     signal txReady : out std_logic
 );
@@ -491,23 +491,23 @@ begin
 end;
 
 procedure handleOneSpiTxByteSignals(
-    signal clk : in std_logic;
+    signal spi_clk : in std_logic;
     signal txReq : out std_logic;
     signal txReady : out std_logic
 ) is
 begin
 --    wait 100 ns;
-    wait until rising_edge(clk);
-    wait until rising_edge(clk);
-    wait until rising_edge(clk);
+    wait until rising_edge(spi_clk);
+    wait until rising_edge(spi_clk);
+    wait until rising_edge(spi_clk);
     txReq <= '1';
-    wait until rising_edge(clk);
+    wait until rising_edge(spi_clk);
     txReq <= '0';
-    wait until rising_edge(clk);
-    wait until rising_edge(clk);
-    wait until rising_edge(clk);
+    wait until rising_edge(spi_clk);
+    wait until rising_edge(spi_clk);
+    wait until rising_edge(spi_clk);
     txReady <= '1';
-    wait until rising_edge(clk);
+    wait until rising_edge(spi_clk);
     txReady <= '0';
 end procedure;    
 
