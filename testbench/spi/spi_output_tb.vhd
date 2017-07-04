@@ -51,8 +51,14 @@ architecture behave of spi_output_tb is
 P_STIMUL: process
  begin
  	--do nothing
-    wait for 300 ns;
+    wait for 400 ns;
 
+    wait until rising_edge(sl_OutputClk);
+    sl_dataValid <= '1';
+     wait until rising_edge(sl_OutputClk);
+    sl_dataValid <= '0';
+
+    wait for 100 ns;
     wait until rising_edge(sl_OutputClk);
     sl_TxActive <= '1';
      wait until rising_edge(sl_OutputClk);

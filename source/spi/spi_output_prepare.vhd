@@ -81,6 +81,7 @@ end entity spi_output_prepare;
 architecture RTL of spi_output_prepare is
     type sm_OutputPrepareSpi_Type is (
         st_Idle,
+        st_loadFirst,
         st_loadSecond,
         st_loadThird,
         st_loadFourth,
@@ -213,10 +214,10 @@ begin
     case smLoadSpi_cs is
     when st_Idle =>
 --        if isl_transferData = '1' then
---        if(sl_trDataReqR = '1') then
---            smLoadSpi_ns <= st_loadFirst;
---        end if;    
---    when st_loadFirst =>
+        if(sl_trDataReqR = '1') then
+            smLoadSpi_ns <= st_loadFirst;
+        end if;    
+    when st_loadFirst =>
         if(sl_trDataReqR = '1') then
             smLoadSpi_ns <= st_loadSecond;
         end if;    
