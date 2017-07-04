@@ -41,7 +41,8 @@ architecture behave of spi_output_tb is
     signal slv8_MagicWord  : std_logic_vector(7 downto 0) := x"a5"; 
     signal slv8_Header     : std_logic_vector(7 downto 0) := x"22";  
     signal slv32_DataL     : std_logic_vector(31 downto 0) := x"12345678"; 
-    signal slv32_DataR     : std_logic_vector(31 downto 0) := x"9ABCDEF0"; 
+    signal slv32_DataR     : std_logic_vector(31 downto 0) := x"9ABCDEF0";
+    signal sl_dataValid     : std_logic := '0'; 
 
  begin	
     
@@ -124,6 +125,7 @@ port map
 -- system side
     isl_SystemClock  => sl_SystemClk,--: in STD_LOGIC ;
     isl_reset        => sl_reset,--: in std_logic;
+    isl_dataValid    => sl_dataValid ,--: in std_logic;
     islv8_MagicWord  => slv8_MagicWord  ,--: in std_logic_vector(7 downto 0);
     islv8_Header     => slv8_Header     ,--: in std_logic_vector(7 downto 0);
     islv32_DataL     => slv32_DataL     ,--: in std_logic_vector(31 downto 0);

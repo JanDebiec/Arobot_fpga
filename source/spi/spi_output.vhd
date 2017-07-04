@@ -31,6 +31,7 @@ package spi_output_pkg is
 -- system side
     isl_SystemClock  : in STD_LOGIC ;
     isl_reset        : in std_logic;
+    isl_dataValid    : in std_logic;
     islv8_MagicWord  : in std_logic_vector(7 downto 0);
     islv8_Header     : in std_logic_vector(7 downto 0);
     islv32_DataL     : in std_logic_vector(31 downto 0);
@@ -65,6 +66,7 @@ entity spi_output is
 -- system side
     isl_SystemClock  : in STD_LOGIC ;
     isl_reset        : in std_logic;
+    isl_dataValid    : in std_logic;
     islv8_MagicWord  : in std_logic_vector(7 downto 0);
     islv8_Header     : in std_logic_vector(7 downto 0);
     islv32_DataL     : in std_logic_vector(31 downto 0);
@@ -92,13 +94,11 @@ architecture RTL of spi_output is
     signal sl_validData : std_logic;
     signal uTxPrep_slv8_Data : std_logic_vector(7 downto 0);
     signal uTx_sl_dataReqSpi : std_logic;
-    signal uTxB_sl_dataReqSpi : std_logic;
 --    signal sl_dataReqSpiDel : std_logic;
 --    signal sl_dataReqSpi2Del : std_logic;
     
 --    signal sl_dataReqSys : std_logic;
     signal uTx_sl_TxReady : std_logic;
-    signal uTxB_sl_TxReady : std_logic;
     signal uTx_sl_miso : std_logic;
     signal uM_sl_TxActive_m : std_logic;
     
@@ -106,12 +106,12 @@ architecture RTL of spi_output is
     signal uTxPrep_sl_DataValid : std_logic;
     signal uTxPrep_sl_txActive : std_logic;
     signal sl_txActive : std_logic;
-    signal uTxPrepB_sl_firstByteValid : std_logic;
-    signal uTxPrepB_sl_DataValid : std_logic;
-    signal uTxPrepB_sl_txActive : std_logic;
 ---- signals for DpRam
 ---- read side    
     signal sl_SystemClock : STD_LOGIC ;
+    signal sl_DataReq      : std_logic;
+    signal sl_InputDataValid : std_logic;
+    
 begin
     
     
@@ -180,9 +180,9 @@ port map
 --! signals on OutputCLock domain
     isl_SpiClk       => sl_SpiClk,
     isl_reset        => sl_Reset,--: in std_logic;
-    isl_TxActive     => uTxPrepB_sl_txActive,--: in std_logic;
-    isl_FirstByteValid => uTxPrepB_sl_firstByteValid,
-    isl_validData    => uTxPrepB_sl_DataValid,--: in std_logic;
+    isl_TxActive     => uTxPrep_sl_txActive,--: in std_logic;
+    isl_FirstByteValid => uTxPrep_sl_firstByteValid,
+    isl_validData    => uTxPrep_sl_DataValid,--: in std_logic;
     islv8_Data       => uTxPrep_slv8_Data,--: in std_logic_vector(7 downto 0);
     osl_dataReq      => uTx_sl_dataReqSpi,--
     osl_TxReady      => uTx_sl_TxReady,--
@@ -198,81 +198,19 @@ port map
     islv8_Header     => islv8_Header     ,--: in std_logic_vector(7 downto 0);
     islv32_DataL     => islv32_DataL     ,--: in std_logic_vector(31 downto 0);
     islv32_DataR     => islv32_DataR     ,--: in std_logic_vector(31 downto 0);
+    osl_DataReq      => sl_DataReq,--: out std_logic;
+    isl_dataValid    => sl_InputDataValid,--: in std_logic;
+    isl_reset        => sl_reset,--: in std_logic;
+
+ -- spi clock
+    isl_SpiClock     => sl_SpiClk,--: in std_logic;    
     isl_transferData => isl_TxActive ,--: in std_logic;
-    isl_trDataReq    => uTxB_sl_dataReqSpi,
-    isl_trReady      => uTxB_sl_TxReady,
+    isl_trDataReq    => uTx_sl_dataReqSpi,
+    isl_trReady      => uTx_sl_TxReady,
     oslv8_outData    => uTxPrep_slv8_Data    ,--: out std_logic_vector(7 downto 0);
     osl_firstByteValid  => uTxPrep_sl_firstByteValid,--: out std_logic;
     osl_DataValid    => uTxPrep_sl_DataValid,--: out std_logic;
-    osl_txActive     => uTxPrep_sl_txActive,--: out std_logic;
-    isl_reset        => sl_reset--: in std_logic;
+    osl_txActive     => uTxPrep_sl_txActive--: out std_logic;
 );
-
-uTxDataReq : mono_on_border
-    PORT map
-    (
-    i_InputClock    => sl_SpiClk,--: in  STD_LOGIC;--
-    i_OutputClock   => sl_SystemClock,--: in  STD_LOGIC;--
-    i_Input         => uTx_sl_dataReqSpi,--: in  STD_LOGIC;--
-    i_Reset         => sl_reset,--: in  STD_LOGIC;--
-    o_Output        => uTxB_sl_dataReqSpi--: out STD_LOGIC     --
-    );
-
-uTxDataReady : mono_on_border
-    PORT map
-    (
-    i_InputClock    => sl_SpiClk,--: in  STD_LOGIC;--
-    i_OutputClock   => sl_SystemClock,--: in  STD_LOGIC;--
-    i_Input         => uTx_sl_TxReady,--: in  STD_LOGIC;--
-    i_Reset         => sl_reset,--: in  STD_LOGIC;--
-    o_Output        => uTxB_sl_TxReady--: out STD_LOGIC     --
-    );
-
-uFirstByteVal : mono_on_border
-    PORT map
-    (
-    i_InputClock    => sl_SystemClock,--: in  STD_LOGIC;--
-    i_OutputClock   => sl_SpiClk,--: in  STD_LOGIC;--
-    i_Input         => uTxPrep_sl_firstByteValid,--: in  STD_LOGIC;--
-    i_Reset         => sl_reset,--: in  STD_LOGIC;--
-    o_Output        => uTxPrepB_sl_firstByteValid--: out STD_LOGIC     --
-    );
-
-uTxDataVal : mono_on_border
-    PORT map
-    (
-    i_InputClock    => sl_SystemClock,--: in  STD_LOGIC;--
-    i_OutputClock   => sl_SpiClk,--: in  STD_LOGIC;--
-    i_Input         => uTxPrep_sl_DataValid,--: in  STD_LOGIC;--
-    i_Reset         => sl_reset,--: in  STD_LOGIC;--
-    o_Output        => uTxPrepB_sl_DataValid--: out STD_LOGIC     --
-    );
-
-uTxActive : mono_on_border
-    PORT map
-    (
-    i_InputClock    => sl_SystemClock,--: in  STD_LOGIC;--
-    i_OutputClock   => sl_SpiClk,--: in  STD_LOGIC;--
-    i_Input         => uTxPrep_sl_txActive,--: in  STD_LOGIC;--
-    i_Reset         => sl_reset,--: in  STD_LOGIC;--
-    o_Output        => uTxPrepB_sl_txActive--: out STD_LOGIC     --
-    );
-
--- write in system side
---read on spi side
---U_SpiOutputDpram : dpram2048x8
---PORT map
---(
---    data        => slv8_WrData,--: IN STD_LOGIC_VECTOR (7 DOWNTO 0);
---    rdaddress   => slv11_rdAddr,--: IN STD_LOGIC_VECTOR (10 DOWNTO 0);
---    rdclock     => sl_SystemClock,--: IN STD_LOGIC ;
---    rdclocken   => sl_SysClkEna,--: IN STD_LOGIC  := '1';
---    rden        => sl_RdEna,--: IN STD_LOGIC  := '1';
---    wraddress   => slv11_wrAddr,--: IN STD_LOGIC_VECTOR (10 DOWNTO 0);
---    wrclock     => sl_SpiInternalClk,--: IN STD_LOGIC  := '1';
---    wrclocken   => sl_wrClkEna,--: IN STD_LOGIC  := '1';
---    wren        => sl_wrEna,--: IN STD_LOGIC  := '0';
---    q           => slv8_RdData--: OUT STD_LOGIC_VECTOR (7 DOWNTO 0)
---);
 
 end architecture RTL;
