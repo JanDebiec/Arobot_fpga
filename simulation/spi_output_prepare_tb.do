@@ -12,7 +12,10 @@ vmap work rtl_work
 vcom -2008 -work work $localpath/source/globals/arobot_typedef_pkg.vhd
 vcom -2008 -work work $localpath/source/globals/arobot_constant_pkg.vhd
 vcom -2008 -work work $localpath/source/globals/arobot_component_pkg.vhd
+vcom -2008 -work work $localpath/source/basics/flipflop_d1.vhd
+vcom -2008 -work work $localpath/source/basics/flipflop_sre.vhd
 vcom -2008 -work work $localpath/source/basics/monoshot.vhd
+vcom -2008 -work work $localpath/source/basics/mono_on_border.vhd
 vcom -2008  -work work $localpath/source/basics/flipflop_d1.vhd
 vcom -2008  -work work $localpath/source/spi/spi_transmitter.vhd
 vcom -2008  -work work $localpath/source/spi/spi_output_prepare.vhd
@@ -35,5 +38,5 @@ radix -hexadecimal
 set StdArithNoWarnings 1
 
 
-run 5 us
+run 10 us
 wave zoom full

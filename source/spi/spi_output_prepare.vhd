@@ -30,14 +30,17 @@ package spi_output_prepare_pkg is
     islv8_Header     : in std_logic_vector(7 downto 0);
     islv32_DataL     : in std_logic_vector(31 downto 0);
     islv32_DataR     : in std_logic_vector(31 downto 0);
+    osl_DataReq      : out std_logic;
+    isl_reset        : in std_logic;
+-- spi clock
+    isl_SpiClock     : in std_logic;    
     isl_transferData : in std_logic;
     isl_trDataReq    : in std_logic;
     isl_trReady      : in std_logic;
     oslv8_outData    : out std_logic_vector(7 downto 0);
     osl_firstByteValid  : out std_logic;
     osl_DataValid    : out std_logic;
-    osl_txActive     : out std_logic;
-    isl_reset        : in std_logic
+    osl_txActive     : out std_logic
     );        
     end component spi_output_prepare;
             
@@ -47,7 +50,9 @@ library ieee;
     use ieee.std_logic_1164.all;
     use ieee.numeric_std.all;
 library work;
+    use work.mono_on_border_pkg.all;
     use work.monoshot_pkg.all;
+    use work.flipflop_d1_pkg.all;
  
 entity spi_output_prepare is
     port (
@@ -57,14 +62,17 @@ entity spi_output_prepare is
     islv8_Header     : in std_logic_vector(7 downto 0);
     islv32_DataL     : in std_logic_vector(31 downto 0);
     islv32_DataR     : in std_logic_vector(31 downto 0);
+    osl_DataReq      : out std_logic;
+    isl_reset        : in std_logic;
+-- spi clock
+    isl_SpiClock     : in std_logic;    
     isl_transferData : in std_logic;
     isl_trDataReq    : in std_logic;
     isl_trReady      : in std_logic;
     oslv8_outData    : out std_logic_vector(7 downto 0);
     osl_firstByteValid  : out std_logic;
     osl_DataValid    : out std_logic;
-    osl_txActive     : out std_logic;
-    isl_reset        : in std_logic
+    osl_txActive     : out std_logic
     );
 end entity spi_output_prepare;
 
@@ -81,14 +89,30 @@ architecture RTL of spi_output_prepare is
         st_loadEight,
         st_loadNinth,
         st_loadTenth,
-        st_end
+        st_dataReq
             
     );
     signal smLoad_cs, smLoad_ns : sm_OutputPrepare_Type;
     
     signal slv80_outputRegister : std_logic_vector(79 downto 0);
+    signal sl_trDataReqR : std_logic;
+    signal sl_dataReq_Sys : std_logic;
+    signal sl_dataReq_Spi : std_logic;
 
 begin
+    
+    sl_dataReq_Spi <= '1' when (smLoad_cs = st_dataReq) else '0';
+uDataReq : mono_on_border
+    PORT map
+    (
+    i_InputClock    => isl_SpiClock,--: in  STD_LOGIC;--
+    i_OutputClock   => isl_SystemClock,--: in  STD_LOGIC;--
+    i_Input         => sl_dataReq_Spi,--: in  STD_LOGIC;--
+    i_Reset         => isl_reset,--: in  STD_LOGIC;--
+    o_Output        => sl_dataReq_Sys--: out STD_LOGIC     --
+    );
+    
+    osl_DataReq <= sl_dataReq_Sys;
     
     osl_txActive <= '1' when (smLoad_cs /= st_Idle) else '0';
     slv80_outputRegister <= islv8_MagicWord & islv8_Header & islv32_DataL & islv32_DataR;
@@ -105,9 +129,20 @@ begin
                     x"AA";
 
 
+uFDataReq : flipflop_d1
+    PORT map
+    (
+    isl_clock   => isl_SpiClock,--: in STD_LOGIC;
+    isl_d       => isl_trDataReq,--: in STD_LOGIC;
+    isl_ena     => '1',--: in STD_LOGIC;
+    isl_reset   => isl_reset,--: in STD_LOGIC;
+    osl_out     => sl_trDataReqR--: out STD_LOGIC
+    );
+
+
 uFBVMono : monoshot 
     port map (
-        isl_SystemClock,
+        isl_SpiClock,
         isl_reset,
         isl_transferData,
         osl_firstByteValid
@@ -116,7 +151,7 @@ uFBVMono : monoshot
 
 pLoad_com : process (
     isl_transferData,
-    isl_trDataReq,
+    sl_trDataReqR,
     isl_trReady,
     smLoad_cs
 )
@@ -127,45 +162,47 @@ begin
             smLoad_ns <= st_loadFirst;
         end if;    
     when st_loadFirst =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadSecond;
         end if;    
     when st_loadSecond =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadThird;
         end if;    
     when st_loadThird =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadFourth;
         end if;    
     when st_loadFourth =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadFifth;
         end if;    
     when st_loadFifth =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadSixth;
         end if;    
     when st_loadSixth =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadSeventh;
         end if;    
     when st_loadSeventh =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadEight;
         end if;    
     when st_loadEight =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadNinth;
         end if;    
     when st_loadNinth =>
-        if(isl_trDataReq = '1') then
+        if(sl_trDataReqR = '1') then
             smLoad_ns <= st_loadTenth;
         end if;    
     when st_loadTenth =>
         if(isl_trReady = '1') then
-            smLoad_ns <= st_Idle;
+            smLoad_ns <= st_dataReq;
         end if;    
+    when st_dataReq =>
+        smLoad_ns <= st_Idle;    
 --    when st_end =>
         when others =>
             smLoad_ns <= st_Idle;
@@ -173,13 +210,13 @@ begin
 end process;        
 
 pLoad_seq : process (
-        isl_SystemClock,
+        isl_SpiClock,
         isl_reset     
 )
 begin
     if (isl_reset = '1') then
         smLoad_cs <= st_Idle;
-    elsif (rising_edge(isl_SystemClock)) then
+    elsif (rising_edge(isl_SpiClock)) then
         smLoad_cs <= smLoad_ns;
     END IF;
 end process;

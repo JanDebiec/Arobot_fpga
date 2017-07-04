@@ -180,7 +180,7 @@ port map
 --! signals on OutputCLock domain
     isl_SpiClk       => sl_SpiClk,
     isl_reset        => sl_Reset,--: in std_logic;
-    isl_TxActive     => uTxPrep_sl_txActive,--: in std_logic;
+    isl_TxActive     => uTxPrepB_sl_txActive,--: in std_logic;
     isl_FirstByteValid => uTxPrepB_sl_firstByteValid,
     isl_validData    => uTxPrepB_sl_DataValid,--: in std_logic;
     islv8_Data       => uTxPrep_slv8_Data,--: in std_logic_vector(7 downto 0);

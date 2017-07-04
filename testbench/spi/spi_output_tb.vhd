@@ -45,8 +45,8 @@ architecture behave of spi_output_tb is
 
  begin	
     
-    sl_SpiClk <= rec_SpiMiso.sl_SpiClk;
-      
+--    sl_SpiClk <= rec_SpiMiso.sl_SpiClk;
+      sl_SpiClk <= sl_OutputClk;
 P_STIMUL: process
  begin
  	--do nothing
