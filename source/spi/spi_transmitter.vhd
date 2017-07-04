@@ -130,7 +130,6 @@ begin
     END IF;
 end process;
 
---    osl_miso <= 'Z' when ((isl_TxActive = '0') OR (isl_reset = '1')  or (slv8_cntReg(0) = '1')) else
     osl_miso <= 'Z' when ((isl_TxActive = '0') OR (isl_reset = '1')) else
                 tx_buf(8);
 

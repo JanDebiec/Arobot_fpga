@@ -30,7 +30,6 @@ vsim -t 1ps -L altera -L lpm -L sgate -L altera_mf -L altera_lnsim -L cycloneiv 
 add wave spi_output_prepare_tb/*
 add wave spi_output_prepare_tb/U_DUT/*
 
-
 radix -hexadecimal
 #view structure
 #view signals

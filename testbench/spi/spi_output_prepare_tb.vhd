@@ -29,6 +29,7 @@ architecture behave of spi_output_prepare_tb is
     signal slv32_DataL     : std_logic_vector(31 downto 0) := x"12345678"; 
     signal slv32_DataR     : std_logic_vector(31 downto 0) := x"9ABCDEF0"; 
     signal sl_DataReq      : std_logic;
+    signal sl_InputDataValid : std_logic := '0';
     
 -- spi side    
     signal sl_transferData : std_logic := '0';                     
@@ -44,18 +45,21 @@ architecture behave of spi_output_prepare_tb is
 P_STIMUL: process
  begin
  	--do nothing
-    wait for 300 ns;
+    wait for 400 ns;
+    
+    
+    wait until rising_edge(sl_SystemClk);
+    sl_InputDataValid <= '1';
+    wait until rising_edge(sl_SystemClk);
+    sl_InputDataValid <= '0';
+    
+    wait for 100 ns;
     wait until rising_edge(sl_SpiClk);
     sl_transferData <= '1';
     wait until rising_edge(sl_SpiClk);
     sl_transferData <= '0';
 
     handleOneSpiTxByteSignals(sl_SpiClk, sl_trDataReq, sl_trReady);
---    wait for 100 ns;
---    wait until rising_edge(sl_SystemClk);
---    sl_trDataReq <= '1';               
---    wait until rising_edge(sl_SystemClk);
---    sl_trDataReq <= '0';               
     
     wait for 300 ns;
     handleOneSpiTxByteSignals(sl_SpiClk, sl_trDataReq, sl_trReady);
@@ -80,16 +84,6 @@ P_STIMUL: process
 
     wait for 300 ns;
     handleOneSpiTxByteSignals(sl_SpiClk, sl_trDataReq, sl_trReady);
-
-    wait for 300 ns;
-    handleOneSpiTxByteSignals(sl_SpiClk, sl_trDataReq, sl_trReady);
-
---    SpiMiso_TxByte(
---        clk => sl_OutputClk,
---        rec_SpiMiso => rec_SpiMiso
---    );
---    
-
 
 	wait; 	
 end process;
@@ -123,6 +117,7 @@ port map
     islv32_DataL     => slv32_DataL     ,--: in std_logic_vector(31 downto 0);
     islv32_DataR     => slv32_DataR     ,--: in std_logic_vector(31 downto 0);
     osl_DataReq      => sl_DataReq,--: out std_logic;
+    isl_dataValid    => sl_InputDataValid,--: in std_logic;
     isl_reset        => sl_reset,--: in std_logic;
 -- spi clock
     isl_SpiClock     => sl_SpiClk,--: in std_logic;    
