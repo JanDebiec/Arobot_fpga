@@ -49,7 +49,7 @@ Library work;
     use work.arobot_constant_pkg.all;
     use work.arobot_component_pkg.all;
     use work.arobot_typedef_pkg.all;
-    use work.deflipflop_pkg.all;
+    use work.flipflop_d1_pkg.all;
     use work.monoshot_pkg.all;
     use work.spi_transmitter_pkg.all;
 
@@ -133,8 +133,8 @@ begin
 --    sl_BufReady <= islv8_status(0);
     
 -- delay for valid data, 2 ticks    
-U_DataReqDel : deflipflop port map(sl_SpiClk, uTx_sl_dataReqSpi, '1', '0', sl_dataReqSpiDel );
-U_DataReq2Del : deflipflop port map(sl_SpiClk, sl_dataReqSpiDel, '1', '0', sl_dataReqSpi2Del );
+U_DataReqDel : flipflop_d1 port map(sl_SpiClk, uTx_sl_dataReqSpi, '1', '0', sl_dataReqSpiDel );
+U_DataReq2Del : flipflop_d1 port map(sl_SpiClk, sl_dataReqSpiDel, '1', '0', sl_dataReqSpi2Del );
 
 
 --P_RdAddrCntNext : process( uTx_sl_dataReqSpi,  uM_sl_TxActive_m)

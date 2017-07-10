@@ -19,7 +19,7 @@ use ieee.numeric_std.all;
 Library work;           
 	use work.arobot_constant_pkg.all;
 	use work.arobot_component_pkg.all;
-    use work.deflipflop_pkg.all;
+    use work.flipflop_d1_pkg.all;
     use work.monoshot_pkg.all;
     use work.spi_receiver_pkg.all;
     use work.spi_transmitter_pkg.all;

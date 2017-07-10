@@ -684,7 +684,8 @@ port map
 uUart: UART
 generic map (
     CLK_FREQ    => 50e6,
-    BAUD_RATE   => 115200,
+    BAUD_RATE   => 9600,
+--    BAUD_RATE   => 115200,
     PARITY_BIT  => "none"
 )
 port map (
