@@ -1,0 +1,28 @@
+# vsim -modelsimini e:/project/msystem/msystem/soft_fpga/vu/vunit_out/modelsim/modelsim.ini -wlf e:/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.buffer_control_1603_tb.all/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.buffer_control_1603_tb(behave) -L vunit_lib -L lib -g/buffer_control_1603_tb/runner_cfg="enabled_test_cases : None,output path : e::/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.buffer_control_1603_tb.all/,active python runner : true" 
+# Start time: 15:51:20 on Sep 20,2016
+# ** Warning: (vsim-8683) Uninitialized out port /buffer_control_1603_tb/U_DUT/on_H2FRdBufBNr has no driver.
+# 
+# This port will contribute value (-2147483648) to the signal network.
+# ** Warning: (vsim-8683) Uninitialized out port /buffer_control_1603_tb/U_DUT/oslvn_BufBValid(1 downto 0) has no driver.
+# 
+# This port will contribute value (UU) to the signal network.
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 0 ps  Iteration: 0  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 0 ps  Iteration: 0  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 0 ps  Iteration: 0  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 2110 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 6690 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 6690 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 11350 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 15690 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# ** Warning: NUMERIC_STD.TO_SIGNED: vector truncated
+#    Time: 15690 ns  Iteration: 1  Instance: /buffer_control_1603_tb/U_DUT
+# Break in Subprogram vunit_stop at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
+# Stopped at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10

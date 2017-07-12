@@ -1,0 +1,16 @@
+# End time: 15:13:47 on Sep 20,2016, Elapsed time: 0:00:00
+# Errors: 0, Warnings: 13
+# vsim -modelsimini e:/project/msystem/msystem/soft_fpga/vu/vunit_out/modelsim/modelsim.ini -wlf e:/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.flipflop_d1_tb.all/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.flipflop_d1_tb(behave) -L vunit_lib -L lib -g/flipflop_d1_tb/runner_cfg="enabled_test_cases : None,output path : e::/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.flipflop_d1_tb.all/,active python runner : true" 
+# Start time: 15:13:47 on Sep 20,2016
+# ** Warning: state is correct
+#    Time: 300 ns  Iteration: 1  Instance: /flipflop_d1_tb
+# ** Warning: state is correct
+#    Time: 630 ns  Iteration: 1  Instance: /flipflop_d1_tb
+# ** Warning: state is correct
+#    Time: 735 ns  Iteration: 1  Instance: /flipflop_d1_tb
+# ** Warning: state is correct
+#    Time: 1090 ns  Iteration: 1  Instance: /flipflop_d1_tb
+# ** Warning: state is correct
+#    Time: 1195 ns  Iteration: 1  Instance: /flipflop_d1_tb
+# Break in Subprogram vunit_stop at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
+# Stopped at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10

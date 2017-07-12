@@ -1,0 +1,6 @@
+# End time: 15:13:49 on Sep 20,2016, Elapsed time: 0:00:01
+# Errors: 0, Warnings: 1
+# vsim -modelsimini e:/project/msystem/msystem/soft_fpga/vu/vunit_out/modelsim/modelsim.ini -wlf e:/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.runtime_control_1603_tb.all/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.runtime_control_1603_tb(behave) -L vunit_lib -L lib -g/runtime_control_1603_tb/runner_cfg="enabled_test_cases : None,output path : e::/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.runtime_control_1603_tb.all/,active python runner : true" 
+# Start time: 15:13:49 on Sep 20,2016
+# Break in Subprogram vunit_stop at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
+# Stopped at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
