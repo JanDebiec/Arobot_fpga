@@ -102,8 +102,10 @@ architecture RTL of pulse_generator is
 	signal n16_ValueShadow 			: signed(15 downto 0);
 
 -- real values for 50 ms
-	constant un32_TickTimerSetting 			: signed(31 downto 0) := x"0026_25a0";-- ca 2.5 mln
-	constant un32_PulsePauseOneSetting		: signed(31 downto 0) := x"0026_2400";
+--	constant un32_TickTimerSetting 			: signed(31 downto 0) := x"0026_25a0";-- ca 2.5 mln
+--	constant un32_PulsePauseOneSetting		: signed(31 downto 0) := x"0026_2400";
+    constant un32_TickTimerSetting          : signed(31 downto 0) := x"0262_5a00";-- ca 2.5 mln
+    constant un32_PulsePauseOneSetting      : signed(31 downto 0) := x"0262_2400";
 	signal un32_TickTimerCounter 			: signed(31 downto 0);
 -- orig
 	constant un32_PulseTimeSetting			: signed(31 downto 0) := x"0000_0032";-- 50 dec
