@@ -84,7 +84,8 @@ architecture RTL of c4_1702 is
 	signal sl_output1B		: std_logic;
 	signal sl_output2A		: std_logic;
 	signal sl_output2B		: std_logic;
-	signal n32_periodCount	: signed (31 downto 0) := x"004C4B40";--05-000-000 clocks = 100ms
+--	signal n32_periodCount	: signed (31 downto 0) := x"004C4B40";--05-000-000 clocks = 100ms
+	signal n32_periodCount	: signed (31 downto 0) := x"00180000";--05-000-000 clocks = 100ms
 	signal sl_slice_tick		: std_logic;	--!
 
 	signal n16_inputVelocity : signed (15 downto 0);
@@ -189,7 +190,8 @@ pRamp : process (
    all 
 )begin
     if (sl_Reset = '1') then
-        n16_rampValue <= x"0040";
+--        n16_rampValue <= x"0040";
+        n16_rampValue <= x"0100";
 --    elsif (rising_edge(sl_clk50Mhz)) then
 --        if (uH2flw_sl_rampValid = '1') then
 --        n16_rampValue <= uH2flw_n16_rampValue;
