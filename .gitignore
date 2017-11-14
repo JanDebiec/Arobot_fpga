@@ -2,7 +2,7 @@ transcript
 .settings/
 _info
 *.bak
-vu_msystem/
+vunit_out/
 
 
 
