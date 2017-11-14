@@ -1,4 +1,0 @@
-# vsim 
-# Start time: 15:08:04 on Nov 30,2016
-# Break in Subprogram vunit_stop at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
-# Stopped at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
