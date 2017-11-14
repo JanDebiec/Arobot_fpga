@@ -2,5 +2,5 @@ transcript
 .settings/
 _info
 *.bak
-
+vunit_out/
 
