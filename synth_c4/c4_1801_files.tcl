@@ -50,5 +50,5 @@ set_global_assignment -name VHDL_FILE ../source/uart/uart_tx.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/uart_parity.vhd
 set_global_assignment -name VHDL_FILE ../source/uart/uart.vhd
 set_global_assignment -name VHDL_FILE ../source/cmdVel_parser.vhd
-set_global_assignment -name VHDL_FILE ../source/top/c4_1703.vhd
+set_global_assignment -name VHDL_FILE ../source/top/c4_1801.vhd
 

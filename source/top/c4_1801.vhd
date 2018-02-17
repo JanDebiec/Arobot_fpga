@@ -37,7 +37,7 @@ Library work;
     use work.version_pkg.all;
 
 --!
-entity c4_1703 is
+entity c4_1801 is
     generic(
 			bModelSim : boolean := FALSE;
 			bISSP     : boolean := FALSE
@@ -70,9 +70,9 @@ entity c4_1703 is
     isl_SerialRx    : in std_logic; 
     osl_SerialTx    : out std_logic 
 	);
-end entity c4_1703;
+end entity c4_1801;
 
-architecture RTL of c4_1703 is
+architecture RTL of c4_1801 is
 	signal sl_clk50MHz  		: STD_LOGIC := '0';     -- clock 50MHz
 	signal sl_Reset 			: STD_LOGIC := '0';
 	signal slv4_switch       : std_logic_vector(3 downto 0);
