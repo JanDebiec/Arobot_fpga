@@ -3,12 +3,12 @@ Library ieee;           use ieee.std_logic_1164.all;
 USE ieee.math_real.ALL;   -- for UNIFORM, TRUNC functions
 
 Library work;           
-                        use work.cmdVel_parser_pkg.all;
+                        use work.cmdVel_parser_serial_pkg.all;
                         
-entity cmdVel_parser_TB is
-end cmdVel_parser_TB;
+entity cmdVel_parser_serial_TB is
+end cmdVel_parser_serial_TB;
 
-architecture behave of cmdVel_parser_TB is
+architecture behave of cmdVel_parser_serial_TB is
 	signal sl_clk50MHz  : STD_LOGIC := '0';     -- clock 50MHz
 	signal sl_Reset 	: STD_LOGIC := '0';
 	signal sl_bitValid : std_logic := '0';
@@ -20,7 +20,7 @@ architecture behave of cmdVel_parser_TB is
 	signal sl_outputValid: std_logic := '0';
 begin	
 
-U_DUT : cmdVel_parser
+U_DUT : cmdVel_parser_serial
     port map
     (
 		isl_clk50Mhz 		=> sl_clk50MHz,--: in std_logic;
