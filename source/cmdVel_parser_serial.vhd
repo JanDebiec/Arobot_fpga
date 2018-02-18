@@ -20,8 +20,8 @@ Library ieee;
     use ieee.std_logic_unsigned.all;
     use ieee.numeric_std.all;
 --
-package cmdVel_parser_pkg is
-component cmdVel_parser 
+package cmdVel_parser_serial_pkg is
+component cmdVel_parser_serial
 generic (
     eslv8_MagicWord : std_logic_vector(7 downto 0) := x"a5";
     eslv8_CmdVelWord : std_logic_vector(7 downto 0) := x"00"
@@ -35,9 +35,9 @@ port (
     oslv_shortB : out signed(15 downto 0);
     osl_outputValid : out std_logic
 );        
-end component cmdVel_parser;
+end component cmdVel_parser_serial;
             
-end package cmdVel_parser_pkg;
+end package cmdVel_parser_serial_pkg;
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -46,7 +46,7 @@ library work;
     use work.arobot_typedef_pkg.all;
     use work.monoshot_pkg.all;
 
-entity cmdVel_parser is
+entity cmdVel_parser_serial is
 generic (
     eslv8_MagicWord : std_logic_vector(7 downto 0) := x"a5";
     eslv8_CmdVelWord : std_logic_vector(7 downto 0) := x"00"
@@ -60,9 +60,9 @@ port (
     oslv_shortB : out signed(15 downto 0);
     osl_outputValid : out std_logic
 );
-end entity cmdVel_parser;
+end entity cmdVel_parser_serial;
 
-architecture RTL of cmdVel_parser is
+architecture RTL of cmdVel_parser_serial is
     signal tShiftReg : SixBytesShiftRegs;
     signal sl_MagicFound : std_logic;
     signal sl_MagicFoundM : std_logic;

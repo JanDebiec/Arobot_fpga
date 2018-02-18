@@ -1,4 +1,0 @@
-# vsim -modelsimini e:/project/msystem/msystem/soft_fpga/vu/vunit_out/modelsim/modelsim.ini -wlf e:/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.encoder_filter_tb.all/modelsim/vsim.wlf -quiet -t ps -onfinish stop lib.encoder_filter_tb(behave) -L vunit_lib -L lib -g/encoder_filter_tb/runner_cfg="enabled_test_cases : None,output path : e::/project/msystem/msystem/soft_fpga/vu/vunit_out/tests/lib.encoder_filter_tb.all/,active python runner : true" 
-# Start time: 18:29:31 on Oct 20,2016
-# Break in Subprogram vunit_stop at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
-# Stopped at C:/Python27/lib/site-packages/vunit/vhdl/core/src/stop_body_2008.vhd line 10
