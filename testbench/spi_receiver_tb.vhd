@@ -5,9 +5,9 @@ Library ieee;
     use ieee.numeric_std.all;
 
 Library work;           
-	use work.msystem_tcc_pkg.all;
-    use work.msystem_stim_tcc.all;
-    use work.msystem_stim_fp_pkg.all;
+	use work.arobot_constant_pkg.all;
+    use work.arobot_stim_tcc_pkg.all;
+    use work.arobot_stim_fp_pkg.all;
     use work.spi_receiver_pkg.all;
                             
 entity spi_receiver_tb is
