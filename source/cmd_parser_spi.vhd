@@ -68,33 +68,79 @@ architecture RTL of cmdVel_parser is
     signal tShiftReg : TwelveBytesShiftRegs;
     signal sl_MagicFound : std_logic;
     signal sl_MagicFoundM : std_logic;
+    signal sl_cmdFound : std_logic;
     signal sl_cmdVelFound : std_logic;
+    signal sl_cmdRampFound : std_logic;
+    signal sls_valueA : signed(31 downto 0);
+    signal sls_valueB : signed(31 downto 0);
+    signal slv32_valueA : std_logic_vector(31 downto 0);
+    signal slv32_valueB : std_logic_vector(31 downto 0);
     signal sls_VelocityA : signed(31 downto 0);
     signal sls_VelocityB : signed(31 downto 0);
-    signal slv32_commandA : std_logic_vector(31 downto 0);
-    signal slv32_commandB : std_logic_vector(31 downto 0);
+    signal sls_RampA : signed(31 downto 0);
+    signal sls_RampB : signed(31 downto 0);
     
 begin
 
 osl_outputValid <= sl_cmdVelFound;
 oslv_VelocityA <= sls_VelocityA;
 oslv_VelocityB <= sls_VelocityB;
-slv32_commandA <= tShiftReg(7) & tShiftReg(6) & tShiftReg(5) & tShiftReg(4);
-slv32_commandB <= tShiftReg(3) & tShiftReg(2) & tShiftReg(1) & tShiftReg(0);
+slv32_valueA <= tShiftReg(7) & tShiftReg(6) & tShiftReg(5) & tShiftReg(4);
+slv32_valueB <= tShiftReg(3) & tShiftReg(2) & tShiftReg(1) & tShiftReg(0);
 
-pVelOut : process(
+
+
+pCmdVelocityOut : process(
     all
 )
 is
 begin
     if isl_rst = '1' then
-        sls_VelocityA <= x"00000000";
-        sls_VelocityB <= x"00000000";
+        sls_velocityA <= x"00000000";
+        sls_velocityB <= x"00000000";
     else
         if rising_edge(isl_clk50Mhz) then
             if(sl_cmdVelFound = '1') then
-                sls_VelocityA <= signed(slv32_commandA);
-                sls_VelocityB <= signed(slv32_commandB);
+                sls_velocityA <= sls_valueA;
+                sls_velocityB <= sls_valueA;
+            end if;    
+        end if;
+    end if;        
+end process;    
+    
+pCmdRampOut : process(
+    all
+)
+is
+begin
+    if isl_rst = '1' then
+        sls_RampA <= x"00000000";
+        sls_RampB <= x"00000000";
+    else
+        if rising_edge(isl_clk50Mhz) then
+            if(sl_cmdRampFound = '1') then
+                sls_RampA <= sls_valueA;
+                sls_RampB <= sls_valueA;
+            end if;    
+        end if;
+    end if;        
+end process;    
+    
+
+
+pCmdValueOut : process(
+    all
+)
+is
+begin
+    if isl_rst = '1' then
+        sls_valueA <= x"00000000";
+        sls_valueB <= x"00000000";
+    else
+        if rising_edge(isl_clk50Mhz) then
+            if(sl_cmdFound = '1') then
+                sls_valueA <= signed(slv32_valueA);
+                sls_valueB <= signed(slv32_valueB);
             end if;    
         end if;
     end if;        
@@ -141,9 +187,14 @@ end process;
 sl_MagicFound <= '1' when ((tShiftReg(11)  = eslv8_MagicByte0 ) 
                             and (tShiftReg(10)  = eslv8_MagicByte1))
                     else '0';
+                        
 sl_cmdVelFound <= '1' when (((tShiftReg(9) &  tShiftReg(8)) = eslv16_CmdVelocity ) 
-                            and (sl_MagicFoundM = '1')) 
+                            and (sl_cmdFound = '1')) 
                             else '0';
+sl_cmdRampFound <= '1' when (((tShiftReg(9) &  tShiftReg(8)) = eslv16_CmdRamp ) 
+                            and (sl_cmdFound = '1')) 
+                            else '0';
+sl_cmdFound <= '1' when sl_MagicFoundM = '1' else '0';
 uMono : monoshot
 port map
 (
