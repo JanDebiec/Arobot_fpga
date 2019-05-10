@@ -183,6 +183,10 @@ sl_Reset <= not (KEY(0));
     osl_outR1B  <= uAxisR_sl_output1B;
     osl_outR2A  <= uAxisR_sl_output2A;
     osl_outR2B  <= uAxisR_sl_output2B;
+--    osl_outR1A  <= uAxisL_sl_output1A;
+--    osl_outR1B  <= uAxisL_sl_output1B;
+--    osl_outR2A  <= uAxisL_sl_output2A;
+--    osl_outR2B  <= uAxisL_sl_output2B;
     osl_slice_tick <= uST_sl_sliceTick;
 --!
 
@@ -320,8 +324,10 @@ port map
     isl_rst             => sl_Reset,--: in std_logic;
     isl_sliceTick       => uST_sl_sliceTick,--in std_logic; --! 50 ms tick for velocity changes
     in16_inputVector    => n16_inputVectorR,--in signed (15 downto 0);--! input velocity 15 bits + sign
+--    in16_inputVector    => n16_inputVectorL,--in signed (15 downto 0);--! input velocity 15 bits + sign
     in16_rampValue      => n16_rampValue,--in signed (15 downto 0);--! ramp, allowed changes of velocity per tick
     iu8_microResProStep => u8_microResProStepR,-- in unsigned(7 downto 0);
+--    iu8_microResProStep => u8_microResProStepL,-- in unsigned(7 downto 0);
     oslv6_PosModulo     => uAxisR_oslv6_PosModulo,--: out std_logic_vector(5 downto 0);
     osl_output1A        => uAxisR_sl_output1A ,--   : out std_logic;
     osl_output1B        => uAxisR_sl_output1B ,--   : out std_logic;
